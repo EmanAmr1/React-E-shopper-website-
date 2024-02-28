@@ -8,9 +8,6 @@ const Header = () => {
 
         <>
 
-
-
-
             <div class="offcanvas-menu-overlay"></div>
             <div class="offcanvas-menu-wrapper">
                 <div class="offcanvas__close">+</div>

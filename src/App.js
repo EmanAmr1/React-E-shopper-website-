@@ -9,12 +9,13 @@ import 'magnific-popup/dist/magnific-popup.css';
 import 'owl.carousel/dist/assets/owl.carousel.min.css';
 import 'slicknav/dist/slicknav.min.css';
 
-import Header from './components/Header';
+
+import Layout from './components/Layout';
 function App() {
   return (
     
    <>
-   <Header />
+   <Layout />
    </>
   );
 }

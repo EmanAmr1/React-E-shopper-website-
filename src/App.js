@@ -13,19 +13,19 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import ProductDetailes from './components/ProductDetailes';
+import ProductDetails from './components/ProductDetails';
+import NotFound from './components/NotFound';
 function App() {
   return (
 
     <Router>
-      <>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route path="productDetails" element={<ProductDetailes />} />
-          </Route>
-        </Routes>
-      </>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route path="productDetails" element={<ProductDetails />} />
+      </Route>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </Router>
   );
 
 }

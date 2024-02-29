@@ -11,7 +11,7 @@ import pro4 from  '../imags/product/details/product-4.jpg';
 
 
 
-const ProductDetailes = () => {
+const ProductDetails = () => {
 
     return (
 
@@ -224,4 +224,4 @@ const ProductDetailes = () => {
 }
 
 
-export default ProductDetailes;
+export default ProductDetails;

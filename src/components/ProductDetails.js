@@ -16,17 +16,19 @@ import { axiosInstance } from "../apis/config";
 
 const ProductDetails = () => {
 
-
+    
     const [proDetails, setProDetails] = useState({})
     const params = useParams();
     console.log(params);
 
+   const baseImageUrl="http://127.0.0.1:8000";
+
     useEffect(() => {
         axiosInstance
-            .get(`/API/getProduct/${params.id}`)
-            .then((res) => setProDetails(res.data))
+            .get(`/API/getProduct/${params.id}/`)
+            .then((res) => setProDetails(res.data.product))
             .catch((err) => console.log(err));
-    }, []);
+    }, [params.id]);
 
 
     return (
@@ -40,8 +42,8 @@ const ProductDetails = () => {
                             <div class="breadcrumb__links">
                                 <a href="./index.html"><i class="fa fa-home"></i> Home</a>
                                 <a href=" ">Women’s </a>
-                                <span>Essential structured blazer</span>
-                                <p>{proDetails.description}</p>
+                                <span>Essential structured blazer </span>
+
                             </div>
                         </div>
                     </div>
@@ -70,9 +72,10 @@ const ProductDetails = () => {
                                         <img src={thumb4} alt="" />
                                     </a>
                                 </div>
+                                <img className="product__big__img" src={`${baseImageUrl}${proDetails.image}`} alt="" />
                                 <div className="product__details__slider__content">
                                     <div className="product__details__pic__slider owl-carousel">
-                                        <img data-hash="product-1" className="product__big__img" src={pro1} alt="" />
+                                        <img data-hash="product-1" className="product__big__img" src={`http://127.0.0.1:8000${proDetails.image}`} alt="" />
                                         <img data-hash="product-2" className="product__big__img" src={pro2} alt="" />
                                         <img data-hash="product-3" className="product__big__img" src={pro3} alt="" />
                                         <img data-hash="product-4" className="product__big__img" src={pro4} alt="" />
@@ -82,7 +85,7 @@ const ProductDetails = () => {
                         </div>
                         <div className="col-lg-6">
                             <div className="product__details__text">
-                                <h3>Essential structured blazer <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
+                                <h3>{proDetails.name}<span>Brand: {proDetails.brand}</span></h3>
                                 <div className="rating">
                                     <i className="fa fa-star"></i>
                                     <i className="fa fa-star"></i>
@@ -91,9 +94,8 @@ const ProductDetails = () => {
                                     <i className="fa fa-star"></i>
                                     <span>( 138 reviews )</span>
                                 </div>
-                                <div className="product__details__price">$ 75.0 <span>$ 83.0</span></div>
-                                <p>Nemo enim ipsam voluptatem quia aspernatur aut odit aut loret fugit, sed quia consequuntur
-                                    magni lores eos qui ratione voluptatem sequi nesciunt.</p>
+                                <div className="product__details__price">$ {proDetails.price} <span>$ 83.0</span>   </div>
+                                <p>{proDetails.description}  <div>stock :{proDetails.stock} </div><div>Category: {proDetails.category}</div> <div>add_date: {proDetails.add_date}</div><div>update_date: {proDetails.update_date}</div></p>
                                 <div className="product__details__button">
                                     <div className="quantity">
                                         <span>Quantity:</span>

@@ -8,12 +8,10 @@ import 'slicknav/dist/slicknav.min.css';
 
 
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
-
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import ProductDetails from './components/ProductDetails';
+import ProductList from './components/ProductList';
 import NotFound from './components/NotFound';
 function App() {
   return (
@@ -22,6 +20,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="productDetails" element={<ProductDetails />} />
+        <Route path="ProductList" element={<ProductList />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

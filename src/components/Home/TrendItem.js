@@ -7,7 +7,8 @@ import '../../CSS/slicknav.min.css'
 import '../../CSS/bootstrap.min.css'
 
 import { useState } from 'react';
-import{trenditemapi} from './TrendData'
+
+import { trenditemapi } from './api'
 const TrendItem = () => {
   console.log(trenditemapi)
   const [trenditem,setTrendItem]= useState(trenditemapi)

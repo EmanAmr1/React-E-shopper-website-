@@ -1,7 +1,10 @@
 import React from 'react'
 import '../../CSS/style.css';
 import { useState } from 'react';
-import{categoriesapi} from './CategoriesData'
+
+import{categoriesapi} from './api'
+
+
 
 const Categories =()=>{
     console.log(categoriesapi)

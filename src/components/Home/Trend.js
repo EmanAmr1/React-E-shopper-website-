@@ -4,9 +4,9 @@ import '../../CSS/font-awesome.min.css';
 import '../../CSS/slicknav.min.css';
 import '../../CSS/bootstrap.min.css';
 import { useState } from 'react';
-import { trendapi } from './TrendData';
-import TrendItem from './TrendItem';
 
+import TrendItem from './TrendItem';
+import { trendapi } from './api';
 const Trend = () => {
   const [trend, setTrend] = useState(trendapi);
 

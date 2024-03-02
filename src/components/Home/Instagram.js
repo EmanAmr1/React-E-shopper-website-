@@ -8,7 +8,8 @@ import '../../CSS/slicknav.min.css'
 import '../../CSS/bootstrap.min.css'
 
 import { useState } from 'react';
-import{instagramapi} from './TrendData'
+
+import { instagramapi } from './api'
 const Instagram = () => {
     console.log(instagramapi)
     const [instagram,setInstagram]= useState(instagramapi)

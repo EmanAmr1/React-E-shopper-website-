@@ -7,7 +7,7 @@ import '../../CSS/slicknav.min.css'
 import '../../CSS/bootstrap.min.css'
 
 import { useState } from 'react';
-import{productapi} from './ProductData'
+import{productapi} from './api'
 
 const Products = ()=>{
     console.log(productapi)

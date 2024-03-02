@@ -5,7 +5,9 @@ import '../../CSS/slicknav.min.css'
 import '../../CSS/bootstrap.min.css'
 
 import { useState } from 'react';
-import{bannerapi} from './BannerData'
+
+import{bannerapi} from './api'
+
 
 const Banner = () => {
     const [banner,setBanner]= useState(bannerapi)

@@ -8,6 +8,7 @@ const Home = React.lazy(()=>import('../pages/Home'))
 const ProductDetails =React.lazy(()=>import('../pages/ProductDetails') )
 const ProductList =React.lazy(()=>import('../pages/ProductList') )
 const NotFound =React.lazy(()=>import('../pages/NotFound') )
+// const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
 
 
@@ -22,6 +23,7 @@ const Router =()=>{
         <Route path='/' element={<Home />} />
         <Route path='productDetails/:id' element={<ProductDetails />} />
         <Route path='ProductList' element={<ProductList />} />
+        {/* <Route path='Register' element={<Register />} /> */}
 
         </Route>
         <Route path='*' element={<NotFound/>}/>

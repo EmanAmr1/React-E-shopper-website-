@@ -15,7 +15,7 @@ const TrendItem = () => {
     <>
     {trenditem.map(treitem=>{return(
      
-      <div className="trend__item">
+      <div className="trend__item"key={treitem.id}>
         <div className="trend__item__pic">
           <img src={treitem.image} alt="" />
         </div>

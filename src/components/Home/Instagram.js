@@ -1,59 +1,37 @@
 import React from 'react'
 
+import '../../CSS/style.css'
+
+import '../../CSS/elegant-icons.css'
+import '../../CSS/font-awesome.min.css'
+import '../../CSS/slicknav.min.css'
+import '../../CSS/bootstrap.min.css'
+
+import { useState } from 'react';
+import{instagramapi} from './TrendData'
 const Instagram = () => {
+    console.log(instagramapi)
+    const [instagram,setInstagram]= useState(instagramapi)
   return (
     <>
+
       <div className="instagram">
     <div className="container-fluid">
         <div className="row">
-            <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div className="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">
-                    <div className="instagram__text">
-                        <i className="fa fa-instagram"></i>
-                        <a href="h">@ ashion_shop</a>
+        {instagram.map(inst=>{
+                return(
+
+                    <div className="col-lg-2 col-md-4 col-sm-4 p-0">
+                    <div className="instagram__item set-bg" style={{ backgroundImage: `url(${inst.image})` }}>
+                        <div className="instagram__text">
+                            <i className="fa fa-instagram"></i>
+                            <a href="h">@ ashion_shop</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div className="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">
-                    <div className="instagram__text">
-                        <i className="fa fa-instagram"></i>
-                        <a href="h">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div className="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">
-                    <div className="instagram__text">
-                        <i className="fa fa-instagram"></i>
-                        <a href="h">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div className="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">
-                    <div className="instagram__text">
-                        <i className="fa fa-instagram"></i>
-                        <a href="h">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div className="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">
-                    <div className="instagram__text">
-                        <i className="fa fa-instagram"></i>
-                        <a href="h">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div className="instagram__item set-bg" data-setbg="img/instagram/insta-6.jpg">
-                    <div className="instagram__text">
-                        <i className="fa fa-instagram"></i>
-                        <a href="h">@ ashion_shop</a>
-                    </div>
-                </div>
-            </div>
+                )
+            })}
+
         </div>
     </div>
 </div>

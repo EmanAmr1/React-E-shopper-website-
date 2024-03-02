@@ -1,5 +1,5 @@
 import React from 'react'
-
+import desc1 from '../../imags/discount.jpg'
 const Discount = () => {
   return (
     <>
@@ -8,7 +8,7 @@ const Discount = () => {
         <div className="row">
             <div className="col-lg-6 p-0">
                 <div className="discount__pic">
-                    <img src="img/discount.jpg" alt=""/>
+                    <img src={desc1} alt=""/>
                 </div>
             </div>
             <div className="col-lg-6 p-0">

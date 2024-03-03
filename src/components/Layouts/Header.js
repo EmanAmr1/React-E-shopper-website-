@@ -1,6 +1,7 @@
 import React from 'react';
 import '../../CSS/style.css'
 import logoImage from '../../imags/logo.png';
+import { Link } from 'react-router-dom';
 const Header = () => {
 
     return (
@@ -13,20 +14,20 @@ const Header = () => {
                 <div class="offcanvas__close">+</div>
                 <ul class="offcanvas__widget">
                     <li><span class="icon_search search-switch"></span></li>
-                    <li><a href="H"><span class="icon_heart_alt"></span>
+                    <li><Link to="H"><span class="icon_heart_alt"></span>
                         <div class="tip">2</div>
-                    </a></li>
-                    <li><a href="H"><span class="icon_bag_alt"></span>
+                    </Link></li>
+                    <li><Link to="H"><span class="icon_bag_alt"></span>
                         <div class="tip">2</div>
-                    </a></li>
+                    </Link></li>
                 </ul>
                 <div class="offcanvas__logo">
-                    <a href="./index.html"><img src={logoImage} alt="" /></a>
+                    <Link to="/"><img src={logoImage} alt="" /></Link>
                 </div>
                 <div id="mobile-menu-wrap"></div>
                 <div class="offcanvas__auth">
-                    <a href="H">Login</a>
-                    <a href="H">Register</a>
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Register</Link>
                 </div>
             </div>
 
@@ -35,43 +36,43 @@ const Header = () => {
                     <div class="row">
                         <div class="col-xl-3 col-lg-2">
                             <div class="header__logo">
-                                <a href="./index.html"><img src={logoImage} alt="" /></a>
+                                <Link to="/"><img src={logoImage} alt="" /></Link>
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-7">
                             <nav class="header__menu">
                                 <ul>
-                                    <li class="active"><a href="./index.html">Home</a></li>
-                                    <li><a href="h">Women’s</a></li>
-                                    <li><a href="h">Men’s</a></li>
-                                    <li><a href="./shop.html">Shop</a></li>
-                                    <li><a href="h">Pages</a>
+                                    <li class="active"><Link href="/">Home</Link></li>
+                                    <li><Link to="h">Women’s</Link></li>
+                                    <li><Link to="h">Men’s</Link></li>
+                                    <li><Link to="/ProductList">Shop</Link></li>
+                                    <li><Link to="h">Pages</Link>
                                         <ul class="dropdown">
-                                            <li><a href="./product-details.html">Product Details</a></li>
-                                            <li><a href="./shop-cart.html">Shop Cart</a></li>
-                                            <li><a href="./checkout.html">Checkout</a></li>
-                                            <li><a href="./blog-details.html">Blog Details</a></li>
+                                            <li><Link to="productDetails/:id">Product Details</Link></li>
+                                            <li><Link to="./shop-cart.html">Shop Cart</Link></li>
+                                            <li><Link to="./checkout.html">Checkout</Link></li>
+                                            <li><Link to="./blog-details.html">Blog Details</Link></li>
                                         </ul>
                                     </li>
-                                    <li><a href="./blog.html">Blog</a></li>
-                                    <li><a href="./contact.html">Contact</a></li>
+                                    <li><Link to="./blog.html">Blog</Link></li>
+                                    <li><Link to="./contact.html">Contact</Link></li>
                                 </ul>
                             </nav>
                         </div>
                         <div class="col-lg-3">
                             <div class="header__right">
                                 <div class="header__right__auth">
-                                    <a href="h">Login</a>
-                                    <a href="h">Register</a>
+                                    <Link to="/login">Login</Link>
+                                    <Link to="/register">Register</Link>
                                 </div>
                                 <ul class="header__right__widget">
                                     <li><span class="icon_search search-switch"></span></li>
-                                    <li><a href="h"><span class="icon_heart_alt"></span>
+                                    <li><Link to="h"><span class="icon_heart_alt"></span>
                                         <div class="tip">2</div>
-                                    </a></li>
-                                    <li><a href="h"><span class="icon_bag_alt"></span>
+                                    </Link></li>
+                                    <li><Link to="h"><span class="icon_bag_alt"></span>
                                         <div class="tip">2</div>
-                                    </a></li>
+                                    </Link></li>
                                 </ul>
                             </div>
                         </div>

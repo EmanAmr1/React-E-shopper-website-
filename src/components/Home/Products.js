@@ -34,7 +34,7 @@ const Products = ()=>{
             </div>
         </div>
         <div className="row property__gallery">
-            {product.map(prod=>{
+            {product.map((prod)=>{
                 return(
                     <div className="col-lg-3 col-md-4 col-sm-6 mix women">
                 <div className="product__item">

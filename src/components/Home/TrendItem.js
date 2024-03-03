@@ -9,12 +9,14 @@ import '../../CSS/bootstrap.min.css'
 import { useState } from 'react';
 
 import { trenditemapi } from './api'
-const TrendItem = () => {
+const TrendItem = (props) => {
+  console.log(props)
   console.log(trenditemapi)
   const [trenditem,setTrendItem]= useState(trenditemapi)
   return (
     <>
-    {trenditem.map(treitem=>{return(
+    {trenditem.map((treitem)=>{
+      return(
      
       <div className="trend__item"key={treitem.id}>
         <div className="trend__item__pic">

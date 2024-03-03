@@ -21,7 +21,7 @@ const Trend = () => {
                   <div className="section-title">
                     <h4>{ter.title}</h4>
                   </div>
-                  <TrendItem />
+                  <TrendItem trenditems={ter} />
                 </div>
               </div>
             );

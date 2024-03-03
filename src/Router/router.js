@@ -8,6 +8,10 @@ const Home = React.lazy(()=>import('../pages/Home'))
 const ProductDetails =React.lazy(()=>import('../pages/ProductDetails') )
 const ProductList =React.lazy(()=>import('../pages/ProductList') )
 const NotFound =React.lazy(()=>import('../pages/NotFound') )
+const Register = React.lazy(()=>import('../components/Accounts/Register'))
+const Login = React.lazy(()=>import('../components/Accounts/Login'))
+const CustomerProfile =React.lazy(()=>import('../components/Accounts/CustomerProfile')) ;
+const VendorProfile = React.lazy(()=>import('../components/Accounts/VendorProfile'));
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
 
@@ -27,6 +31,10 @@ const Router =()=>{
 
         </Route>
         <Route path='*' element={<NotFound/>}/>
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/customerprofile' element={<CustomerProfile />} />
+        <Route path='/vendorprofile' element={<VendorProfile />} />
 
 
 

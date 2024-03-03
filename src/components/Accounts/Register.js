@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import welc from "../../imags/register/welc.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCake } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,7 @@ import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
 // import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 // import { faUser } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 function Register() {
   const [userForm, setUserForm] = useState({
@@ -18,11 +19,12 @@ function Register() {
     username: "",
     email: "",
     birthdate: "",
-    mobile_phone: "",
+    phone: "",
     usertype: "",
     address: "",
     shopname: "",
   });
+ 
   const navigate = useNavigate();
   const containerStyle = {
     display: "flex",
@@ -43,79 +45,24 @@ function Register() {
 
   const handleFieldChange = (event) => {
     const field_name = event.target.name;
-    let field_value = event.target.value;
-    if (field_name === "first_name") {
-      setUserForm({
+    const field_value = event.target.value;
+    
+    setUserForm({
         ...userForm,
-        first_name: field_value,
-      });
-    }
-    if (field_name === "last_name") {
-      setUserForm({
-        ...userForm,
-        last_name: field_value,
-      });
-    }
-    if (field_name === "password") {
-      setUserForm({
-        ...userForm,
-        password: field_value,
-      });
-    }
-    if (field_name === "confirmPassword") {
-      setUserForm({
-        ...userForm,
-        confirmPassword: field_value,
-      });
-    }
-    if (field_name === "username") {
-      setUserForm({
-        ...userForm,
-        username: field_value,
-      });
-    }
-    if (field_name === "email") {
-      setUserForm({
-        ...userForm,
-        email: field_value,
-      });
-    }
-    if (field_name === "birthdate") {
-      setUserForm({
-        ...userForm,
-        birthdate: field_value,
-      });
-    }
-    if (field_name === "mobile_phone") {
-      setUserForm({
-        ...userForm,
-        mobile_phone: field_value,
-      });
-    }
-    if (field_name === "usertype") {
-      setUserForm({
-        ...userForm,
-        usertype: field_value,
-      });
-    }
-    if (field_name === "address") {
-      setUserForm({
-        ...userForm,
-        address: field_value,
-      });
-    }
-    if (field_name === "shopname") {
-      setUserForm({
-        ...userForm,
-        shopname: field_value,
-      });
-    }
-  };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(userForm);
-    navigate("/login");
-  };
+        [field_name]: field_value,
+    });
+};
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+  console.log(userForm);
+  axios.post('http://localhost:8000/api/register/', userForm)
+    .then((res) => {
+      console.log(res);
+      navigate("/login");
+    })
+    .catch((err) => console.log(err));
+};
 
   return (
     <div className="container" style={containerStyle}>
@@ -268,15 +215,15 @@ function Register() {
               <input
                 type="tel"
                 className="form-control"
-                value={userForm.mobile_phone}
+                value={userForm.phone}
                 id="phone"
                 onChange={handleFieldChange}
-                name="mobile_phone"
+                name="phone"
                 required
               />
             </div>
-            {userForm.mobile_phone &&
-              !userForm.mobile_phone.startsWith("+20") && (
+            {userForm.phone &&
+              !userForm.phone.startsWith("+20") && (
                 <span className="text-danger">
                   Mobile phone must begin with +20
                 </span>
@@ -298,8 +245,8 @@ function Register() {
               required
             >
               <option value="">Select User Type</option>
-              <option value="Customer">Customer</option>
-              <option value="Vendor">Vendor</option>
+              <option value="customer">Customer</option>
+              <option value="vendor">Vendor</option>
             </select>
           </div>
           <div className="col-md-6">

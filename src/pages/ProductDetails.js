@@ -7,6 +7,7 @@ import pro1 from '../imags/product/details/product-1.jpg';
 import pro2 from '../imags/product/details/product-2.jpg';
 import pro3 from '../imags/product/details/product-3.jpg';
 import pro4 from '../imags/product/details/product-4.jpg';
+import '../CSS/review.css'
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -16,21 +17,23 @@ import { axiosInstance } from "../apis/config";
 
 const ProductDetails = () => {
 
-    
+
     const [proDetails, setProDetails] = useState({})
     const [comment, setComment] = useState('');
-    const [productId, setProductId] = useState(''); 
+    const [productId, setProductId] = useState('');
     const [userId, setUserId] = useState('');
 
     const params = useParams();
     console.log(params);
 
-   const baseImageUrl="http://127.0.0.1:8000";
+    const baseImageUrl = "http://127.0.0.1:8000";
 
     useEffect(() => {
         axiosInstance
             .get(`/API/getProduct/${params.id}/`)
-            .then((res) => setProDetails(res.data.product))
+            .then((res) => {setProDetails(res.data.product);
+            setProductId(res.data.product.id);}
+            )
             .catch((err) => console.log(err));
     }, [params.id]);
 
@@ -39,24 +42,24 @@ const ProductDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axiosInstance.post('/API/Review/addReview/', {
-            
-          product_id: productId,
-          comment: comment,
-          user: userId
-            
-          });
-          console.log(response.data);
-          // Handle success (e.g., show a success message)
+            const response = await axiosInstance.post('/API/Review/addReview/', {
+
+                product_id: productId,
+                comment: comment,
+                user: userId
+
+            });
+            console.log(response.data);
+            // Handle success (e.g., show a success message)
         } catch (error) {
-          console.error('Error:', error.response.data);
-          // Handle error (e.g., show an error message)
+            console.error('Error:', error.response.data);
+            // Handle error (e.g., show an error message)
         }
-      };
-    
+    };
 
 
 
+     
 
     return (
 
@@ -194,69 +197,43 @@ const ProductDetails = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-12">
-                            <div className="product__details__tab">
-                                <ul className="nav nav-tabs" role="tablist">
-                                    <li className="nav-item">
-                                        <a className="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
-                                    </li>
-                                </ul>
-                                <div className="tab-content">
-                                    <div className="tab-pane active" id="tabs-1" role="tabpanel">
-                                        <h6>Description</h6>
-                                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                            quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                            Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                            voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                            consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                            consequat massa quis enim.</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                            dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                            nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                            quis, sem.</p>
-                                    </div>
-                                    <div className="tab-pane" id="tabs-2" role="tabpanel">
-                                        <h6>Specification</h6>
-                                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                            quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                            Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                            voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                            consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                            consequat massa quis enim.</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                            dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                            nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                            quis, sem.</p>
-                                    </div>
-                                    <div className="tab-pane" id="tabs-3" role="tabpanel">
-                                        <h6>Reviews ( 2 )</h6>
-                                        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                            quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                            Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                            voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                            consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                            consequat massa quis enim.</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                            dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                            nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                            quis, sem.</p>
-                                    </div>
+
+                    </div>
+
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12">
+                                <div className="add-review-form">
+                                    <h3>Add your Review on this Product</h3>
+
+
+                                    <form onSubmit={handleSubmit}>
+                                        <div className="form-group">
+                                            <label htmlFor="productId">Product ID:</label>
+                                            <input type="text" id="productId" value={productId} onChange={(e) => setProductId(e.target.value)} readOnly />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="comment">Comment:</label>
+                                            <textarea id="comment" value={comment} onChange={(e) => setComment(e.target.value)} />
+                                        </div>
+                                        <button type="submit">Add Review</button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Product ID" value={productId} onChange={(e) => setProductId(e.target.value)} />
-      <input type="text" placeholder="Comment" value={comment} onChange={(e) => setComment(e.target.value)} />
-      <button type="submit">Add Review</button>
-    </form>
+
+
+
+
+
+
+
+
+
+
 
 
 

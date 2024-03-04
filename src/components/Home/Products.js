@@ -59,7 +59,7 @@ const Products = ()=>{
                             <i className="fa fa-star"></i>
                             <i className="fa fa-star"></i>
                         </div>
-                        {prod.sale ? (<div className="product__price  " style={{color:'#ca1515'}}>{prod.newprice} <span>{prod.price}</span></div>):(<div className="product__price">{prod.price1}</div>)}
+                        {prod.sale ? (<div className="product__price  " style={{color:'#ca1515'}}>{prod.newprice} <span>{prod.price}</span></div>):(<div className="product__price">{prod.price}</div>)}
                         
                     </div>
                 </div>

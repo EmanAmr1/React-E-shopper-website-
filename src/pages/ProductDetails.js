@@ -4,7 +4,7 @@ import thumb2 from '../imags/product/details/thumb-1.jpg';
 import thumb3 from '../imags/product/details/thumb-3.jpg';
 import thumb4 from '../imags/product/details/thumb-4.jpg';
 import rev from "../imags/rev.png"
-import '../CSS/review.css'
+
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";

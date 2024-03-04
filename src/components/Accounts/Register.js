@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import welc from "../../imags/register/welc.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCake } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +24,7 @@ function Register() {
     address: "",
     shopname: "",
   });
- 
+
   const navigate = useNavigate();
   const containerStyle = {
     display: "flex",
@@ -285,10 +285,10 @@ const handleSubmit = (event) => {
                 value={userForm.shopname}
                 onChange={handleFieldChange}
                 name="shopname"
-                disabled={userForm.usertype === "Customer"}
+                disabled={userForm.usertype === "customer"}
                 required
               />
-              {userForm.usertype === "Vendor" &&
+              {userForm.usertype === "vendor" &&
                 userForm.shopname.trim() === "" && (
                   <span className="text-danger">
                     Shop name is required for vendor

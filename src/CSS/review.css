@@ -50,9 +50,12 @@ button:hover {
 
 
 .reviews__title {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 40px;
+    margin: 20px;
     color: #ca1515;
+    font-weight: bold;
+
+
 }
 
 .reviews__list {
@@ -65,7 +68,7 @@ button:hover {
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
-    /* Add shadow effect */
+    
     margin-bottom: 20px;
     padding: 10px;
 }
@@ -102,4 +105,36 @@ button:hover {
     margin: 0;
     font-size: 16px;
     color: brown;
+}
+
+.mypic {
+
+    width: 100%;
+    height: 100%;
+}
+
+.product__details__pic {
+    padding: 3px;
+}
+
+.thumbnail-container {
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 2px 4px 8px #ca1515(0, 0, 0, 0.1);
+
+}
+
+.thumbnail-container a {
+    flex: 1;
+    padding: 10px;
+
+    box-sizing: border-box;
+}
+
+.thumbnail-container img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 3px solid #ddd;
+
 }

@@ -3,9 +3,6 @@ import thumb1 from '../imags/product/details/thumb-1.jpg';
 import thumb2 from '../imags/product/details/thumb-1.jpg';
 import thumb3 from '../imags/product/details/thumb-3.jpg';
 import thumb4 from '../imags/product/details/thumb-4.jpg';
-import pro2 from '../imags/product/details/product-2.jpg';
-import pro3 from '../imags/product/details/product-3.jpg';
-import pro4 from '../imags/product/details/product-4.jpg';
 import rev from "../imags/rev.png"
 import '../CSS/review.css'
 
@@ -109,32 +106,34 @@ const ProductDetails = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6">
-                            <div className="product__details__pic">
-                                <div className="product__details__pic__left product__thumb nice-scroll">
-                                    <a className="pt active" href="#product-1">
-                                        <img src={thumb1} alt="" />
+
+                            <div className="product__big__img__container">
+                                <img className='mypic' src={`${baseImageUrl}${proDetails.image}`} alt="Product Image" />
+                            </div>
+
+
+                            <div class="product__details__pic">
+                                <div class="thumbnail-container">
+                                    <a class="pt active" href="#product-1">
+                                        <img src={thumb1} alt="Thumbnail 1" />
                                     </a>
-                                    <a className="pt" href="#product-2">
-                                        <img src={thumb2} alt="" />
+                                    <a class="pt" href="#product-2">
+                                        <img src={thumb2} alt="Thumbnail 2" />
                                     </a>
-                                    <a className="pt" href="#product-3">
-                                        <img src={thumb3} alt="" />
+                                    <a class="pt" href="#product-3">
+                                        <img src={thumb3} alt="Thumbnail 3" />
                                     </a>
-                                    <a className="pt" href="#product-4">
-                                        <img src={thumb4} alt="" />
+                                    <a class="pt" href="#product-4">
+                                        <img src={thumb4} alt="Thumbnail 4" />
                                     </a>
-                                </div>
-                                <img className="product__big__img" src={`${baseImageUrl}${proDetails.image}`} alt="" />
-                                <div className="product__details__slider__content">
-                                    <div className="product__details__pic__slider owl-carousel">
-                                        <img data-hash="product-1" className="product__big__img" src={`http://127.0.0.1:8000${proDetails.image}`} alt="" />
-                                        <img data-hash="product-2" className="product__big__img" src={pro2} alt="" />
-                                        <img data-hash="product-3" className="product__big__img" src={pro3} alt="" />
-                                        <img data-hash="product-4" className="product__big__img" src={pro4} alt="" />
-                                    </div>
                                 </div>
                             </div>
+
                         </div>
+
+
+
+
                         <div className="col-lg-6">
                             <div className="product__details__text">
                                 <h3>{proDetails.name}<span>Brand: {proDetails.brand}</span></h3>
@@ -223,8 +222,9 @@ const ProductDetails = () => {
                     </div>
 
 
+
                     <div className="row">
-                        <div className="col-lg-8 mx-auto">
+                        <div className="col-lg-11 mx-auto">
                             <h3 className="reviews__title">Reviews</h3>
                             {reviews.length > 0 ? (
                                 <ul className="reviews__list">
@@ -249,10 +249,9 @@ const ProductDetails = () => {
                         </div>
                     </div>
 
-
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-12">
+                            <div className="col-lg-9">
                                 <div className="add-review-form">
                                     <h3>Add your Review on this Product</h3>
 
@@ -273,7 +272,6 @@ const ProductDetails = () => {
                             </div>
                         </div>
                     </div>
-
 
                     <div className="row">
                         <div className="col-lg-12 text-center">

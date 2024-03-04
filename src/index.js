@@ -8,6 +8,7 @@ import './CSS/elegant-icons.css';
 import './CSS/font-awesome.min.css';
 import './CSS/slicknav.min.css';
 import './CSS/bootstrap.min.css';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

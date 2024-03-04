@@ -18,6 +18,10 @@ const ProductDetails = () => {
 
     
     const [proDetails, setProDetails] = useState({})
+    const [comment, setComment] = useState('');
+    const [productId, setProductId] = useState(''); 
+    const [userId, setUserId] = useState('');
+
     const params = useParams();
     console.log(params);
 
@@ -29,6 +33,29 @@ const ProductDetails = () => {
             .then((res) => setProDetails(res.data.product))
             .catch((err) => console.log(err));
     }, [params.id]);
+
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          const response = await axiosInstance.post('/API/Review/addReview/', {
+            
+          product_id: productId,
+          comment: comment,
+          user: userId
+            
+          });
+          console.log(response.data);
+          // Handle success (e.g., show a success message)
+        } catch (error) {
+          console.error('Error:', error.response.data);
+          // Handle error (e.g., show an error message)
+        }
+      };
+    
+
+
 
 
     return (
@@ -224,6 +251,15 @@ const ProductDetails = () => {
                             </div>
                         </div>
                     </div>
+
+                    <form onSubmit={handleSubmit}>
+      <input type="text" placeholder="Product ID" value={productId} onChange={(e) => setProductId(e.target.value)} />
+      <input type="text" placeholder="Comment" value={comment} onChange={(e) => setComment(e.target.value)} />
+      <button type="submit">Add Review</button>
+    </form>
+
+
+
                     <div className="row">
                         <div className="col-lg-12 text-center">
                             <div className="related__title">

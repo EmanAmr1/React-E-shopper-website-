@@ -1,8 +1,5 @@
 import React from 'react';
-import '../../CSS/elegant-icons.css';
-import '../../CSS/font-awesome.min.css';
-import '../../CSS/slicknav.min.css';
-import '../../CSS/bootstrap.min.css';
+
 import { useState } from 'react';
 
 import TrendItem from './TrendItem';

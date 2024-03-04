@@ -1,58 +1,68 @@
-import React from 'react'
-import '../../CSS/style.css';
-import { useState } from 'react';
 
-import{categoriesapi} from './api'
+import { useState,useEffect } from "react";
 
+import axios from "axios";
+const Categories = () => {
+  
+  const [category, setCategory] = useState([]);
+ 
+  useEffect(() => { 
+    axios
+      .get('http://127.0.0.1:8000/API/categories/')
+      .then((res) => setCategory(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+  //Categories Section Begin
 
-
-const Categories =()=>{
-    console.log(categoriesapi)
-    const [category,setCategory]= useState(categoriesapi)
-//Categories Section Begin 
-
-  return(
-    <>
-
-    <section className="categories">
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-lg-6 p-0">
-                    <div className="categories__item categories__large__item set-bg"
-                    style={{ backgroundImage: `url(${category[0].image})` }}>
-                    <div className="categories__text">
-                        <h1>{category[0].title}</h1>
-                        <p>{category[0].description}</p>
-                        <a href="h">Shop now</a>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-6">
-                <div className="row">
-                    {category.slice(1).map(cat=>{
-                        return(
-                            <div className="col-lg-6 col-md-6 col-sm-6 p-0" key={cat.id}>
-                            <div className="categories__item set-bg" style={{ backgroundImage: `url(${cat.image})` }}>
-                                <div className="categories__text">
-                                    <h4>{cat.title}</h4>
-                                    <p>{cat.itemCount}</p>
-                                    <a href="h">Shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                        )
-                    })}
-                
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
+  return (
     
+    <>
+      
+      <section className="categories">
+        {/* Add a check for category[0] before accessing its properties */}
+        {category.length > 0 && (
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-lg-6 p-0">
+                <div
+                  className="categories__item categories__large__item set-bg"
+                  style={{ backgroundImage: `url(${category[0].image})` }}
+                >
+                  <div className="categories__text">
+                    <h1>{category[0].name}</h1>
+                    <p>{category[0].description}</p>
+                    <a href="/">Shop now</a>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-6">
+                <div className="row">
+                  {category.slice(1).map((cat) => (
+                    <div
+                      className="col-lg-6 col-md-6 col-sm-6 p-0"
+                      key={cat.id}
+                    >
+                      <div
+                        className="categories__item set-bg"
+                        style={{ backgroundImage: `url(${cat.image})` }}
+                      >
+                        <div className="categories__text">
+                          <h4>{cat.name}</h4>
+                          <p>{cat.itemCount} items</p>
+                          <a href="/">Shop now</a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
     </>
-  )
-}
-// Categories Section End 
+  );
+};
+// Categories Section End
 
-export default Categories
+export default Categories;

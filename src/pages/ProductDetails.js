@@ -17,10 +17,11 @@ import { axiosInstance } from "../apis/config";
 
 const ProductDetails = () => {
 
-
+    const [loading, setLoading] = useState(true);
     const [proDetails, setProDetails] = useState({})
     const [comment, setComment] = useState('');
     const [productId, setProductId] = useState('');
+    const [reviews, setReviews] = useState([]);
     const [userId, setUserId] = useState('');
 
     const params = useParams();
@@ -31,12 +32,31 @@ const ProductDetails = () => {
     useEffect(() => {
         axiosInstance
             .get(`/API/getProduct/${params.id}/`)
-            .then((res) => {setProDetails(res.data.product);
-            setProductId(res.data.product.id);}
+            .then((res) => {
+                setProDetails(res.data.product);
+                setProductId(res.data.product.id);
+            }
             )
             .catch((err) => console.log(err));
     }, [params.id]);
 
+
+
+
+
+
+    useEffect(() => {
+        axiosInstance
+            .get(`/API/Review/listReviwes/`)
+            .then((res) => {
+
+
+                const productReviewss = res.data.data.filter(review => review.product_id === proDetails.id);
+                setReviews(productReviewss);
+                setLoading(false);
+            })
+            .catch((err) => console.log(err));
+    }, [proDetails.id]);
 
 
     const handleSubmit = async (e) => {
@@ -59,7 +79,7 @@ const ProductDetails = () => {
 
 
 
-     
+
 
     return (
 
@@ -199,6 +219,30 @@ const ProductDetails = () => {
                         </div>
 
                     </div>
+
+
+
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <h3>Reviews</h3>
+                            <ul>
+                                {reviews.map((review, index) => (
+                                    <li key={index}>
+                                        <p>{review.comment}</p>
+                                        {/* Render other review details as needed */}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
 
                     <div className="container">
                         <div className="row">

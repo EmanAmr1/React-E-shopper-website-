@@ -3,15 +3,15 @@ import thumb1 from '../imags/product/details/thumb-1.jpg';
 import thumb2 from '../imags/product/details/thumb-1.jpg';
 import thumb3 from '../imags/product/details/thumb-3.jpg';
 import thumb4 from '../imags/product/details/thumb-4.jpg';
-import pro1 from '../imags/product/details/product-1.jpg';
 import pro2 from '../imags/product/details/product-2.jpg';
 import pro3 from '../imags/product/details/product-3.jpg';
 import pro4 from '../imags/product/details/product-4.jpg';
+import rev from "../imags/rev.png"
 import '../CSS/review.css'
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+
 import { axiosInstance } from "../apis/config";
 
 
@@ -41,10 +41,6 @@ const ProductDetails = () => {
     }, [params.id]);
 
 
-
-
-
-
     useEffect(() => {
         axiosInstance
             .get(`/API/Review/listReviwes/`)
@@ -70,10 +66,16 @@ const ProductDetails = () => {
 
             });
             console.log(response.data);
-            // Handle success (e.g., show a success message)
+
+            // Update reviews state with the new review
+            setReviews([...reviews, { comment, date: new Date().toLocaleDateString() }]);
+
+            // Reset form fields
+            setComment('');
+
         } catch (error) {
             console.error('Error:', error.response.data);
-            // Handle error (e.g., show an error message)
+
         }
     };
 
@@ -221,27 +223,31 @@ const ProductDetails = () => {
                     </div>
 
 
-
                     <div className="row">
-                        <div className="col-lg-12">
-                            <h3>Reviews</h3>
-                            <ul>
-                                {reviews.map((review, index) => (
-                                    <li key={index}>
-                                        <p>{review.comment}</p>
-                                        {/* Render other review details as needed */}
-                                    </li>
-                                ))}
-                            </ul>
+                        <div className="col-lg-8 mx-auto">
+                            <h3 className="reviews__title">Reviews</h3>
+                            {reviews.length > 0 ? (
+                                <ul className="reviews__list">
+                                    {reviews.map((review, index) => (
+                                        <li key={index} className="review__item">
+                                            <div className="review__header">
+                                                <img className="review__avatar" src={rev} alt="User Avatar" />
+                                                <div className="review__meta">
+                                                    <span className="review__author">Eman Amr</span>
+                                                    <span className="review__date">{review.date}</span>
+                                                </div>
+                                            </div>
+                                            <div className="review__content">
+                                                <p className="review__comment">{review.comment}</p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No reviews yet</p>
+                            )}
                         </div>
                     </div>
-
-
-
-
-
-
-
 
 
                     <div className="container">
@@ -269,27 +275,13 @@ const ProductDetails = () => {
                     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
                     <div className="row">
                         <div className="col-lg-12 text-center">
                             <div className="related__title">
-                                <h5>RELATED PRODUCTS</h5>
+
                             </div>
                         </div>
-                        {/* Related Products */}
-                        {/* Your existing HTML for related products */}
-                        {/* ... */}
+
                     </div>
                 </div>
             </section>

@@ -7,11 +7,13 @@ import { Suspense } from "react";
 const Home = React.lazy(()=>import('../pages/Home'))
 const ProductDetails =React.lazy(()=>import('../pages/ProductDetails') )
 const ProductList =React.lazy(()=>import('../pages/ProductList') )
+const CheckoutPage =React.lazy(()=>import('../pages/CheckoutPage') )
 const NotFound =React.lazy(()=>import('../pages/NotFound') )
 const Register = React.lazy(()=>import('../components/Accounts/Register'))
 const Login = React.lazy(()=>import('../components/Accounts/Login'))
 const CustomerProfile =React.lazy(()=>import('../components/Accounts/CustomerProfile')) ;
 const VendorProfile = React.lazy(()=>import('../components/Accounts/VendorProfile'));
+
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
 
@@ -27,6 +29,9 @@ const Router =()=>{
         <Route path='/' element={<Home />} />
         <Route path='productDetails/:id' element={<ProductDetails />} />
         <Route path='ProductList' element={<ProductList />} />
+        <Route path='checkoutPage' element={<CheckoutPage />} />
+
+        
         {/* <Route path='Register' element={<Register />} /> */}
 
         </Route>

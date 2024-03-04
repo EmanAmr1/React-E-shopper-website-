@@ -42,7 +42,7 @@ const Header = () => {
                         <div class="col-xl-6 col-lg-7">
                             <nav class="header__menu">
                                 <ul>
-                                    <li class="active"><Link href="/">Home</Link></li>
+                                    <li class="active"><Link to="/">Home</Link></li>
                                     <li><Link to="h">Women’s</Link></li>
                                     <li><Link to="h">Men’s</Link></li>
                                     <li><Link to="/ProductList">Shop</Link></li>
@@ -50,7 +50,7 @@ const Header = () => {
                                         <ul class="dropdown">
                                             <li><Link to="productDetails/:id">Product Details</Link></li>
                                             <li><Link to="./shop-cart.html">Shop Cart</Link></li>
-                                            <li><Link to="./checkout.html">Checkout</Link></li>
+                                            <li><Link to="/checkoutPage">Checkout</Link></li>
                                             <li><Link to="./blog-details.html">Blog Details</Link></li>
                                         </ul>
                                     </li>

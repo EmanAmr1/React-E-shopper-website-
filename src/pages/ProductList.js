@@ -1,33 +1,47 @@
-import React from 'react';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { axiosInstance } from "../apis/config";
-import {faHeart} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-
 
 const ProductList = () => {
-
     const [activeAccordion, setActiveAccordion] = useState(null);
     const toggleAccordion = (index) => {
         setActiveAccordion(activeAccordion === index ? null : index);
     };
     const [products, setProducts] = useState([]);
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(100);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
+        fetchProducts();
+    }, [minPrice, maxPrice, currentPage]);
+
+    const fetchProducts = () => {
         axiosInstance
-            .get("/API/allproducts/")
+            .get(`/API/allproducts/?minPrice=${minPrice}&maxPrice=${maxPrice}&page=${currentPage}`)
             .then((res) => {
-                setProducts(res.data.products);
+                setProducts(res.data.results.products);
+                const totalPages = Math.ceil(res.data.count / 12); // Calculate total pages
+                setTotalPages(totalPages);
             })
             .catch((err) => {
                 console.log(err);
             });
-    }, []);
-    console.log(products[2]);
+    };
+
+    const handlePriceChange = (event) => {
+        const { name, value } = event.target;
+        if (name === "minPrice") {
+            setMinPrice(value);
+        } else if (name === "maxPrice") {
+            setMaxPrice(value);
+        }
+    };
+     const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     return (
-
         <section className="shop spad">
             <div className="container">
                 <div className="row">
@@ -66,87 +80,43 @@ const ProductList = () => {
                                     <h4>Shop by price</h4>
                                 </div>
                                 <div className="filter-range-wrap">
-                                    <div className="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                        data-min="33" data-max="99"></div>
+                                    <input type="range" className="custom-range" min="0" max="100" step="1" value={minPrice} onChange={handlePriceChange} name="minPrice" />
+                                    <input type="range" className="custom-range" min="0" max="100" step="1" value={maxPrice} onChange={handlePriceChange} name="maxPrice" />
                                     <div className="range-slider">
                                         <div className="price-input">
                                             <p>Price:</p>
-                                            <input type="text" id="minamount" />
-                                            <input type="text" id="maxamount" />
+                                            <input type="text" id="minamount" value={minPrice} onChange={handlePriceChange} name="minPrice" />
+                                            <input type="text" id="maxamount" value={maxPrice} onChange={handlePriceChange} name="maxPrice" />
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#">Filter</a>
                             </div>
                             <div className="sidebar__sizes">
                                 <div className="section-title">
                                     <h4>Shop by size</h4>
                                 </div>
                                 <div className="size__list">
-                                    <label for="xxs">
-                                        xxs
-                                        <input type="checkbox" id="xxs" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="xs">
-                                        xs
-                                        <input type="checkbox" id="xs" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="xss">
-                                        xs-s
-                                        <input type="checkbox" id="xss" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="s">
-                                        s
-                                        <input type="checkbox" id="s" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="m">
-                                        m
-                                        <input type="checkbox" id="m" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="ml">
-                                        m-l
-                                        <input type="checkbox" id="ml" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="l">
-                                        l
-                                        <input type="checkbox" id="l" />
-                                        <span className="checkmark"></span>
-                                    </label>
-                                    <label for="xl">
-                                        xl
-                                        <input type="checkbox" id="xl" />
-                                        <span className="checkmark"></span>
-                                    </label>
+                                    {/* Your size options go here */}
                                 </div>
                             </div>
-
                         </div>
                     </div>
 
                     <div className="col-lg-9 col-md-9">
                         <div className="row">
-                            {products.map((product, id) => (
-                                <div className="col-lg-4 col-md-6">
-
-                                    <div className="product__item" >
-                                        <div className="product__item__pic set-bg">
-                                            <img  src={`http://127.0.0.1:8000${product.image}`}/>
-
-                                            <div className="label new">New</div>
+                            {products.map((prod) => (
+                                <div className="col-lg-3 col-md-4 col-sm-6 mix women" key={prod.id}>
+                                    <div className="product__item">
+                                        <div className="product__item__pic set-bg" style={{ backgroundImage: `url('http://127.0.0.1:8000${prod.image}')` }}>
+                                            {prod.new ? (<div className="label new">New</div>) : prod.sale ? (<div className="label sale">Sale</div>) : prod.stock === 0 ? (<div className="label stockout">out of stock</div>) : null}
                                             <ul className="product__hover">
-                                                <li><a href="#" className="image-popup"><FontAwesomeIcon icon={faHeart} /></a></li>
-                                               
-
+                                                <li><a href={prod.image} className="image-popup"><span className="arrow_expand"></span></a></li>
+                                                <li><a href="h"><span className="icon_heart_alt"></span></a></li>
+                                                <li><a href="h"><span className="icon_bag_alt"></span></a></li>
                                             </ul>
                                         </div>
                                         <div className="product__item__text">
-                                            <h6><a href="#">{product.name}</a></h6>
+                                            <h6><a href="h">{prod.name}</a></h6>
                                             <div className="rating">
                                                 <i className="fa fa-star"></i>
                                                 <i className="fa fa-star"></i>
@@ -154,20 +124,26 @@ const ProductList = () => {
                                                 <i className="fa fa-star"></i>
                                                 <i className="fa fa-star"></i>
                                             </div>
-                                            <div className="product__price">$ 59.0</div>
+                                            {prod.sale ? (<div className="product__price  " style={{ color: '#ca1515' }}>{prod.newprice} <span>{prod.price}</span></div>) : (<div className="product__price">{prod.price}</div>)}
                                         </div>
                                     </div>
-
                                 </div>
                             ))}
+                            <div class="col-lg-12 text-center mt-3">
+                            <div class="pagination__option">
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                               <a href="#" key={page} onClick={() => handlePageChange(page)} className={`pagination-link ${currentPage === page ? 'activee' : ''}`}>
+                               {page}
+                           </a>
+                            ))}
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     )
-
 }
-
 
 export default ProductList;

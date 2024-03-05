@@ -1454,17 +1454,18 @@ ol {
 .filter-range-wrap .range-slider .price-input:after {
 	position: absolute;
 	left: 81px;
-	top: 12px;
+	top: 50%;
 	height: 1px;
 	width: 5px;
 	background: #0d0d0d;
 	content: "";
+	transform: translateY(50%);
 }
 
 .filter-range-wrap .range-slider .price-input input {
 	font-size: 16px;
 	color: #0d0d0d;
-	max-width: 16%;
+	max-width: 20%;
 	border: none;
 }
 
@@ -1597,10 +1598,11 @@ ol {
 	font-weight: 600;
 }
 
+.pagination__option a.activee,
 .pagination__option a:hover {
-	background: #0d0d0d;
-	border-color: #0d0d0d;
-	color: #ffffff;
+    background: #0d0d0d;
+    border-color: #0d0d0d;
+    color: #ffffff;
 }
 
 /*---------------------
@@ -3680,3 +3682,9 @@ ol {
 		font-size: 24px;
 	}
 }
+/* .activee{
+	background: #0d0d0d;
+	border-color: #0d0d0d;
+	color: #ffffff;
+	
+} */

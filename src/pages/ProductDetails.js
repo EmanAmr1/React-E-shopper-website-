@@ -107,7 +107,7 @@ const ProductDetails = () => {
                     <div className="row">
                         <div className="col-lg-6">
 
-                            <div className="product__big__img__container">
+                            <div className="product__big__img__container myimg">
                                 <img className='mypic' src={`${baseImageUrl}${proDetails.image}`} alt="Product Image" />
                             </div>
 
@@ -136,7 +136,18 @@ const ProductDetails = () => {
 
                         <div className="col-lg-6">
                             <div className="product__details__text">
-                                <h3>{proDetails.name}<span>Brand: {proDetails.brand}</span></h3>
+
+
+                                <div className="label-container">
+                                    <h3>{proDetails.name}</h3>
+
+                                    {proDetails.new && <div className="label new">New</div>}
+                                    {proDetails.sale && <div className="label sale">Sale</div>}
+                                    {proDetails.stock === 0 && <div className="label stockout">Out of Stock</div>}
+                                </div>
+
+                                <span className="product__details__price">$ {proDetails.newprice} <span>$ {proDetails.price}</span>   </span>
+
                                 <div className="rating">
                                     <i className="fa fa-star"></i>
                                     <i className="fa fa-star"></i>
@@ -145,13 +156,34 @@ const ProductDetails = () => {
                                     <i className="fa fa-star"></i>
                                     <span>( 138 reviews )</span>
                                 </div>
-                                <div className="product__details__price">$ {proDetails.price} <span>$ 83.0</span>   </div>
-                                <p>{proDetails.description}  <div>stock :{proDetails.stock} </div><div>Category: {proDetails.category}</div> <div>add_date: {proDetails.add_date}</div><div>update_date: {proDetails.update_date}</div></p>
+
+
+                                <p  >
+
+                                    
+
+                                    <div className='basic'>{proDetails.description}</div>
+
+                                    <span > <span className='basic' >Brand:</span> {proDetails.brand}</span>
+
+
+                                    <div><span className='basic' >Category: </span>  {proDetails.category}</div>
+                                </p>
+
+
+
                                 <div className="product__details__button">
                                     <div className="quantity">
                                         <span>Quantity:</span>
-                                        <div className="pro-qty">
-                                            <input type="text" value="1" />
+                                        <div className="pro-qt">
+
+
+                                            <div class="category ps-4">
+                                                <span class="counter-btn minus">-</span>
+                                                <span id="counter" class="counter-value">0</span>
+                                                <span class="counter-btn plus">+</span>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <a href=" " className="cart-btn"><span className="icon_bag_alt"></span> Add to cart</a>
@@ -163,14 +195,22 @@ const ProductDetails = () => {
                                 <div className="product__details__widget">
                                     <ul>
                                         <li>
+
+
                                             <span>Availability:</span>
                                             <div className="stock__checkbox">
                                                 <label htmlFor="stockin">
                                                     In Stock
-                                                    <input type="checkbox" id="stockin" />
+                                                    <input type="checkbox" id="stockin" checked={proDetails.stock > 1} readOnly />
                                                     <span className="checkmark"></span>
                                                 </label>
                                             </div>
+
+
+
+
+
+
                                         </li>
                                         <li>
                                             <span>Available color:</span>
@@ -192,22 +232,30 @@ const ProductDetails = () => {
                                         <li>
                                             <span>Available size:</span>
                                             <div className="size__btn">
-                                                <label htmlFor="xs-btn" className="active">
-                                                    <input type="radio" id="xs-btn" />
-                                                    xs
-                                                </label>
-                                                <label htmlFor="s-btn">
-                                                    <input type="radio" id="s-btn" />
-                                                    s
-                                                </label>
-                                                <label htmlFor="m-btn">
-                                                    <input type="radio" id="m-btn" />
-                                                    m
-                                                </label>
-                                                <label htmlFor="l-btn">
-                                                    <input type="radio" id="l-btn" />
-                                                    l
-                                                </label>
+                                                {proDetails.stock_S > 0 && (
+                                                    <label htmlFor="xs-btn">
+                                                        <input type="radio" id="xs-btn" />
+                                                        S
+                                                    </label>
+                                                )}
+                                                {proDetails.stock_M > 0 && (
+                                                    <label htmlFor="s-btn">
+                                                        <input type="radio" id="s-btn" />
+                                                        M
+                                                    </label>
+                                                )}
+                                                {proDetails.stock_L > 0 && (
+                                                    <label htmlFor="m-btn">
+                                                        <input type="radio" id="m-btn" />
+                                                        L
+                                                    </label>
+                                                )}
+                                                {proDetails.stock_XL > 0 && (
+                                                    <label htmlFor="l-btn">
+                                                        <input type="radio" id="l-btn" />
+                                                        XL
+                                                    </label>
+                                                )}
                                             </div>
                                         </li>
                                         <li>
@@ -257,10 +305,7 @@ const ProductDetails = () => {
 
 
                                     <form onSubmit={handleSubmit}>
-                                        <div className="form-group">
-                                            <label htmlFor="productId">Product ID:</label>
-                                            <input type="text" id="productId" value={productId} onChange={(e) => setProductId(e.target.value)} readOnly />
-                                        </div>
+                                       
                                         <div className="form-group">
                                             <label htmlFor="comment">Comment:</label>
                                             <textarea id="comment" value={comment} onChange={(e) => setComment(e.target.value)} />

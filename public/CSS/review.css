@@ -68,7 +68,7 @@ button:hover {
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
-    
+
     margin-bottom: 20px;
     padding: 10px;
 }
@@ -107,10 +107,15 @@ button:hover {
     color: brown;
 }
 
+
+.myimg {
+    box-shadow: 0 4px 8px rgba(202, 21, 21, 0.1), 0 6px 20px rgba(202, 21, 21, 0.15);
+}
+
 .mypic {
 
     width: 100%;
-    height: 100%;
+    height: 450px;
 }
 
 .product__details__pic {
@@ -137,4 +142,93 @@ button:hover {
     height: 100%;
     border: 3px solid #ddd;
 
+}
+
+
+.quantity {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.quantity span {
+    margin-right: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.pro-qt {
+    padding: 2px;
+}
+
+.category {
+    display: flex;
+    align-items: center;
+}
+
+.counter-btn {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.counter-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.counter-value {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ca1515;
+}
+
+
+.basic {
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    line-height: 2;
+    color: #333;
+}
+
+.label-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.label {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 15px;
+    margin-bottom: 30px;
+}
+
+.new {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.sale {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.stockout {
+    background-color: #dc3545;
+    color: #fff;
 }

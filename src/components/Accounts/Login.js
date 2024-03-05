@@ -9,7 +9,7 @@ function Login() {
     email: "",
     password: "",
   });
-
+  
   const navigate = useNavigate();
   const handleField = (event) => {
     const field_name = event.target.name;
@@ -35,7 +35,7 @@ const handleSubmit = (event) => {
       Cookies.set('user', JSON.stringify(user)); // Storing user data in a cookie
 
       // Navigate to CustomerProfile with user data
-      navigate("/CustomerProfile", { state: { user } });
+      navigate("/CustomerProfile", { state: { user,token } });
     })
     .catch((err) => console.log(err));
 };

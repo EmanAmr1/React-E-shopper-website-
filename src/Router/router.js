@@ -43,7 +43,7 @@ const Router = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/vendorprofile" element={<VendorProfile />} />
-        <Route path="/verify-email" element={<EmailVerification />} />
+        {/* <Route path="/verify-email" element={<EmailVerification />} /> */}
         <Route path="/addProduct" element={<AddProduct />} />
       </Routes>
     </Suspense>

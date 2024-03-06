@@ -105,7 +105,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="h">
+                    <Link to="Cart">
                       <span class="icon_bag_alt"></span>
                       <div class="tip">2</div>
                     </Link>

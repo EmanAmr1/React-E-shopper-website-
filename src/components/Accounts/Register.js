@@ -6,9 +6,8 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faShopify } from "@fortawesome/free-brands-svg-icons";
 import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import './reg.css';
-
+import axios from "axios";
+import "./reg.css";
 
 function Register() {
   const [userForm, setUserForm] = useState({
@@ -26,30 +25,32 @@ function Register() {
   });
 
   const navigate = useNavigate();
-  
+
   const handleFieldChange = (event) => {
     const field_name = event.target.name;
     const field_value = event.target.value;
-    
-    setUserForm({
-        ...userForm,
-        [field_name]: field_value,
-    });
-};
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  console.log(userForm);
-  axios.post('http://localhost:8000/api/register/', userForm)
-    .then((res) => {
-      console.log(res);
-      navigate("/verify-email"); 
-    })
-    .catch((err) => console.log(err));
-};
+    setUserForm({
+      ...userForm,
+      [field_name]: field_value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(userForm);
+    axios
+      .post("http://localhost:8000/api/register/", userForm)
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+        // navigate("/verify-email");
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
-    <div className="container" >
+    <div className="container">
       <img src={welc} alt="Welcome" className="welc-img" />
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">
@@ -206,12 +207,11 @@ const handleSubmit = (event) => {
                 required
               />
             </div>
-            {userForm.phone &&
-              !userForm.phone.startsWith("+20") && (
-                <span className="text-danger">
-                  Mobile phone must begin with +20
-                </span>
-              )}
+            {userForm.phone && !userForm.phone.startsWith("+20") && (
+              <span className="text-danger">
+                Mobile phone must begin with +20
+              </span>
+            )}
           </div>
         </div>
         <div className="row mb-3">

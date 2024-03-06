@@ -1,0 +1,40 @@
+@media (max-width: 550px) {
+    .welc-img {
+      display: none;
+    }
+  }
+  
+  @media (min-width: 551px) and (max-width: 768px) {
+    .welc-img {
+      display: none;
+    }
+  }
+  
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .welc-img {
+      display: none;
+    }
+  }
+  
+  .welc-img {
+    width: 100%; 
+    max-width: 550px; 
+    margin: 0 auto;
+  }
+  
+  
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+  }
+  
+  

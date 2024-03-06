@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 function VendorProfile() {
   const location = useLocation();
@@ -15,8 +16,17 @@ function VendorProfile() {
     // Clear JWT token and user data cookies
     Cookies.remove('jwt');
     Cookies.remove('user');
-  
-    navigate("/login");
+    Cookies.remove('token');
+    
+    // Call the logout API
+    axios.post('http://localhost:8000/api/logout/')
+      .then((res) => {
+        console.log("Logout successful");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
   };
 
 

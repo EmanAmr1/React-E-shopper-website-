@@ -5,10 +5,10 @@ import { faCake } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { faShopify } from "@fortawesome/free-brands-svg-icons";
 import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
-// import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-// import { faUser } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import './reg.css';
+
 
 function Register() {
   const [userForm, setUserForm] = useState({
@@ -26,23 +26,7 @@ function Register() {
   });
 
   const navigate = useNavigate();
-  const containerStyle = {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    border: "1px solid #ced4da",
-    borderRadius: "5px",
-    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
-    padding: "20px",
-    marginTop: "20px",
-    position: "relative",
-  };
-
-  const imageStyle = {
-    width: "550px",
-  };
-
+  
   const handleFieldChange = (event) => {
     const field_name = event.target.name;
     const field_value = event.target.value;
@@ -59,14 +43,14 @@ const handleSubmit = (event) => {
   axios.post('http://localhost:8000/api/register/', userForm)
     .then((res) => {
       console.log(res);
-      navigate("/login");
+      navigate("/verify-email"); 
     })
     .catch((err) => console.log(err));
 };
 
   return (
-    <div className="container" style={containerStyle}>
-      <img src={welc} alt="Welcome" style={imageStyle} />
+    <div className="container" >
+      <img src={welc} alt="Welcome" className="welc-img" />
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">
           <div className="col-md-6">

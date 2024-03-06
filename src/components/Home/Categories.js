@@ -1,14 +1,15 @@
 
 import { useState,useEffect } from "react";
+import { axiosInstance } from "../../apis/config";
 
-import axios from "axios";
+
 const Categories = () => {
   
   const [category, setCategory] = useState([]);
  
   useEffect(() => { 
-    axios
-      .get('http://127.0.0.1:8000/API/categories/')
+    axiosInstance
+      .get('/API/categories/')
       .then((res) => setCategory(res.data))
       .catch((err) => console.log(err));
   }, []);

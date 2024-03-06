@@ -3,15 +3,16 @@ import React from "react";
 
 import { useState,useEffect } from 'react';
 
-import axios from "axios";
+
+import { axiosInstance } from "../../apis/config";
 
 const Products = ()=>{
 
     const [product,setProduct]= useState([])
     useEffect(() => { 
-        axios
-          .get('http://127.0.0.1:8000/API/allproducts/')
-          .then((res) =>setProduct(res.data.results.products))
+        axiosInstance
+          .get('/API/allproducts/')
+          .then((res) =>setProduct(res.data.products))
           .catch((err) => console.log(err));
       }, []);
    

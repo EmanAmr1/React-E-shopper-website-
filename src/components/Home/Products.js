@@ -12,7 +12,7 @@ const Products = ()=>{
     useEffect(() => { 
         axiosInstance
           .get('/API/allproducts/')
-          .then((res) =>setProduct(res.data.products))
+          .then((res) =>setProduct(res.data.results.products))
           .catch((err) => console.log(err));
       }, []);
    

@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import './CustomerProfile.css'
 
 function CustomerProfile() {
   const location = useLocation();
@@ -34,7 +35,7 @@ function CustomerProfile() {
       <h1>Welcome {user ? user.first_name : ''}</h1>
       {user && (
         <div>
-          <p>Token: {token}</p>
+          {/* <p>Token: {token}</p> */}
           <p>Email: {user.email}</p>
           <p>Firstname: {user.first_name}</p>
           <p>Lastname: {user.last_name}</p>

@@ -33,6 +33,7 @@ const Router =()=>{
         <Route path='productDetails/:id' element={<ProductDetails />} />
         <Route path='ProductList' element={<ProductList />} />
         <Route path='checkoutPage' element={<CheckoutPage />} />
+        <Route path='/customerprofile' element={<CustomerProfile />} />
 
         
         {/* <Route path='Register' element={<Register />} /> */}
@@ -41,7 +42,6 @@ const Router =()=>{
         <Route path='*' element={<NotFound/>}/>
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/customerprofile' element={<CustomerProfile />} />
         <Route path='/vendorprofile' element={<VendorProfile />} />
         <Route path='/verify-email' element={<EmailVerification/>} />
         <Route path='/addProduct' element={<AddProduct />} />

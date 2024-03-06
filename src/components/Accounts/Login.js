@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -20,27 +20,6 @@ function Login() {
       [field_name]: field_value,
     });
   };
-
-  useEffect(() => {
-    const jwtToken = Cookies.get('jwt');
-    if (jwtToken) {
-      axios.get('http://localhost:8000/api/verify-email', {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-        }
-      })
-      .then((res) => {
-        const { verified } = res.data;
-        if (!verified) {
-          navigate("/verify-email"); // Redirect if email is not verified
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        // Handle error, such as unauthorized access or network issue
-      });
-    }
-  }, [navigate]); 
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -1,13 +1,13 @@
-import React from 'react'
-import Checkout from '../components/checkout/Checkout'
-import Instagram from '../components/Home/Instagram'
+import React from "react";
+import Checkout from "../components/checkout/Checkout";
+import Instagram from "../components/Home/Instagram";
 const CheckoutPage = () => {
   return (
     <>
-          <Checkout/>
-          <Instagram/>
+      <Checkout />
+      <Instagram />
     </>
-  )
-}
+  );
+};
 
-export default CheckoutPage
+export default CheckoutPage;

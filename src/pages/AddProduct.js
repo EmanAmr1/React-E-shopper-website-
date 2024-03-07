@@ -23,10 +23,11 @@ const AddProduct = () => {
         stock_L: '',
         stock_XL: '',
         images: [],
+        
 
     }]);
 
-
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -42,7 +43,8 @@ const AddProduct = () => {
         } else if (type === 'file') { // Handle file inputs for images and thumbnail
             setAddPro({
                 ...addPro,
-                [name]: e.target.files[0] // Assuming you only allow uploading one file for thumbnail
+                [name]: e.target.files[0] ,// Assuming you only allow uploading one file for thumbnail
+             
             });
         } else { // Handle other inputs
             setAddPro({
@@ -58,7 +60,11 @@ const AddProduct = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+       
 
+
+
+        
 
 
         const data = {
@@ -83,11 +89,33 @@ const AddProduct = () => {
 
 
         }
-        axiosInstance.post('/API/addProduct/', data).then(res => {
-
-        }
-        );
-    };
+        axiosInstance.post('/API/addProduct/', data)
+        .then(res => {
+            setSuccessMessage('Product successfully added');
+            // Clear form after successful submission
+            setAddPro({
+                name: '',
+                description: '',
+                price: '',
+                brand: '',
+                stock: '',
+                ratings: '',
+                new: true,
+                sale: true,
+                newprice: '',
+                thumbnail: '',
+                category: '',
+                stock_S: '',
+                stock_M: '',
+                stock_L: '',
+                stock_XL: '',
+                images: [],
+            });
+        })
+        .catch(error => {
+            console.error('Error adding product:', error);
+        });
+};
 
 
 
@@ -106,8 +134,7 @@ const AddProduct = () => {
                                 <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" />
                             </div>
 
-
-
+                           
 
                             <div className="mb-3">
                                 <label htmlFor="description" className="form-label">Product Description:</label>

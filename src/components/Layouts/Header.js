@@ -1,8 +1,21 @@
 import React from "react";
-
 import logoImage from "../../imags/logo.png";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { fetchTotalCount } from "../../store/slices/total";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const Header = () => {
+  const userCookie = Cookies.get("user");
+  const userID = userCookie ? JSON.parse(userCookie).id : null;
+  const total = useSelector((state) => state.total.count);
+  // const [total, setTotal] = useState();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTotalCount(userID));
+  }, []);
+
   return (
     <>
       <div class="offcanvas-menu-overlay"></div>
@@ -107,7 +120,7 @@ const Header = () => {
                   <li>
                     <Link to="Cart">
                       <span class="icon_bag_alt"></span>
-                      <div class="tip">2</div>
+                      <div class="tip">{total}</div>
                     </Link>
                   </li>
                 </ul>

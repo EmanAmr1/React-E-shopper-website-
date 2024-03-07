@@ -4,6 +4,8 @@ import thumb2 from "../imags/product/details/thumb-1.jpg";
 import thumb3 from "../imags/product/details/thumb-3.jpg";
 import thumb4 from "../imags/product/details/thumb-4.jpg";
 import rev from "../imags/rev.png";
+import { useDispatch } from "react-redux";
+import { increaseCounterByAmount } from "../store/slices/total";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -12,6 +14,7 @@ import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 
 const ProductDetails = () => {
+  const dispatch = useDispatch();
   const userCookie = Cookies.get("user");
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [loading, setLoading] = useState(true);
@@ -68,7 +71,7 @@ const ProductDetails = () => {
         user: userID,
         quantity: quantity,
       });
-      console.log(response.data);
+      dispatch(increaseCounterByAmount(response.data.quantity));
       //   setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
       //   const deletedItem = items.find((item) => item.id === itemId);
       //   if (deletedItem) {

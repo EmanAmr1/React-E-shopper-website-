@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
-
+import { useDispatch } from "react-redux";
+import {
+  increaseCounter,
+  decreaseCounter,
+  decreaseCounterByAmount,
+} from "../store/slices/total";
 const Cart = () => {
   const userCookie = Cookies.get("user");
+  const dispatch = useDispatch();
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [items, setItems] = useState([]);
   const baseImageUrl = "http://127.0.0.1:8000";
@@ -38,6 +44,7 @@ const Cart = () => {
         newTotal += item.subtotal_price;
       });
       setTotal(newTotal);
+      dispatch(increaseCounter());
     } catch (error) {
       console.error("Error:", error.response.data);
     }
@@ -60,6 +67,7 @@ const Cart = () => {
         newTotal += item.subtotal_price;
       });
       setTotal(newTotal);
+      dispatch(decreaseCounter());
     } catch (error) {
       console.error("Error:", error.response.data);
     }
@@ -74,6 +82,7 @@ const Cart = () => {
       if (deletedItem) {
         const deletedItemSubtotal = deletedItem.subtotal_price;
         setTotal((prevTotal) => prevTotal - deletedItemSubtotal);
+        dispatch(decreaseCounterByAmount(deletedItem.quantity));
       }
     } catch (error) {
       console.error("Error:", error.response.data);

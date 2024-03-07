@@ -18,7 +18,9 @@ const CustomerProfile = React.lazy(() =>
 const VendorProfile = React.lazy(() =>
   import("../components/Accounts/VendorProfile")
 );
+
 const AddProduct = React.lazy(() => import("../pages/AddProduct"));
+const Vendorplan = React.lazy(() => import("../pages/Vendorplan"));
 const EmailVerification = React.lazy(() =>
   import("../components/Accounts/EmailVerification")
 );
@@ -45,6 +47,7 @@ const Router = () => {
         <Route path="/vendorprofile" element={<VendorProfile />} />
         {/* <Route path="/verify-email" element={<EmailVerification />} /> */}
         <Route path="/addProduct" element={<AddProduct />} />
+        <Route path="/Vendorplan" element={<Vendorplan />} />
       </Routes>
     </Suspense>
   );

@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance } from "../apis/config";
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
+    const [category, setCategory] = useState([]);
+ 
+  useEffect(() => { 
+    axiosInstance
+      .get('/API/categories/')
+      .then((res) => setCategory(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+ 
     const [activeAccordion, setActiveAccordion] = useState(null);
     const toggleAccordion = (index) => {
         setActiveAccordion(activeAccordion === index ? null : index);
@@ -53,25 +63,39 @@ const ProductList = () => {
                                 </div>
                                 <div className="categories__accordion">
                                     <div className="accordion" id="accordionExample">
-                                        {['Women', 'Men', 'Kids', 'Accessories', 'Cosmetic'].map((category, index) => (
-                                            <div className="card" key={index}>
-                                                <div className={`card-heading ${activeAccordion === index ? 'active' : ''}`}>
-                                                    <a onClick={() => toggleAccordion(index)}>{category}</a>
+                                        {category.map((cat)=>{
+                                            return(
+                                                <>
+                                                <div className="card" key={cat.id}>
+                                                <div
+                                                    className={`card-heading ${activeAccordion === cat.id ? 'active' : ''}`}
+                                                    onClick={() => toggleAccordion(cat.id)}
+                                                >
+                                                    <Link data-toggle="collapse" data-target={`#collapse${cat.id}`}>
+                                                        {cat.name}
+                                                    </Link>
                                                 </div>
-                                                <div className={`collapse ${activeAccordion === index ? 'show' : ''}`} id={`collapse${index + 1}`}>
+                                                <div
+                                                    id={`collapse${cat.id}`}
+                                                    className={`collapse ${activeAccordion === cat.id ? 'show' : ''}`}
+                                                    data-parent="#accordionExample"
+                                                >
                                                     <div className="card-body">
                                                         <ul>
-                                                            <li><a href="#">Coats</a></li>
-                                                            <li><a href="#">Jackets</a></li>
-                                                            <li><a href="#">Dresses</a></li>
-                                                            <li><a href="#">Shirts</a></li>
-                                                            <li><a href="#">T-shirts</a></li>
-                                                            <li><a href="#">Jeans</a></li>
+                                                        {cat.subcategories.map((subcat) => (
+                                                                <li key={subcat.id}>
+                                                                    <Link to="h">{subcat.name}</Link>
+                                                                </li>
+                                                            ))}
+                                                            
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
-                                        ))}
+                                                
+                                                </>
+                                            )
+                                        })}
                                     </div>
                                 </div>
                             </div>

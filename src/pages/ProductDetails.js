@@ -1,338 +1,364 @@
-import React from 'react';
-import thumb1 from '../imags/product/details/thumb-1.jpg';
-import thumb2 from '../imags/product/details/thumb-1.jpg';
-import thumb3 from '../imags/product/details/thumb-3.jpg';
-import thumb4 from '../imags/product/details/thumb-4.jpg';
-import rev from "../imags/rev.png"
-
+import React from "react";
+import thumb1 from "../imags/product/details/thumb-1.jpg";
+import thumb2 from "../imags/product/details/thumb-1.jpg";
+import thumb3 from "../imags/product/details/thumb-3.jpg";
+import thumb4 from "../imags/product/details/thumb-4.jpg";
+import rev from "../imags/rev.png";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { axiosInstance } from "../apis/config";
-
+import Cookies from "js-cookie";
 
 const ProductDetails = () => {
+  const userCookie = Cookies.get("user");
+  const userID = userCookie ? JSON.parse(userCookie).id : null;
+  const [loading, setLoading] = useState(true);
+  const [proDetails, setProDetails] = useState({});
+  const [comment, setComment] = useState("");
+  const [productId, setProductId] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [userId, setUserId] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
-    const [loading, setLoading] = useState(true);
-    const [proDetails, setProDetails] = useState({})
-    const [comment, setComment] = useState('');
-    const [productId, setProductId] = useState('');
-    const [reviews, setReviews] = useState([]);
-    const [userId, setUserId] = useState('');
+  const increase = () => {
+    setQuantity((count) => count + 1);
+  };
 
-    const params = useParams();
-    console.log(params);
+  const decrease = () => {
+    if (quantity > 1) {
+      setQuantity((count) => count - 1);
+    }
+  };
 
-    const baseImageUrl = "http://127.0.0.1:8000";
+  const params = useParams();
+  console.log(params);
 
-    useEffect(() => {
-        axiosInstance
-            .get(`/API/getProduct/${params.id}/`)
-            .then((res) => {
-                setProDetails(res.data.product);
-                setProductId(res.data.product.id);
-            }
-            )
-            .catch((err) => console.log(err));
-    }, [params.id]);
+  const baseImageUrl = "http://127.0.0.1:8000";
 
+  useEffect(() => {
+    axiosInstance
+      .get(`/API/getProduct/${params.id}/`)
+      .then((res) => {
+        setProDetails(res.data.product);
+        setProductId(res.data.product.id);
+      })
+      .catch((err) => console.log(err));
+  }, [params.id]);
 
-    useEffect(() => {
-        axiosInstance
-            .get(`/API/Review/listReviwes/`)
-            .then((res) => {
+  useEffect(() => {
+    axiosInstance
+      .get(`/API/Review/listReviwes/`)
+      .then((res) => {
+        const productReviewss = res.data.data.filter(
+          (review) => review.product_id === proDetails.id
+        );
+        setReviews(productReviewss);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, [proDetails.id]);
 
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(`/api/cart/add/`, {
+        item: productId,
+        user: userID,
+        quantity: quantity,
+      });
+      console.log(response.data);
+      //   setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+      //   const deletedItem = items.find((item) => item.id === itemId);
+      //   if (deletedItem) {
+      //     const deletedItemSubtotal = deletedItem.subtotal_price;
+      //     setTotal((prevTotal) => prevTotal - deletedItemSubtotal);
+      //   }
+    } catch (error) {
+      console.error("Error:", error.response.data);
+    }
+  };
 
-                const productReviewss = res.data.data.filter(review => review.product_id === proDetails.id);
-                setReviews(productReviewss);
-                setLoading(false);
-            })
-            .catch((err) => console.log(err));
-    }, [proDetails.id]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post("/API/Review/addReview/", {
+        product_id: productId,
+        comment: comment,
+        user: userId,
+      });
+      console.log(response.data);
 
+      // Update reviews state with the new review
+      setReviews([
+        ...reviews,
+        { comment, date: new Date().toLocaleDateString() },
+      ]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axiosInstance.post('/API/Review/addReview/', {
+      // Reset form fields
+      setComment("");
+    } catch (error) {
+      console.error("Error:", error.response.data);
+    }
+  };
 
-                product_id: productId,
-                comment: comment,
-                user: userId
+  return (
+    <>
+      <div class="breadcrumb-option ">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="breadcrumb__links">
+                <a href="./index.html">
+                  <i class="fa fa-home"></i> Home
+                </a>
+                <a href=" ">Women’s </a>
+                <span>Essential structured blazer </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            });
-            console.log(response.data);
+      <section className="product-details spad">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-6">
+              <div className="product__big__img__container myimg">
+                <img
+                  className="mypic"
+                  src={`${baseImageUrl}${proDetails.image}`}
+                  alt="Product Image"
+                />
+              </div>
 
-            // Update reviews state with the new review
-            setReviews([...reviews, { comment, date: new Date().toLocaleDateString() }]);
-
-            // Reset form fields
-            setComment('');
-
-        } catch (error) {
-            console.error('Error:', error.response.data);
-
-        }
-    };
-
-
-
-
-
-    return (
-
-        <>
-
-            <div class="breadcrumb-option ">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="breadcrumb__links">
-                                <a href="./index.html"><i class="fa fa-home"></i> Home</a>
-                                <a href=" ">Women’s </a>
-                                <span>Essential structured blazer </span>
-
-                            </div>
-                        </div>
-                    </div>
+              <div class="product__details__pic">
+                <div class="thumbnail-container">
+                  <a class="pt active" href="#product-1">
+                    <img src={thumb1} alt="Thumbnail 1" />
+                  </a>
+                  <a class="pt" href="#product-2">
+                    <img src={thumb2} alt="Thumbnail 2" />
+                  </a>
+                  <a class="pt" href="#product-3">
+                    <img src={thumb3} alt="Thumbnail 3" />
+                  </a>
+                  <a class="pt" href="#product-4">
+                    <img src={thumb4} alt="Thumbnail 4" />
+                  </a>
                 </div>
+              </div>
             </div>
 
-            <section className="product-details spad">
+            <div className="col-lg-6">
+              <div className="product__details__text">
+                <div className="label-container">
+                  <h3>{proDetails.name}</h3>
 
-
-
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6">
-
-                            <div className="product__big__img__container myimg">
-                                <img className='mypic' src={`${baseImageUrl}${proDetails.image}`} alt="Product Image" />
-                            </div>
-
-
-                            <div class="product__details__pic">
-                                <div class="thumbnail-container">
-                                    <a class="pt active" href="#product-1">
-                                        <img src={thumb1} alt="Thumbnail 1" />
-                                    </a>
-                                    <a class="pt" href="#product-2">
-                                        <img src={thumb2} alt="Thumbnail 2" />
-                                    </a>
-                                    <a class="pt" href="#product-3">
-                                        <img src={thumb3} alt="Thumbnail 3" />
-                                    </a>
-                                    <a class="pt" href="#product-4">
-                                        <img src={thumb4} alt="Thumbnail 4" />
-                                    </a>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-
-                        <div className="col-lg-6">
-                            <div className="product__details__text">
-
-
-                                <div className="label-container">
-                                    <h3>{proDetails.name}</h3>
-
-                                    {proDetails.new && <div className="label new">New</div>}
-                                    {proDetails.sale && <div className="label sale">Sale</div>}
-                                    {proDetails.stock === 0 && <div className="label stockout">Out of Stock</div>}
-                                </div>
-
-                                <span className="product__details__price">$ {proDetails.newprice} <span>$ {proDetails.price}</span>   </span>
-
-                                <div className="rating">
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <span>( 138 reviews )</span>
-                                </div>
-
-
-                                <p  >
-
-                                    
-
-                                    <div className='basic'>{proDetails.description}</div>
-
-                                    <span > <span className='basic' >Brand:</span> {proDetails.brand}</span>
-
-
-                                    <div><span className='basic' >Category: </span>  {proDetails.category}</div>
-                                </p>
-
-
-
-                                <div className="product__details__button">
-                                    <div className="quantity">
-                                        <span>Quantity:</span>
-                                        <div className="pro-qt">
-
-
-                                            <div class="category ps-4">
-                                                <span class="counter-btn minus">-</span>
-                                                <span id="counter" class="counter-value">0</span>
-                                                <span class="counter-btn plus">+</span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <a href=" " className="cart-btn"><span className="icon_bag_alt"></span> Add to cart</a>
-                                    <ul>
-                                        <li><a href=" "><span className="icon_heart_alt"></span></a></li>
-                                        <li><a href=" "><span className="icon_adjust-horiz"></span></a></li>
-                                    </ul>
-                                </div>
-                                <div className="product__details__widget">
-                                    <ul>
-                                        <li>
-
-
-                                            <span>Availability:</span>
-                                            <div className="stock__checkbox">
-                                                <label htmlFor="stockin">
-                                                    In Stock
-                                                    <input type="checkbox" id="stockin" checked={proDetails.stock > 1} readOnly />
-                                                    <span className="checkmark"></span>
-                                                </label>
-                                            </div>
-
-
-
-
-
-
-                                        </li>
-                                        <li>
-                                            <span>Available color:</span>
-                                            <div className="color__checkbox">
-                                                <label htmlFor="red">
-                                                    <input type="radio" name="color__radio" id="red" checked />
-                                                    <span className="checkmark"></span>
-                                                </label>
-                                                <label htmlFor="black">
-                                                    <input type="radio" name="color__radio" id="black" />
-                                                    <span className="checkmark black-bg"></span>
-                                                </label>
-                                                <label htmlFor="grey">
-                                                    <input type="radio" name="color__radio" id="grey" />
-                                                    <span className="checkmark grey-bg"></span>
-                                                </label>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span>Available size:</span>
-                                            <div className="size__btn">
-                                                {proDetails.stock_S > 0 && (
-                                                    <label htmlFor="xs-btn">
-                                                        <input type="radio" id="xs-btn" />
-                                                        S
-                                                    </label>
-                                                )}
-                                                {proDetails.stock_M > 0 && (
-                                                    <label htmlFor="s-btn">
-                                                        <input type="radio" id="s-btn" />
-                                                        M
-                                                    </label>
-                                                )}
-                                                {proDetails.stock_L > 0 && (
-                                                    <label htmlFor="m-btn">
-                                                        <input type="radio" id="m-btn" />
-                                                        L
-                                                    </label>
-                                                )}
-                                                {proDetails.stock_XL > 0 && (
-                                                    <label htmlFor="l-btn">
-                                                        <input type="radio" id="l-btn" />
-                                                        XL
-                                                    </label>
-                                                )}
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <span>Promotions:</span>
-                                            <p>Free shipping</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-                    <div className="row">
-                        <div className="col-lg-11 mx-auto">
-                            <h3 className="reviews__title">Reviews</h3>
-                            {reviews.length > 0 ? (
-                                <ul className="reviews__list">
-                                    {reviews.map((review, index) => (
-                                        <li key={index} className="review__item">
-                                            <div className="review__header">
-                                                <img className="review__avatar" src={rev} alt="User Avatar" />
-                                                <div className="review__meta">
-                                                    <span className="review__author">Eman Amr</span>
-                                                    <span className="review__date">{review.date}</span>
-                                                </div>
-                                            </div>
-                                            <div className="review__content">
-                                                <p className="review__comment">{review.comment}</p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No reviews yet</p>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-9">
-                                <div className="add-review-form">
-                                    <h3>Add your Review on this Product</h3>
-
-
-                                    <form onSubmit={handleSubmit}>
-                                       
-                                        <div className="form-group">
-                                            <label htmlFor="comment">Comment:</label>
-                                            <textarea id="comment" value={comment} onChange={(e) => setComment(e.target.value)} />
-                                        </div>
-                                        <button type="submit">Add Review</button>
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-lg-12 text-center">
-                            <div className="related__title">
-
-                            </div>
-                        </div>
-
-                    </div>
+                  {proDetails.new && <div className="label new">New</div>}
+                  {proDetails.sale && <div className="label sale">Sale</div>}
+                  {proDetails.stock === 0 && (
+                    <div className="label stockout">Out of Stock</div>
+                  )}
                 </div>
-            </section>
 
-        </>
-    )
+                <span className="product__details__price">
+                  $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
+                </span>
 
-}
+                <div className="rating">
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <i className="fa fa-star"></i>
+                  <span>( 138 reviews )</span>
+                </div>
 
+                <p>
+                  <div className="basic">{proDetails.description}</div>
+
+                  <span>
+                    {" "}
+                    <span className="basic">Brand:</span> {proDetails.brand}
+                  </span>
+
+                  <div>
+                    <span className="basic">Category: </span>{" "}
+                    {proDetails.category}
+                  </div>
+                </p>
+
+                <div className="product__details__button">
+                  <div className="quantity">
+                    <span>Quantity:</span>
+                    <div className="pro-qt">
+                      <div class="category ps-4">
+                        <span class="counter-btn minus" onClick={decrease}>
+                          -
+                        </span>
+                        <span id="counter" class="counter-value">
+                          {quantity}
+                        </span>
+                        <span class="counter-btn plus" onClick={increase}>
+                          +
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <a href=" " className="cart-btn" onClick={handleAdd}>
+                    <span className="icon_bag_alt"></span> Add to cart
+                  </a>
+                  <ul>
+                    <li>
+                      <a href=" ">
+                        <span className="icon_heart_alt"></span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href=" ">
+                        <span className="icon_adjust-horiz"></span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="product__details__widget">
+                  <ul>
+                    <li>
+                      <span>Availability:</span>
+                      <div className="stock__checkbox">
+                        <label htmlFor="stockin">
+                          In Stock
+                          <input
+                            type="checkbox"
+                            id="stockin"
+                            checked={proDetails.stock > 1}
+                            readOnly
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <span>Available color:</span>
+                      <div className="color__checkbox">
+                        <label htmlFor="red">
+                          <input
+                            type="radio"
+                            name="color__radio"
+                            id="red"
+                            checked
+                          />
+                          <span className="checkmark"></span>
+                        </label>
+                        <label htmlFor="black">
+                          <input type="radio" name="color__radio" id="black" />
+                          <span className="checkmark black-bg"></span>
+                        </label>
+                        <label htmlFor="grey">
+                          <input type="radio" name="color__radio" id="grey" />
+                          <span className="checkmark grey-bg"></span>
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <span>Available size:</span>
+                      <div className="size__btn">
+                        {proDetails.stock_S > 0 && (
+                          <label htmlFor="xs-btn">
+                            <input type="radio" id="xs-btn" />S
+                          </label>
+                        )}
+                        {proDetails.stock_M > 0 && (
+                          <label htmlFor="s-btn">
+                            <input type="radio" id="s-btn" />M
+                          </label>
+                        )}
+                        {proDetails.stock_L > 0 && (
+                          <label htmlFor="m-btn">
+                            <input type="radio" id="m-btn" />L
+                          </label>
+                        )}
+                        {proDetails.stock_XL > 0 && (
+                          <label htmlFor="l-btn">
+                            <input type="radio" id="l-btn" />
+                            XL
+                          </label>
+                        )}
+                      </div>
+                    </li>
+                    <li>
+                      <span>Promotions:</span>
+                      <p>Free shipping</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-11 mx-auto">
+              <h3 className="reviews__title">Reviews</h3>
+              {reviews.length > 0 ? (
+                <ul className="reviews__list">
+                  {reviews.map((review, index) => (
+                    <li key={index} className="review__item">
+                      <div className="review__header">
+                        <img
+                          className="review__avatar"
+                          src={rev}
+                          alt="User Avatar"
+                        />
+                        <div className="review__meta">
+                          <span className="review__author">Eman Amr</span>
+                          <span className="review__date">{review.date}</span>
+                        </div>
+                      </div>
+                      <div className="review__content">
+                        <p className="review__comment">{review.comment}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No reviews yet</p>
+              )}
+            </div>
+          </div>
+
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-9">
+                <div className="add-review-form">
+                  <h3>Add your Review on this Product</h3>
+
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="comment">Comment:</label>
+                      <textarea
+                        id="comment"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                    </div>
+                    <button type="submit">Add Review</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-lg-12 text-center">
+              <div className="related__title"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
 
 export default ProductDetails;

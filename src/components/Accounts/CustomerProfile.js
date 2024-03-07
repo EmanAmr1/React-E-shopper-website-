@@ -62,12 +62,9 @@ function CustomerProfile() {
   };
 
   const handleLogout = () => {
-    // Clear JWT token and user data cookies
     Cookies.remove('jwt');
     Cookies.remove('user');
     Cookies.remove('token');
-
-    // Call the logout API
     axios.post('http://localhost:8000/api/logout/')
       .then((res) => {
         console.log("Logout successful");
@@ -76,6 +73,21 @@ function CustomerProfile() {
       .catch((error) => {
         console.error("Logout error:", error);
       });
+  };
+  const handleDelete = () => {
+    const password = prompt("Please enter your password to confirm deletion:");
+    if (password) {
+      axios.delete(`http://localhost:8000/api/delete/${user.id}/`, {
+        data: { password: user.password }
+      })
+      .then((res) => {
+        console.log("Delete successful");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Delete error:", error);
+      });
+    }
   };
 
   return (
@@ -127,8 +139,9 @@ function CustomerProfile() {
               </div> */}
             </div>
             <button type="submit" className="btn btn-primary" disabled={!isModified} onChange={handleUpdate}>Update</button>
+            <button type="button" className="btn btn-danger" onClick={handleDelete}>Delete Account</button>
           </form>
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} >Logout</button>
         </div>
       )}
     </>

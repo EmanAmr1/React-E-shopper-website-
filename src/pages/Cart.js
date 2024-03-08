@@ -8,6 +8,8 @@ import {
   decreaseCounter,
   decreaseCounterByAmount,
 } from "../store/slices/total";
+import { Link } from "react-router-dom";
+
 const Cart = () => {
   const userCookie = Cookies.get("user");
   const itemsid = useSelector((state) => state.total.itemsid);
@@ -159,7 +161,41 @@ const Cart = () => {
           </div>
           <div className="mb-3" style={{ fontSize: "2rem", display: "hidden" }}>
             Total: ${total}
+            </div>
+          <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="#">Continue Shopping</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn update__btn">
+                        <a href="#"><span class="icon_loading"></span> Update cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="discount__content">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code"/>
+                            <button type="submit" class="site-btn">Apply</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>$49.00</span></li>
+                            <li>Total <span>${total}</span></li>
+                        </ul>
+                        <Link to="/checkoutPage" class="primary-btn">Proceed to checkout</Link>
+                    </div>
+                </div>
           </div>
+          
         </div>
       </section>
     </div>

@@ -1,11 +1,35 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
-import { useState } from 'react'
+//import ReactDOM from 'react-dom';
+import { useState, useEffect } from 'react';
+import Cookies from "js-cookie";
 import swal from 'sweetalert';
 import { Link, useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../../apis/config";
 import { event } from 'jquery';
 const Checkout = () => {
+    const clearCart = () => {
+        setItems([]);
+        setTotal(0);
+        // Any other necessary updates to the cart state
+      };
+    const userCookie = Cookies.get("user");
+  
+    const userID = userCookie ? JSON.parse(userCookie).id : null;
+    const [items, setItems] = useState([]);
+    const baseImageUrl = "http://127.0.0.1:8000";
+    const [total, setTotal] = useState();
+    useEffect(() => {
+        axiosInstance
+          .get(`/api/cart/list/${userID}`)
+          .then((res) => {
+            console.log(res.data);
+            setItems(res.data.cart_items);
+            setTotal(res.data.total_items_price);
+            console.log(userID);
+          })
+          .catch((err) => console.log(err));
+      }, []);
+
     const navigate = useNavigate();
     /*if(!localStorage.getItem('auth_token')){
         navigate('/');
@@ -24,6 +48,7 @@ const Checkout = () => {
         street: '',
         phone_number:'',
         email: '',
+        order_Items: [],
     });
     const handleInput = (event) => {
 
@@ -40,17 +65,25 @@ const Checkout = () => {
         event.preventDefault();
         if (!validateForm()) {
             return;
-          }
+        }
+        const orderItems = items.map((product) => ({
+            product: product.id, // Replace 'id' with the actual property representing the product ID
+            quantity: 1,  // You may adjust the quantity as needed
+            price: product.item_price,
+        }));
+    
+          
         const data = {
             first_name:checoutInput.first_name,
             last_name:checoutInput.last_name,
             country:checoutInput.country,
             city:checoutInput.city,
-            zip_code:checoutInput.zip,
+            zip_code:checoutInput.zip_code,
             state:checoutInput.state,
             street:checoutInput.street,
             phone_number:checoutInput.phone_number,
-            email:checoutInput.email
+            email:checoutInput.email,
+            order_Items: orderItems,
 
         }
         axiosInstance.post('/API/orders/new/',data).then(res=>{
@@ -58,6 +91,7 @@ const Checkout = () => {
             {
                 swal("Order Placed Successfully",res.data.message,"success");
                 setError([]);
+                clearCart(); 
 
                 //navigate('/thannk-you');
             }
@@ -213,24 +247,27 @@ const Checkout = () => {
                         <div className="col-lg-4">
                             <div className="checkout__order">
                                 <h5>Your checoutInput</h5>
-                                <div className="checkout__order__product">
+                                    <div className="checkout__order__product">
                                     <ul>
                                         <li>
                                             <span className="top__text">Product</span>
                                             <span className="top__text__right">Total</span>
                                         </li>
-                                        <li>01. Chain buck bag <span>$ 300.0</span></li>
-                                        <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
-                                        <li>03. Black jean <span>$ 170.0</span></li>
-                                        <li>04. Cotton shirt <span>$ 110.0</span></li>
+                                {items.map((product) => {
+                                    return (<>
+                                        <li>01. {product.item_name} <span>$ {product.item_price}</span></li>
+                                        
+                                        </>);})}
                                     </ul>
                                 </div>
                                 <div className="checkout__order__total">
                                     <ul>
-                                        <li>Subtotal <span>$ 750.0</span></li>
-                                        <li>Total <span>$ 750.0</span></li>
+                                        <li>Subtotal <span>$ {total}</span></li>
+                                        <li>Total <span>$ {total}</span></li>
                                     </ul>
                                 </div>
+                                    
+                                
                                 <div className="checkout__order__widget">
                                     <label for="o-acc">
                                         Create an acount?

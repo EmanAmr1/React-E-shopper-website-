@@ -4,14 +4,14 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import './login.css';
-import hello from '../../imags/register/hello.jpg'
+import hello from '../../imags/register/hello.jpg';
 
 function Login() {
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
-
+  const [errorMessage, setErrorMessage] = useState(""); // State variable to hold error message
   const navigate = useNavigate();
 
   const handleFieldChange = (event) => {
@@ -26,7 +26,6 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(loginForm);
     axios.post('http://localhost:8000/api/login/', loginForm)
       .then((res) => {
         console.log(res);
@@ -41,30 +40,38 @@ function Login() {
           navigate("/VendorProfile", { state: { user, token } });
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          setErrorMessage("Invalid email or password. Please try again."); 
+        } else {
+          setErrorMessage("An error occurred. Please try again."); 
+        }
+      });
   };
 
   return (
     <>
-    <div className="container">
-      <img src={hello} alt="Welcome" className="back" />
-      <form onSubmit={handleSubmit} className="form">
-        <div className="form-group">
-          <label htmlFor="exampleInputEmail1" className="form-label"><b>Email address</b></label>
-          <input type="email" className="form-control" id="exampleInputEmail1" onChange={handleFieldChange} name="email"/>
-        </div>
-        <div className="form-group">
-          <label htmlFor="exampleInputPassword1" className="form-label"><b>Password</b></label>
-          <input type="password" className="form-control" id="exampleInputPassword1" onChange={handleFieldChange} name="password"/>
-        </div>
-        <button type="submit" className="btn btn-dark">Submit</button>
-      </form>
-    </div>
-    <div >
-  <p className='paragraph'>Don't Have an Account? </p>
-  <Link to="/register" className="link">Register</Link>
-</div>
-
+      <div className="container">
+        <img src={hello} alt="Welcome" className="back" />
+        <form onSubmit={handleSubmit} className="form">
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1" className="form-label"><b>Email address</b></label>
+            <input type="email" className="form-control" id="exampleInputEmail1" onChange={handleFieldChange} name="email"/>
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1" className="form-label"><b>Password</b></label>
+            <input type="password" className="form-control" id="exampleInputPassword1" onChange={handleFieldChange} name="password"/>
+          </div>
+          <button type="submit" className="btn btn-dark">Submit</button>
+          <br />
+          {errorMessage && <span className="text-danger">{errorMessage}</span>} {/* Display error message */}
+        </form>
+      </div>
+      <div>
+        <p className='paragraph'>Don't Have an Account? </p>
+        <Link to="/register" className="link">Register</Link>
+      </div>
     </>
   );
 }

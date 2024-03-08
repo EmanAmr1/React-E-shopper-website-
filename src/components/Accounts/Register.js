@@ -39,6 +39,10 @@ function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (userForm.password.length < 8) {
+          setErrorMessage("Password must be at least 8 characters long, and ");
+          return;
+      }
         axios
             .post("http://localhost:8000/api/register/", userForm)
             .then((res) => {
@@ -108,13 +112,18 @@ function Register() {
               onChange={handleFieldChange}
               name="password"
             />
-            {userForm.password &&
-              !/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(userForm.password) && (
-                <span className="text-danger">
-                  Password must contain at least one uppercase character and one
-                  special character
-                </span>
-              )}
+            {userForm.password && (
+  <span className="text-danger">
+    {userForm.password.length < 8 && (
+      <>Password must be at least 8 characters long</>
+    )}
+    {userForm.password.length >= 8 &&
+      !/(?=.*[A-Z])(?=.*[!@#$%^&*])/.test(userForm.password) && (
+        <>Password must contain at least one uppercase character and one special character</>
+      )}
+  </span>
+)}
+
           </div>
           <div className="col-md-6">
             <label htmlFor="confirmPassword" className="form-label">

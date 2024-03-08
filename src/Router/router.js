@@ -24,6 +24,7 @@ const Vendorplan = React.lazy(() => import("../pages/Vendorplan"));
 const EmailVerification = React.lazy(() =>
   import("../components/Accounts/EmailVerification")
 );
+const Message = React.lazy(() => import("../components/Accounts/Message"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
@@ -48,6 +49,7 @@ const Router = () => {
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/addProduct" element={<AddProduct />} />
         <Route path="/Vendorplan" element={<Vendorplan />} />
+        <Route path="/message" element={<Message />} />
       </Routes>
     </Suspense>
   );

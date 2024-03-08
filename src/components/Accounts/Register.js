@@ -47,7 +47,7 @@ function Register() {
             .post("http://localhost:8000/api/register/", userForm)
             .then((res) => {
                 console.log(res);
-                navigate("/login");
+                navigate("/message");
             })
             .catch((err) => {
                 if (err.response && err.response.status === 400) {

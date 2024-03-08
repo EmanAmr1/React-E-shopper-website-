@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  setItemsid,
   increaseCounter,
   decreaseCounter,
   decreaseCounterByAmount,
 } from "../store/slices/total";
 const Cart = () => {
   const userCookie = Cookies.get("user");
+  const itemsid = useSelector((state) => state.total.itemsid);
   const dispatch = useDispatch();
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [items, setItems] = useState([]);
@@ -84,6 +86,11 @@ const Cart = () => {
         setTotal((prevTotal) => prevTotal - deletedItemSubtotal);
         dispatch(decreaseCounterByAmount(deletedItem.quantity));
       }
+      dispatch(
+        setItemsid(
+          items.filter((item) => item.id !== itemId).map((item) => item.item)
+        )
+      );
     } catch (error) {
       console.error("Error:", error.response.data);
     }

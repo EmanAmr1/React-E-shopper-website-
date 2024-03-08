@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import welc from "../../imags/register/welc.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,44 +11,47 @@ import axios from "axios";
 import "./reg.css";
 
 function Register() {
-  const [userForm, setUserForm] = useState({
-    first_name: "",
-    last_name: "",
-    password: "",
-    confirmPassword: "",
-    username: "",
-    email: "",
-    birthdate: "",
-    phone: "",
-    usertype: "",
-    address: "",
-    shopname: "",
-  });
-
-  const navigate = useNavigate();
-
-  const handleFieldChange = (event) => {
-    const field_name = event.target.name;
-    const field_value = event.target.value;
-
-    setUserForm({
-      ...userForm,
-      [field_name]: field_value,
+    const [userForm, setUserForm] = useState({
+        first_name: "",
+        last_name: "",
+        password: "",
+        confirmPassword: "",
+        username: "",
+        email: "",
+        birthdate: "",
+        phone: "",
+        usertype: "",
+        address: "",
+        shopname: "",
     });
-  };
+    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(userForm);
-    axios
-      .post("http://localhost:8000/api/register/", userForm)
-      .then((res) => {
-        console.log(res);
-        navigate("/login");
-        // navigate("/verify-email");
-      })
-      .catch((err) => console.log(err));
-  };
+    const handleFieldChange = (event) => {
+        const field_name = event.target.name;
+        const field_value = event.target.value;
+
+        setUserForm({
+            ...userForm,
+            [field_name]: field_value,
+        });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        axios
+            .post("http://localhost:8000/api/register/", userForm)
+            .then((res) => {
+                console.log(res);
+                navigate("/login");
+            })
+            .catch((err) => {
+                if (err.response && err.response.status === 400) {
+                    setErrorMessage(err.response.data.message);
+                }
+                console.log(err);
+            });
+    };
 
   return (
     <div className="container">
@@ -167,6 +171,7 @@ function Register() {
                 required
               />
             </div>
+            {errorMessage && <span className="text-danger">{errorMessage}</span>}
           </div>
         </div>
         <div className="row mb-3">

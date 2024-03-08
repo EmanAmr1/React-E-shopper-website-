@@ -8,9 +8,26 @@
 }
 
 
-h4 {
+h4 ,h5{
   margin: 20px;
+  padding-left: 0;
 
+}
+.btns{
+  display: flex;
+ justify-content: space-between;
+  flex-direction: row;
+}
+.btns .btn1{
+  cursor: pointer;
+  margin: 20px;
+  color: #007bff;
+ text-decoration: underline;
+}
+.btns .btn2{
+  cursor: pointer;
+  color: red;
+ text-decoration: underline;
 }
   
   

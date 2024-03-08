@@ -91,11 +91,30 @@ function CustomerProfile() {
   };
 
   return (
-    <>
-      <h4>Welcome {user ? user.first_name : ''},</h4>
+    < div>
+    
+      <div className='row mt-3 ' style={{width:'100%'}}>
+        <div className="col-md-4 col-sm-12">
+          <ul>
+            <li>
+              <h4>Welcome {user ? user.first_name : ''}</h4>
+            </li>
+            <li><h5>{user ? user.email : ''}</h5></li>
+            <li className='mt-5'>
+              <div className='btns'>
+                <div>
+               <a className='btn1' onClick={handleLogout} sstyle={{ textDecoration: 'none' }}>Logout</a>
+               </div>
+               <div>
+               <a className='btn2'  onClick={handleDelete}>Delete Account</a>
+               </div>
+               </div>
+               </li>
+          </ul>
+        </div>
       {user && (
-        <div>
-          <form onSubmit={handleUpdate}>
+        <div className='col-md-8 mt-3 '>
+          <form onSubmit={handleUpdate} className='ml-2'>
             <div className="row">
               <div className="col-md-6">
                 <div className="form-group">
@@ -139,12 +158,13 @@ function CustomerProfile() {
               </div> */}
             </div>
             <button type="submit" className="btn btn-primary" disabled={!isModified} onChange={handleUpdate}>Update</button>
-            <button type="button" className="btn btn-danger" onClick={handleDelete}>Delete Account</button>
+        
           </form>
-          <button onClick={handleLogout} >Logout</button>
+         
         </div>
       )}
-    </>
+      </div>
+    </div>
   );
 }
 

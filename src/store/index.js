@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import totalSlice from "./slices/total";
+import wishlistSlice from "./slices/wishlist";
 
 export default configureStore({
   reducer: {
     total: totalSlice,
+    wishlist: wishlistSlice,
   },
 });
 

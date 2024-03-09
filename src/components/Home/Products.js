@@ -7,6 +7,7 @@ import { axiosInstance } from "../../apis/config";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, setItemsid } from "../../store/slices/total";
+import { addItem, removeItem, setItems } from "../../store/slices/wishlist";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const Products = () => {
   const userCookie = Cookies.get("user");
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [product, setProduct] = useState([]);
+  const [wishlistid, setWishlistid] = useState([]);
   //   const [checkCart, setCheckCart] = useState(false);
 
   useEffect(() => {
@@ -22,21 +24,58 @@ const Products = () => {
       .then((res) => setProduct(res.data.results.products))
       .catch((err) => console.log(err));
   }, []);
+  useEffect(() => {
+    axiosInstance
+      .get(`/api/wishlist/list/${userID}`)
+      .then((res) => {
+        console.log(res.data);
+        // console.log(userID);
+        setWishlistid(res.data.wishlist_items.map((item) => item.item));
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleAddWish = async (itemId) => {
+    // e.preventDefault();
+    // console.log(39);
+    // console.log(itemId);
+    // console.log(wishlistid);
+    try {
+      const response = await axiosInstance.post(`/api/wishlist/add/`, {
+        item: itemId,
+        user: userID,
+      });
+
+      if (response.data.msg === "Item removed from wishlist") {
+        dispatch(removeItem());
+        console.log(wishlistid);
+        setWishlistid(wishlistid.filter((itemid) => itemid !== itemId));
+      } else if (response.data.msg === "Item added to wishlist") {
+        dispatch(addItem());
+        console.log(wishlistid);
+        setWishlistid(wishlistid.concat(itemId));
+      }
+    } catch (error) {
+      console.error("Error:", error.response.data);
+    }
+  };
 
   const handleAdd = async (itemId) => {
     // e.preventDefault();
-    try {
-      const response = await axiosInstance.post(`/api/cart/add/`, {
-        item: itemId,
-        user: userID,
-        quantity: 1,
-      });
-      console.log(response.data);
-      dispatch(increaseCounter());
-      const updatedItemsId = itemsid.concat(itemId);
-      dispatch(setItemsid(updatedItemsId));
-    } catch (error) {
-      console.error("Error:", error.response.data);
+    if (!itemsid.includes(itemId)) {
+      try {
+        const response = await axiosInstance.post(`/api/cart/add/`, {
+          item: itemId,
+          user: userID,
+          quantity: 1,
+        });
+        console.log(response.data);
+        dispatch(increaseCounter());
+        const updatedItemsId = itemsid.concat(itemId);
+        dispatch(setItemsid(updatedItemsId));
+      } catch (error) {
+        console.error("Error:", error.response.data);
+      }
     }
   };
 
@@ -89,19 +128,27 @@ const Products = () => {
                           </a>
                         </li>
                         <li>
-                          <a href="h">
+                          <a
+                            href=" "
+                            style={{
+                              backgroundColor:
+                                wishlistid.includes(prod.id) && "#ca1515",
+                            }}
+                            onClick={() => handleAddWish(prod.id)}
+                          >
                             <span className="icon_heart_alt"></span>
                           </a>
                         </li>
                         <li>
-                          <a href=" " onClick={() => handleAdd(prod.id)}>
-                            <span
-                              className={`${
-                                itemsid.includes(prod.id)
-                                  ? "icon_bag_alt text-warning"
-                                  : "icon_bag_alt"
-                              } `}
-                            ></span>
+                          <a
+                            href=" "
+                            style={{
+                              backgroundColor:
+                                itemsid.includes(prod.id) && "#ca1515",
+                            }}
+                            onClick={() => handleAdd(prod.id)}
+                          >
+                            <span className="icon_bag_alt"></span>
                           </a>
                         </li>
                       </ul>

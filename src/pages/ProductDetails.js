@@ -4,14 +4,16 @@ import thumb2 from "../imags/product/details/thumb-1.jpg";
 import thumb3 from "../imags/product/details/thumb-3.jpg";
 import thumb4 from "../imags/product/details/thumb-4.jpg";
 import rev from "../imags/rev.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { increaseCounterByAmount } from "../store/slices/total";
+import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
+import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([]);
   const [userId, setUserId] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [wishlistid, setWishlistid] = useState([]);
 
   const increase = () => {
     setQuantity((count) => count + 1);
@@ -52,6 +55,16 @@ const ProductDetails = () => {
 
   useEffect(() => {
     axiosInstance
+      .get(`/api/wishlist/list/${userID}`)
+      .then((res) => {
+        console.log(res.data);
+        setWishlistid(res.data.wishlist_items.map((item) => item.item));
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    axiosInstance
       .get(`/API/Review/listReviwes/`)
       .then((res) => {
         const productReviewss = res.data.data.filter(
@@ -72,12 +85,26 @@ const ProductDetails = () => {
         quantity: quantity,
       });
       dispatch(increaseCounterByAmount(response.data.quantity));
-      //   setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-      //   const deletedItem = items.find((item) => item.id === itemId);
-      //   if (deletedItem) {
-      //     const deletedItemSubtotal = deletedItem.subtotal_price;
-      //     setTotal((prevTotal) => prevTotal - deletedItemSubtotal);
-      //   }
+    } catch (error) {
+      console.error("Error:", error.response.data);
+    }
+  };
+
+  const handleAddWish = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post(`/api/wishlist/add/`, {
+        item: productId,
+        user: userID,
+      });
+
+      if (response.data.msg === "Item removed from wishlist") {
+        dispatch(removeItem());
+        setWishlistid(wishlistid.filter((itemid) => itemid !== productId));
+      } else if (response.data.msg === "Item added to wishlist") {
+        dispatch(addItem());
+        setWishlistid(wishlistid.concat(productId));
+      }
     } catch (error) {
       console.error("Error:", error.response.data);
     }
@@ -215,7 +242,15 @@ const ProductDetails = () => {
                   </a>
                   <ul>
                     <li>
-                      <a href=" ">
+                      <a
+                        href=" "
+                        style={{
+                          backgroundColor:
+                            wishlistid.includes(productId) && "#ca1515",
+                          // color: wishlistid.includes(productId) && "#ffffff",
+                        }}
+                        onClick={handleAddWish}
+                      >
                         <span className="icon_heart_alt"></span>
                       </a>
                     </li>

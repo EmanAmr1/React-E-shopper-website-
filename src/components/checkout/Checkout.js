@@ -3,21 +3,26 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import Cookies from "js-cookie";
 import swal from 'sweetalert';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate,useParams } from 'react-router-dom';
 import { axiosInstance } from "../../apis/config";
-import { event } from 'jquery';
+//import { event } from 'jquery';
+import { API_URL } from '../../apis/configpaln';
+
 const Checkout = () => {
     const clearCart = () => {
         setItems([]);
         setTotal(0);
         // Any other necessary updates to the cart state
       };
+      //let { order_id } = useParams();
+    
     const userCookie = Cookies.get("user");
   
     const userID = userCookie ? JSON.parse(userCookie).id : null;
     const [items, setItems] = useState([]);
-    const baseImageUrl = "http://127.0.0.1:8000";
+    //const baseImageUrl = "http://127.0.0.1:8000";
     const [total, setTotal] = useState();
+
     useEffect(() => {
         axiosInstance
           .get(`/api/cart/list/${userID}`)
@@ -28,15 +33,15 @@ const Checkout = () => {
             console.log(userID);
           })
           .catch((err) => console.log(err));
-      }, []);
+      }, [userID]);
 
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     /*if(!localStorage.getItem('auth_token')){
         navigate('/');
         swal("Warning","Login to goto Cart Page","error");
     }*/
     
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
     const [error, setError] = useState([]);
     const [checoutInput,setCheckoutInput]=useState({
         first_name:'',
@@ -67,10 +72,11 @@ const Checkout = () => {
             return;
         }
         const orderItems = items.map((product) => ({
-            product: product.id, // Replace 'id' with the actual property representing the product ID
-            quantity: 1,  // You may adjust the quantity as needed
+            product: product.item, 
+            quantity: 1,  
             price: product.item_price,
         }));
+        console.log(orderItems)
     
           
         const data = {
@@ -146,7 +152,8 @@ const Checkout = () => {
                     here to enter your code.</h6>
                 </div>
             </div>
-            <form onSubmit={handleSubmit}  className="checkout__form">
+            console.log({`${API_URL}/API/create-checkout-session/${checoutInput.order_Items.id}/`})
+            <form onSubmit={handleSubmit}  action={`${API_URL}/API/create-checkout-session/${checoutInput.order_Items.id}/`} className="checkout__form">
                 <div className="row">
                     <div className="col-lg-8">
                         <h5>Billing detail</h5>

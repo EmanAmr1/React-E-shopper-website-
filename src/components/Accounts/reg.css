@@ -1,27 +1,4 @@
-@media (max-width: 550px) {
-    .welc-img {
-      display: none;
-    }
-  }
-  
-  @media (min-width: 551px) and (max-width: 768px) {
-    .welc-img {
-      display: none;
-    }
-  }
-  
-  @media (min-width: 769px) and (max-width: 1024px) {
-    .welc-img {
-      display: none;
-    }
-  }
-  
-  .welc-img {
-    width: 100%; 
-    max-width: 550px; 
-    margin: 0 auto;
-  }
-  
+
   
 
   .containerr {
@@ -46,7 +23,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+ 
   }
 
   .submitbtn{

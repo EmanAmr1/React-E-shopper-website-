@@ -64,8 +64,9 @@ function Register() {
     <div className="containerr">
     <div className='row  ' style={{width:'100%'}}>
         
-      <img src={welc} alt="Welcome" className='col-md-5 d-none d-sm-block ' />
-      <div className="form col-md-7 w-100">
+      <img src={welc} alt="Welcome" className='col-md-5 ' />
+      
+      <div className="col-md-7">
       <form onSubmit={handleSubmit} className="pl-2">
         <div className="row mb-3">
           <div className="col-md-6 ">

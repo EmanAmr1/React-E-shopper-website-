@@ -36,10 +36,6 @@ const Products = () => {
   }, []);
 
   const handleAddWish = async (itemId) => {
-    // e.preventDefault();
-    // console.log(39);
-    // console.log(itemId);
-    // console.log(wishlistid);
     try {
       const response = await axiosInstance.post(`/api/wishlist/add/`, {
         item: itemId,

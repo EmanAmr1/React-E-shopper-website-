@@ -49,22 +49,27 @@ function CustomerProfile() {
 
   const handleUpdate = (event) => {
     event.preventDefault(); // Prevent default form submission
-
+  
     const token = Cookies.get('token');
     const headers = {
       Authorization: `Token ${token}`
     };
-
+  
     axios.put('http://localhost:8000/api/profile/', updatedUser, { headers })
       .then((res) => {
         console.log("Update successful");
         setDefaultUser(updatedUser); 
         setLoading(false);
+        // Display confirmation message and navigate to login page after OK
+        if (window.confirm("Your profile has been updated. Please log in again.")) {
+          navigate("/login");
+        }
       })
       .catch((error) => {
         console.error("Update error:", error);
       });
   };
+  
   
   console.log("User after update:", user);
   

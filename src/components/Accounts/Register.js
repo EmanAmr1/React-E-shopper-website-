@@ -60,11 +60,15 @@ function Register() {
 
   return (
     <>
-    <div className="container">
-      <img src={welc} alt="Welcome" className="welc-img" />
-      <form onSubmit={handleSubmit}>
+    <div className="all-register">
+    <div className="containerr">
+    <div className='row  ' style={{width:'100%'}}>
+        
+      <img src={welc} alt="Welcome" className='col-md-5 d-none d-sm-block ' />
+      <div className="form col-md-7 w-100">
+      <form onSubmit={handleSubmit} className="pl-2">
         <div className="row mb-3">
-          <div className="col-md-6">
+          <div className="col-md-6 ">
             <label htmlFor="firstname" className="form-label">
               First name
             </label>
@@ -269,7 +273,7 @@ function Register() {
             </div>
           </div>
         </div>
-        <div className="row mb-3">
+        <div className="row mb-1">
           <div className="col-md-6">
             <label htmlFor="shopname" className="form-label">
               Shop Name
@@ -297,22 +301,28 @@ function Register() {
             </div>
           </div>
         </div>
+        <div className="submitbtn">
         <button
           className="btn btn-dark"
           type="submit"
-          style={{ padding: "10px", width: "150px", marginLeft: "150px" }}
+          style={{ padding: "10px", width: "150px", marginBottom:"10px" }}
         >
           Submit
         </button>
+        </div>
       </form>
+      </div>
      
      
     </div>
+    </div>
     <div className='login_btn' >
+      <div>
         <p className='paragraph'>Already Have An Account? </p>
+        </div>
         <Link to="/login" className="link">Login</Link>
       </div>
-    
+    </div>
       </>
 
   );

@@ -26,7 +26,27 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedImage, setSelectedImage] = useState('');
-  const [userReviews, setUserReviews] = useState([]);
+
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+
+  useEffect(() => {
+    // Fetch related products based on the current product's category
+    axiosInstance
+      .get(`/API/allproducts/?category=${proDetails.category}`)
+      .then((res) => {
+        setRelatedProducts(res.data.results.products);
+      })
+      .catch((err) => console.log(err));
+  }, [proDetails.category]);
+
+
+
+
+
+
+
+
 
   const increase = () => {
     setQuantity((count) => count + 1);
@@ -227,7 +247,7 @@ const ProductDetails = () => {
                   )}
                 </div>
 
-<hr></hr>
+                <hr></hr>
                 <span className="product__details__price">
                   $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
                 </span>
@@ -236,9 +256,9 @@ const ProductDetails = () => {
 
                 <p>
 
-                   <StarRating rating={proDetails.ratings} /><span>( {reviews.length} Reviews)</span>
+                  <StarRating rating={proDetails.ratings} /><span>( {reviews.length} Reviews)</span>
                 </p>
-<hr></hr>
+                <hr></hr>
                 <p>
                   <div className="basic">{proDetails.description}</div>
 
@@ -401,33 +421,60 @@ const ProductDetails = () => {
 
 
 
+
           <div className="container">
             <div className="row">
               <div className="col-lg-9">
-                <div className="add-review-form">
-                  <h3>Add your Review on this Product</h3>
-
+                <div className="add-review-form p-4 border rounded">
+                  <h3 className="mb-3">Add your Review</h3>
                   <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                      <label htmlFor="comment">Comment:</label>
                       <textarea
                         id="comment"
+                        className="form-control"
+                        rows="3"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                       />
                     </div>
-                    <button type="submit">Add Review</button>
+                    <button type="submit" >Add Review</button>
                   </form>
                 </div>
               </div>
             </div>
           </div>
 
+
+
+
+
           <div className="row">
             <div className="col-lg-12 text-center">
-              <div className="related__title"></div>
+              <div className="related__title mt-5" style={{ fontSize: "24px", fontWeight: "bold", color: "#dc3545" }}>RELATED PRODUCTS</div>
+              <div className="row justify-content-center align-items-stretch mt-5">
+                {relatedProducts.map((product) => (
+                  <div className="col-lg-3" key={product.id}>
+                    <div className="product__item d-flex flex-column h-100">
+                      <div className="product__item__pic" style={{ height: "200px" }}>
+                        <img src={`${baseImageUrl}${product.image}`} alt={product.name} style={{ height: "100%", width: "auto" }} />
+                      </div>
+                      <div className="product__item__text flex-grow-1 d-flex flex-column justify-content-between">
+                        <h6>{product.name}</h6>
+                        <p>
+
+                          <StarRating rating={product.ratings} /><span></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+
+
+
         </div>
       </section>
     </>

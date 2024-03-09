@@ -32,8 +32,13 @@
     border: 1px solid #ced4da;
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 10px;
     /* margin-top: 2px; */
   }
-  
+  .login_btn{
+
+    display: flex;
+    
+    justify-content: center;
+  }
   

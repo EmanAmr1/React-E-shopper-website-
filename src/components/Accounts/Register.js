@@ -9,6 +9,7 @@ import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./reg.css";
+import { Link } from 'react-router-dom';
 
 function Register() {
     const [userForm, setUserForm] = useState({
@@ -58,6 +59,7 @@ function Register() {
     };
 
   return (
+    <>
     <div className="container">
       <img src={welc} alt="Welcome" className="welc-img" />
       <form onSubmit={handleSubmit}>
@@ -303,7 +305,16 @@ function Register() {
           Submit
         </button>
       </form>
+     
+     
     </div>
+    <div className='login_btn' >
+        <p className='paragraph'>Already Have An Account? </p>
+        <Link to="/login" className="link">Login</Link>
+      </div>
+    
+      </>
+
   );
 }
 

@@ -27,6 +27,7 @@ const ProductDetails = () => {
   const [userId, setUserId] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [wishlistid, setWishlistid] = useState([]);
+  const [selectedImage, setSelectedImage] = useState('');
 
   const increase = () => {
     setQuantity((count) => count + 1);
@@ -43,15 +44,25 @@ const ProductDetails = () => {
 
   const baseImageUrl = "http://127.0.0.1:8000";
 
+
   useEffect(() => {
     axiosInstance
       .get(`/API/getProduct/${params.id}/`)
       .then((res) => {
         setProDetails(res.data.product);
         setProductId(res.data.product.id);
+
+
       })
       .catch((err) => console.log(err));
   }, [params.id]);
+
+
+  useEffect(() => {
+    // Set the selected image to the main image URL when component mounts
+    setSelectedImage(proDetails.image);
+  }, [proDetails]);
+
 
   useEffect(() => {
     axiosInstance
@@ -75,6 +86,9 @@ const ProductDetails = () => {
       })
       .catch((err) => console.log(err));
   }, [proDetails.id]);
+
+
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -158,24 +172,40 @@ const ProductDetails = () => {
               <div className="product__big__img__container myimg">
                 <img
                   className="mypic"
-                  src={`${baseImageUrl}${proDetails.image}`}
+                  src={`${baseImageUrl}${selectedImage}`}
                   alt="Product Image"
                 />
               </div>
 
               <div class="product__details__pic">
                 <div class="thumbnail-container">
-                  <a class="pt active" href="#product-1">
-                    <img src={thumb1} alt="Thumbnail 1" />
+                  <a
+                    className={`pt ${selectedImage === proDetails.subImageOne ? 'active' : ''}`}
+                    href="#product-1"
+                    onClick={() => setSelectedImage(proDetails.subImageOne)}
+                  >
+                    <img src={`${baseImageUrl}${proDetails.subImageOne}`} alt="Thumbnail 1" />
                   </a>
-                  <a class="pt" href="#product-2">
-                    <img src={thumb2} alt="Thumbnail 2" />
+                  <a
+                    className={`pt ${selectedImage === proDetails.subImageTwo ? 'active' : ''}`}
+                    href="#product-2"
+                    onClick={() => setSelectedImage(proDetails.subImageTwo)}
+                  >
+                    <img src={`${baseImageUrl}${proDetails.subImageTwo}`} alt="Thumbnail 2" />
                   </a>
-                  <a class="pt" href="#product-3">
-                    <img src={thumb3} alt="Thumbnail 3" />
+                  <a
+                    className={`pt ${selectedImage === proDetails.subImageThree ? 'active' : ''}`}
+                    href="#product-3"
+                    onClick={() => setSelectedImage(proDetails.subImageThree)}
+                  >
+                    <img src={`${baseImageUrl}${proDetails.subImageThree}`} alt="Thumbnail 3" />
                   </a>
-                  <a class="pt" href="#product-4">
-                    <img src={thumb4} alt="Thumbnail 4" />
+                  <a
+                    className={`pt ${selectedImage === proDetails.subImageFour ? 'active' : ''}`}
+                    href="#product-4"
+                    onClick={() => setSelectedImage(proDetails.subImageFour)}
+                  >
+                    <img src={`${baseImageUrl}${proDetails.subImageFour}`} alt="Thumbnail 4" />
                   </a>
                 </div>
               </div>

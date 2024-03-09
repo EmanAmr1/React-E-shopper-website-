@@ -6,13 +6,10 @@ import './CustomerProfile.css'
 
 function CustomerProfile() {
   const location = useLocation();
-  const { user, token } = location.state || {};
+  const { user } = location.state || {};
   console.log("User:", user);
   const navigate = useNavigate();
-  const oneHourFromNow = new Date();
-  oneHourFromNow.setTime(oneHourFromNow.getTime() + 60 * 60 * 1000);
-
-  Cookies.set('token', token, { expires: oneHourFromNow, secure: true });
+ 
 
   const [updatedUser, setUpdatedUser] = useState({
     first_name: user.first_name,
@@ -31,15 +28,6 @@ function CustomerProfile() {
     setIsModified((user, updatedUser));
   }, [user, updatedUser]);
 
-  // const compareUsers = (user, UpdatedUser) => {
-  //   return (
-  //     user.first_name === UpdatedUser.first_name &&
-  //     user.last_name === UpdatedUser.last_name &&
-  //     user.address === UpdatedUser.address &&
-  //     user.phone === UpdatedUser.phone &&
-  //     user.birthdate === UpdatedUser.birthdate 
-  //   );
-  // };
   console.log("UpdatedUser:", updatedUser);
   const handleFieldChange = (event) => {
     const field_name = event.target.name;
@@ -52,7 +40,12 @@ function CustomerProfile() {
   };
   
   const handleUpdate = (event) => {
-    axios.put(`http://localhost:8000/api/update/${user.id}/`, updatedUser)
+    const token = Cookies.get('token');
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+  
+    axios.put(`http://localhost:8000/api/profile/`, updatedUser,null, { headers })
       .then((res) => {
         console.log("Update successful");
       })
@@ -62,11 +55,19 @@ function CustomerProfile() {
   };
 
   const handleLogout = () => {
-    Cookies.remove('jwt');
-    Cookies.remove('user');
+    const token = Cookies.get('token'); // Retrieve the token from cookies
+  
+    // Remove the token from cookies
     Cookies.remove('token');
-    axios.post('http://localhost:8000/api/logout/')
-      .then((res) => {
+  
+    // Set up headers with the token
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+  
+    // Send the logout request with the token in headers
+    axios.post('http://localhost:8000/api/logout/', null, { headers })
+      .then(() => {
         console.log("Logout successful");
         navigate("/login");
       })
@@ -74,12 +75,21 @@ function CustomerProfile() {
         console.error("Logout error:", error);
       });
   };
+  
+  
+  
+  
   const handleDelete = () => {
-    const password = prompt("Please enter your password to confirm deletion:");
-    if (password) {
-      axios.delete(`http://localhost:8000/api/delete/${user.id}/`, {
-        data: { password: user.password }
-      })
+    const token = Cookies.get('token'); // Retrieve the token from cookies
+  
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+  
+    // Remove the token from cookies after setting headers
+    Cookies.remove('token');
+  
+    axios.delete('http://localhost:8000/api/profile/', { headers })
       .then((res) => {
         console.log("Delete successful");
         navigate("/login");
@@ -87,8 +97,8 @@ function CustomerProfile() {
       .catch((error) => {
         console.error("Delete error:", error);
       });
-    }
   };
+  
 
   return (
     < div>

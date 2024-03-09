@@ -30,8 +30,8 @@ function Login() {
       .then((res) => {
         console.log(res);
         const { token, user } = res.data;
-        Cookies.set('jwt', token, { expires: 1 / 24, path: '/' }); // Store token at root path
-        Cookies.set('user', JSON.stringify(user)); // Storing user data in a cookie
+        console.log("token",token)
+        Cookies.set('token',token); // Store user data in a cookie
 
         // Redirect based on the user type
         if (user.usertype === 'customer') {

@@ -51,10 +51,13 @@ function Login() {
   };
 
   return (
-    <>
-      <div className="container">
-        <img src={hello} alt="Welcome" className="back" />
-        <form onSubmit={handleSubmit} className="form">
+    <div className='all-login'>
+      <div className="containerr">
+      <div className='row mt-3 ' style={{width:'100%'}}>
+        
+        <img src={hello} alt="Welcome" className='col-md-5 mt-3 imgss ' />
+        <div className="form col-md-7 mt-3 d-flex align-items-center w-100">
+        <form onSubmit={handleSubmit} style={{width:'100%'}} >
           <div className="form-group">
             <label htmlFor="exampleInputEmail1" className="form-label"><b>Email address</b></label>
             <input type="email" className="form-control" id="exampleInputEmail1" onChange={handleFieldChange} name="email"/>
@@ -67,12 +70,17 @@ function Login() {
           <br />
           {errorMessage && <span className="text-danger">{errorMessage}</span>} {/* Display error message */}
         </form>
+      
+     
       </div>
-      <div>
+      </div>
+
+      </div>
+      <div className='register_btn' >
         <p className='paragraph'>Don't Have an Account? </p>
         <Link to="/register" className="link">Register</Link>
       </div>
-    </>
+    </div>
   );
 }
 

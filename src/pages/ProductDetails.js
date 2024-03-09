@@ -1,8 +1,4 @@
 import React from "react";
-import thumb1 from "../imags/product/details/thumb-1.jpg";
-import thumb2 from "../imags/product/details/thumb-1.jpg";
-import thumb3 from "../imags/product/details/thumb-3.jpg";
-import thumb4 from "../imags/product/details/thumb-4.jpg";
 import rev from "../imags/rev.png";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounterByAmount } from "../store/slices/total";
@@ -28,6 +24,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedImage, setSelectedImage] = useState('');
+  const [userReviews, setUserReviews] = useState([]);
 
   const increase = () => {
     setQuantity((count) => count + 1);
@@ -146,6 +143,11 @@ const ProductDetails = () => {
       console.error("Error:", error.response.data);
     }
   };
+
+  
+
+
+
 
   return (
     <>
@@ -395,6 +397,8 @@ const ProductDetails = () => {
               )}
             </div>
           </div>
+
+
 
           <div className="container">
             <div className="row">

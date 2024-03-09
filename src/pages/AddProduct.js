@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
+import { faImage, faMoneyBillAlt, faTag, faBoxOpen, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
 import { axiosInstance } from "../apis/config";
 
 const AddProduct = () => {
@@ -126,7 +127,7 @@ const AddProduct = () => {
                     stock_M: '',
                     stock_L: '',
                     stock_XL: '',
-                    images: [],
+                    images: '',
                 });
 
 
@@ -154,69 +155,74 @@ const AddProduct = () => {
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
-                        <div className="card">
-
+                        <div className="card h-100 shadow-lg">
                             <div className="card-body">
-
-                                <form onSubmit={handleSubmit} encType="multipart/form-data" >
+                                <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <div className="mb-3">
-                                        <label htmlFor="name" className="form-label">Product Name:</label>
+                                        <label htmlFor="name" className="form-label">
+                                            <FontAwesomeIcon icon={faTag} /> Product Name:
+                                        </label>
                                         <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" />
-
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="description" className="form-label">Product Description:</label>
+                                        <label htmlFor="description" className="form-label">
+                                            <FontAwesomeIcon icon={faWarehouse} /> Product Description:
+                                        </label>
                                         <textarea id="description" name="description" value={addPro.description} onChange={handleChange} className="form-control"></textarea>
-
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="price" className="form-label">Price:</label>
+                                        <label htmlFor="price" className="form-label">
+                                            <FontAwesomeIcon icon={faDollarSign} /> Price:
+                                        </label>
                                         <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" />
-
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="brand" className="form-label">Brand:</label>
+                                        <label htmlFor="brand" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Brand:
+                                        </label>
                                         <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" />
-
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="stock" className="form-label">Stock:</label>
+                                        <label htmlFor="stock" className="form-label">
+                                            <FontAwesomeIcon icon={faBalanceScale} /> Stock:
+                                        </label>
                                         <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" />
-
                                     </div>
-
-                                    <div className="mb-3">
-                                        <label htmlFor="ratings" className="form-label">Ratings:</label>
-                                        <input type="text" id="ratings" name="ratings" value={addPro.ratings} onChange={handleChange} className="form-control" />
-                                    </div>
-
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="new" className="form-check-label">New</label>
                                     </div>
-
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sale" className="form-check-label">Sale</label>
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="newprice" className="form-label">New Price:</label>
+                                        <label htmlFor="ratings" className="form-label">
+                                            <FontAwesomeIcon icon={faStar} className="me-2" />
+                                            Ratings:
+                                        </label>
+                                        <input type="number" id="ratings" name="ratings" value={addPro.ratings} onChange={handleChange} className="form-control" />
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="card h-100 shadow-lg">
+                            <div className="card-body">
+                                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                                    <div className="mb-3">
+                                        <label htmlFor="newprice" className="form-label">
+                                            <FontAwesomeIcon icon={faDollarSign} /> New Price:
+                                        </label>
                                         <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="images" className="form-label">Product Images:</label>
-                                        <input type="file" id="images" name="images" onChange={handleChange} className="form-control" multiple />
-                                    </div>
-
-
-                                    <div className="mb-3">
-                                        <label htmlFor="category" className="form-label">Category:</label>
+                                        <label htmlFor="category" className="form-label">
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
+                                        </label>
                                         <select id="category" name="category" value={addPro.category} onChange={handleChange} className="form-control">
                                             <option value="">Select Category</option>
                                             {categories.map(category => (
@@ -224,30 +230,37 @@ const AddProduct = () => {
                                             ))}
                                         </select>
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="stock_S" className="form-label">Stock (S):</label>
+                                        <label htmlFor="stock_S" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (S):
+                                        </label>
                                         <input type="number" id="stock_S" name="stock_S" value={addPro.stock_S} onChange={handleChange} className="form-control" />
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="stock_M" className="form-label">Stock (M):</label>
+                                        <label htmlFor="stock_M" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (M):
+                                        </label>
                                         <input type="number" id="stock_M" name="stock_M" value={addPro.stock_M} onChange={handleChange} className="form-control" />
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="stock_L" className="form-label">Stock (L):</label>
+                                        <label htmlFor="stock_L" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (L):
+                                        </label>
                                         <input type="number" id="stock_L" name="stock_L" value={addPro.stock_L} onChange={handleChange} className="form-control" />
                                     </div>
-
                                     <div className="mb-3">
-                                        <label htmlFor="stock_XL" className="form-label">Stock (XL):</label>
+                                        <label htmlFor="stock_XL" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL):
+                                        </label>
                                         <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" />
                                     </div>
-
-
+                                    <div className="mb-3">
+                                        <label htmlFor="images" className="form-label">
+                                            <FontAwesomeIcon icon={faImage} /> Product Image:
+                                        </label>
+                                        <input type="file" id="images" name="images" onChange={handleChange} className="form-control" multiple />
+                                    </div>
                                     <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#ca1515', borderColor: '#ca1515' }} >Submit</button>
-
                                     {errors.length > 0 && (
                                         <div className="alert alert-danger" role="alert">
                                             {errors.map((error, index) => (
@@ -261,7 +274,6 @@ const AddProduct = () => {
                                         </div>
                                     )}
                                 </form>
-
                             </div>
                         </div>
                     </div>

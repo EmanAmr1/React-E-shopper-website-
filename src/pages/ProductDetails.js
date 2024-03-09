@@ -10,6 +10,8 @@ import { useParams } from "react-router-dom";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
+import StarRating from "./StarRating";
+
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -144,7 +146,7 @@ const ProductDetails = () => {
     }
   };
 
-  
+
 
 
 
@@ -225,19 +227,18 @@ const ProductDetails = () => {
                   )}
                 </div>
 
+<hr></hr>
                 <span className="product__details__price">
                   $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
                 </span>
 
-                <div className="rating">
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <i className="fa fa-star"></i>
-                  <span>( 138 reviews )</span>
-                </div>
 
+
+                <p>
+
+                   <StarRating rating={proDetails.ratings} /><span>( {reviews.length} Reviews)</span>
+                </p>
+<hr></hr>
                 <p>
                   <div className="basic">{proDetails.description}</div>
 

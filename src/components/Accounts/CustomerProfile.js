@@ -10,50 +10,64 @@ function CustomerProfile() {
   console.log("User:", user);
   const navigate = useNavigate();
  
-
+  const [loading, setLoading] = useState(true);
+  const [defaultUser, setDefaultUser] = useState(user);
   const [updatedUser, setUpdatedUser] = useState({
-    first_name: user.first_name,
-    last_name: user.last_name,
-    address: user.address,
-    phone: user.phone,
-    birthdate: user.birthdate,
-    
+    first_name: '',
+    last_name: '',
+    address: '',
+    phone: '',
+    birthdate: ''
   });
-  console.log("UpdatedUser:", updatedUser);
-
 
   const [isModified, setIsModified] = useState(false);
 
   useEffect(() => {
-    setIsModified((user, updatedUser));
-  }, [user, updatedUser]);
+    if (user) {
+      setDefaultUser(user);
+      setUpdatedUser({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        address: user.address,
+        phone: user.phone,
+        birthdate: user.birthdate
+      });
+    }
+  }, [user]);
 
-  console.log("UpdatedUser:", updatedUser);
   const handleFieldChange = (event) => {
-    const field_name = event.target.name;
-    const field_value = event.target.value;
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
 
     setUpdatedUser({
       ...updatedUser,
-      [field_name]: field_value,
+      [fieldName]: fieldValue,
     });
+
+    setIsModified(true);
   };
-  
+
   const handleUpdate = (event) => {
+    event.preventDefault(); // Prevent default form submission
+
     const token = Cookies.get('token');
     const headers = {
       Authorization: `Token ${token}`
     };
-  
-    axios.put(`http://localhost:8000/api/profile/`, updatedUser,null, { headers })
+
+    axios.put('http://localhost:8000/api/profile/', updatedUser, { headers })
       .then((res) => {
         console.log("Update successful");
+        setDefaultUser(updatedUser); 
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Update error:", error);
       });
   };
-
+  
+  console.log("User after update:", user);
+  
   const handleLogout = () => {
     const token = Cookies.get('token'); // Retrieve the token from cookies
   
@@ -107,7 +121,7 @@ function CustomerProfile() {
         <div className="col-md-4 col-sm-12">
           <ul>
             <li>
-              <h4>Welcome {user ? user.first_name : ''}</h4>
+              <h4>Welcome { defaultUser ? defaultUser.first_name : ''}</h4>
             </li>
             <li><h5>{user ? user.email : ''}</h5></li>
             <li className='mt-5'>

@@ -7,16 +7,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishList } from "../../store/slices/wishlist";
 const Header = () => {
-  const userCookie = Cookies.get("user");
-  const userID = userCookie ? JSON.parse(userCookie).id : null;
   const total = useSelector((state) => state.total.count);
   const count = useSelector((state) => state.wishlist.count);
   // const [total, setTotal] = useState();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTotalCount(userID));
-    dispatch(fetchWishList(userID));
+    dispatch(fetchTotalCount());
+    dispatch(fetchWishList());
   }, []);
 
   return (

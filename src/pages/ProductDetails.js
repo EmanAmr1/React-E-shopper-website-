@@ -12,11 +12,12 @@ import Cookies from "js-cookie";
 import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
 import StarRating from "./StarRating";
 
-
 const ProductDetails = () => {
   const dispatch = useDispatch();
-  const userCookie = Cookies.get("user");
-  const userID = userCookie ? JSON.parse(userCookie).id : null;
+  const userCookie = Cookies.get("token");
+  console.log(userCookie);
+  // const userID = userCookie ? JSON.parse(userCookie).id : null;
+  const userID = 2;
   const [loading, setLoading] = useState(true);
   const [proDetails, setProDetails] = useState({});
   const [comment, setComment] = useState("");
@@ -25,10 +26,20 @@ const ProductDetails = () => {
   const [userId, setUserId] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [wishlistid, setWishlistid] = useState([]);
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedImage, setSelectedImage] = useState("");
 
   const [relatedProducts, setRelatedProducts] = useState([]);
 
+  const token = Cookies.get("token");
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
+
+  // axios.put('http://localhost:8000/api/profile/', updatedUser, { headers })
+  //   .then((res) => {
+  //     console.log("Update successful");
+  //     setDefaultUser(updatedUser);
+  //     setLoading(false);
 
   useEffect(() => {
     // Fetch related products based on the current product's category
@@ -39,14 +50,6 @@ const ProductDetails = () => {
       })
       .catch((err) => console.log(err));
   }, [proDetails.category]);
-
-
-
-
-
-
-
-
 
   const increase = () => {
     setQuantity((count) => count + 1);
@@ -63,29 +66,24 @@ const ProductDetails = () => {
 
   const baseImageUrl = "http://127.0.0.1:8000";
 
-
   useEffect(() => {
     axiosInstance
       .get(`/API/getProduct/${params.id}/`)
       .then((res) => {
         setProDetails(res.data.product);
         setProductId(res.data.product.id);
-
-
       })
       .catch((err) => console.log(err));
   }, [params.id]);
-
 
   useEffect(() => {
     // Set the selected image to the main image URL when component mounts
     setSelectedImage(proDetails.image);
   }, [proDetails]);
 
-
   useEffect(() => {
     axiosInstance
-      .get(`/api/wishlist/list/${userID}`)
+      .get(`/api/wishlist/list/`, { headers })
       .then((res) => {
         console.log(res.data);
         setWishlistid(res.data.wishlist_items.map((item) => item.item));
@@ -106,17 +104,17 @@ const ProductDetails = () => {
       .catch((err) => console.log(err));
   }, [proDetails.id]);
 
-
-
-
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(`/api/cart/add/`, {
-        item: productId,
-        user: userID,
-        quantity: quantity,
-      });
+      const response = await axiosInstance.post(
+        `/api/cart/add/`,
+        {
+          item: productId,
+          quantity: quantity,
+        },
+        { headers }
+      );
       dispatch(increaseCounterByAmount(response.data.quantity));
     } catch (error) {
       console.error("Error:", error.response.data);
@@ -126,10 +124,13 @@ const ProductDetails = () => {
   const handleAddWish = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(`/api/wishlist/add/`, {
-        item: productId,
-        user: userID,
-      });
+      const response = await axiosInstance.post(
+        `/api/wishlist/add/`,
+        {
+          item: productId,
+        },
+        { headers }
+      );
 
       if (response.data.msg === "Item removed from wishlist") {
         dispatch(removeItem());
@@ -166,11 +167,6 @@ const ProductDetails = () => {
     }
   };
 
-
-
-
-
-
   return (
     <>
       <div class="breadcrumb-option ">
@@ -204,32 +200,52 @@ const ProductDetails = () => {
               <div class="product__details__pic">
                 <div class="thumbnail-container">
                   <a
-                    className={`pt ${selectedImage === proDetails.subImageOne ? 'active' : ''}`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageOne ? "active" : ""
+                    }`}
                     href="#product-1"
                     onClick={() => setSelectedImage(proDetails.subImageOne)}
                   >
-                    <img src={`${baseImageUrl}${proDetails.subImageOne}`} alt="Thumbnail 1" />
+                    <img
+                      src={`${baseImageUrl}${proDetails.subImageOne}`}
+                      alt="Thumbnail 1"
+                    />
                   </a>
                   <a
-                    className={`pt ${selectedImage === proDetails.subImageTwo ? 'active' : ''}`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageTwo ? "active" : ""
+                    }`}
                     href="#product-2"
                     onClick={() => setSelectedImage(proDetails.subImageTwo)}
                   >
-                    <img src={`${baseImageUrl}${proDetails.subImageTwo}`} alt="Thumbnail 2" />
+                    <img
+                      src={`${baseImageUrl}${proDetails.subImageTwo}`}
+                      alt="Thumbnail 2"
+                    />
                   </a>
                   <a
-                    className={`pt ${selectedImage === proDetails.subImageThree ? 'active' : ''}`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageThree ? "active" : ""
+                    }`}
                     href="#product-3"
                     onClick={() => setSelectedImage(proDetails.subImageThree)}
                   >
-                    <img src={`${baseImageUrl}${proDetails.subImageThree}`} alt="Thumbnail 3" />
+                    <img
+                      src={`${baseImageUrl}${proDetails.subImageThree}`}
+                      alt="Thumbnail 3"
+                    />
                   </a>
                   <a
-                    className={`pt ${selectedImage === proDetails.subImageFour ? 'active' : ''}`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageFour ? "active" : ""
+                    }`}
                     href="#product-4"
                     onClick={() => setSelectedImage(proDetails.subImageFour)}
                   >
-                    <img src={`${baseImageUrl}${proDetails.subImageFour}`} alt="Thumbnail 4" />
+                    <img
+                      src={`${baseImageUrl}${proDetails.subImageFour}`}
+                      alt="Thumbnail 4"
+                    />
                   </a>
                 </div>
               </div>
@@ -252,11 +268,9 @@ const ProductDetails = () => {
                   $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
                 </span>
 
-
-
                 <p>
-
-                  <StarRating rating={proDetails.ratings} /><span>( {reviews.length} Reviews)</span>
+                  <StarRating rating={proDetails.ratings} />
+                  <span>( {reviews.length} Reviews)</span>
                 </p>
                 <hr></hr>
                 <p>
@@ -419,9 +433,6 @@ const ProductDetails = () => {
             </div>
           </div>
 
-
-
-
           <div className="container">
             <div className="row">
               <div className="col-lg-9">
@@ -437,32 +448,44 @@ const ProductDetails = () => {
                         onChange={(e) => setComment(e.target.value)}
                       />
                     </div>
-                    <button type="submit" >Add Review</button>
+                    <button type="submit">Add Review</button>
                   </form>
                 </div>
               </div>
             </div>
           </div>
 
-
-
-
-
           <div className="row">
             <div className="col-lg-12 text-center">
-              <div className="related__title mt-5" style={{ fontSize: "24px", fontWeight: "bold", color: "#dc3545" }}>RELATED PRODUCTS</div>
+              <div
+                className="related__title mt-5"
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  color: "#dc3545",
+                }}
+              >
+                RELATED PRODUCTS
+              </div>
               <div className="row justify-content-center align-items-stretch mt-5">
                 {relatedProducts.map((product) => (
                   <div className="col-lg-3" key={product.id}>
                     <div className="product__item d-flex flex-column h-100">
-                      <div className="product__item__pic" style={{ height: "200px" }}>
-                        <img src={`${baseImageUrl}${product.image}`} alt={product.name} style={{ height: "100%", width: "auto" }} />
+                      <div
+                        className="product__item__pic"
+                        style={{ height: "200px" }}
+                      >
+                        <img
+                          src={`${baseImageUrl}${product.image}`}
+                          alt={product.name}
+                          style={{ height: "100%", width: "auto" }}
+                        />
                       </div>
                       <div className="product__item__text flex-grow-1 d-flex flex-column justify-content-between">
                         <h6>{product.name}</h6>
                         <p>
-
-                          <StarRating rating={product.ratings} /><span></span>
+                          <StarRating rating={product.ratings} />
+                          <span></span>
                         </p>
                       </div>
                     </div>
@@ -471,10 +494,6 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
-
-
-
-
         </div>
       </section>
     </>

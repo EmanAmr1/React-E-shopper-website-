@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../apis/config";
 import { Link } from "react-router-dom";
-import ShopCategory from '../components/Shop/ShopCategory';
+import ShopCategory from "../components/Shop/ShopCategory";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, setItemsid } from "../store/slices/total";
@@ -15,6 +15,10 @@ const ProductList = () => {
   const userCookie = Cookies.get("user");
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [wishlistid, setWishlistid] = useState([]);
+  const token = Cookies.get("token");
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
 
   useEffect(() => {
     axiosInstance
@@ -24,7 +28,7 @@ const ProductList = () => {
   }, []);
   useEffect(() => {
     axiosInstance
-      .get(`/api/wishlist/list/${userID}`)
+      .get(`/api/wishlist/list/`, { headers })
       .then((res) => {
         console.log(res.data);
         // console.log(userID);
@@ -35,10 +39,13 @@ const ProductList = () => {
 
   const handleAddWish = async (itemId) => {
     try {
-      const response = await axiosInstance.post(`/api/wishlist/add/`, {
-        item: itemId,
-        user: userID,
-      });
+      const response = await axiosInstance.post(
+        `/api/wishlist/add/`,
+        {
+          item: itemId,
+        },
+        { headers }
+      );
 
       if (response.data.msg === "Item removed from wishlist") {
         dispatch(removeItem());
@@ -58,11 +65,14 @@ const ProductList = () => {
     // e.preventDefault();
     if (!itemsid.includes(itemId)) {
       try {
-        const response = await axiosInstance.post(`/api/cart/add/`, {
-          item: itemId,
-          user: userID,
-          quantity: 1,
-        });
+        const response = await axiosInstance.post(
+          `/api/cart/add/`,
+          {
+            item: itemId,
+            quantity: 1,
+          },
+          { headers }
+        );
         console.log(response.data);
         dispatch(increaseCounter());
         const updatedItemsId = itemsid.concat(itemId);
@@ -131,8 +141,9 @@ const ProductList = () => {
                         <>
                           <div className="card" key={cat.id}>
                             <div
-                              className={`card-heading ${activeAccordion === cat.id ? "active" : ""
-                                }`}
+                              className={`card-heading ${
+                                activeAccordion === cat.id ? "active" : ""
+                              }`}
                               onClick={() => toggleAccordion(cat.id)}
                             >
                               <Link
@@ -144,8 +155,9 @@ const ProductList = () => {
                             </div>
                             <div
                               id={`collapse${cat.id}`}
-                              className={`collapse ${activeAccordion === cat.id ? "show" : ""
-                                }`}
+                              className={`collapse ${
+                                activeAccordion === cat.id ? "show" : ""
+                              }`}
                               data-parent="#accordionExample"
                             >
                               <div className="card-body">
@@ -182,7 +194,7 @@ const ProductList = () => {
           </div>
 
           <div className="col-lg-9 col-md-9">
-          <ListOfProduct
+            <ListOfProduct
               products={products}
               wishlistid={wishlistid}
               itemsid={itemsid}

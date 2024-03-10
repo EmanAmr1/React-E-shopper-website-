@@ -1,13 +1,19 @@
 import React from "react";
 
-const ListOfProduct = ({ products, wishlistid, itemsid, handleAddWish, handleAdd, handlePageChange, currentPage, totalPages }) => {
+const ListOfProduct = ({
+  products,
+  wishlistid,
+  itemsid,
+  handleAddWish,
+  handleAdd,
+  handlePageChange,
+  currentPage,
+  totalPages,
+}) => {
   return (
     <div className="row">
       {products.map((prod) => (
-        <div
-          className="col-lg-3 col-md-4 col-sm-6 mix women"
-          key={prod.id}
-        >
+        <div className="col-lg-3 col-md-4 col-sm-6 mix women" key={prod.id}>
           <div className="product__item">
             <div
               className="product__item__pic set-bg"
@@ -30,7 +36,7 @@ const ListOfProduct = ({ products, wishlistid, itemsid, handleAddWish, handleAdd
                 </li>
                 <li>
                   <a
-                    href=" "
+                    href={() => false}
                     style={{
                       backgroundColor:
                         wishlistid.includes(prod.id) && "#ca1515",
@@ -42,10 +48,9 @@ const ListOfProduct = ({ products, wishlistid, itemsid, handleAddWish, handleAdd
                 </li>
                 <li>
                   <a
-                    href=" "
+                    href={() => false}
                     style={{
-                      backgroundColor:
-                        itemsid.includes(prod.id) && "#ca1515",
+                      backgroundColor: itemsid.includes(prod.id) && "#ca1515",
                     }}
                     onClick={() => handleAdd(prod.id)}
                   >
@@ -66,10 +71,7 @@ const ListOfProduct = ({ products, wishlistid, itemsid, handleAddWish, handleAdd
                 <i className="fa fa-star"></i>
               </div>
               {prod.sale ? (
-                <div
-                  className="product__price  "
-                  style={{ color: "#ca1515" }}
-                >
+                <div className="product__price  " style={{ color: "#ca1515" }}>
                   {prod.newprice} <span>{prod.price}</span>
                 </div>
               ) : (
@@ -81,18 +83,18 @@ const ListOfProduct = ({ products, wishlistid, itemsid, handleAddWish, handleAdd
       ))}
       <div class="col-lg-12 text-center mt-3">
         <div class="pagination__option">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (page) => (
-              <a
-                href="#"
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`pagination-link ${currentPage === page ? "activee" : ""}`}
-              >
-                {page}
-              </a>
-            )
-          )}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <a
+              href="#"
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-link ${
+                currentPage === page ? "activee" : ""
+              }`}
+            >
+              {page}
+            </a>
+          ))}
         </div>
       </div>
     </div>

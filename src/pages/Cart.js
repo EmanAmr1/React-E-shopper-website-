@@ -18,10 +18,14 @@ const Cart = () => {
   const [items, setItems] = useState([]);
   const baseImageUrl = "http://127.0.0.1:8000";
   const [total, setTotal] = useState();
+  const token = Cookies.get("token");
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
 
   useEffect(() => {
     axiosInstance
-      .get(`/api/cart/list/${userID}`)
+      .get(`/api/cart/list/`, { headers })
       .then((res) => {
         console.log(res.data);
         setItems(res.data.cart_items);
@@ -33,7 +37,13 @@ const Cart = () => {
 
   const handleAddMore = async (itemId) => {
     try {
-      const response = await axiosInstance.put(`/api/cart/addmore/${itemId}`);
+      const response = await axiosInstance.put(
+        `/api/cart/addmore/${itemId}`,
+        null,
+        {
+          headers,
+        }
+      );
       console.log(response.data);
       const updatedItemIndex = items.findIndex((item) => item.id === itemId);
       const updatedItem = { ...items[updatedItemIndex] };
@@ -56,7 +66,13 @@ const Cart = () => {
 
   const handleRemove = async (itemId) => {
     try {
-      const response = await axiosInstance.put(`/api/cart/remove/${itemId}`);
+      const response = await axiosInstance.put(
+        `/api/cart/remove/${itemId}`,
+        null,
+        {
+          headers,
+        }
+      );
       console.log(response.data);
       const updatedItemIndex = items.findIndex((item) => item.id === itemId);
       const updatedItem = { ...items[updatedItemIndex] };
@@ -79,7 +95,10 @@ const Cart = () => {
 
   const handleDelete = async (itemId) => {
     try {
-      const response = await axiosInstance.delete(`/api/cart/delete/${itemId}`);
+      const response = await axiosInstance.delete(
+        `/api/cart/delete/${itemId}`,
+        { headers }
+      );
       console.log(response.data);
       setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
       const deletedItem = items.find((item) => item.id === itemId);
@@ -161,41 +180,50 @@ const Cart = () => {
           </div>
           <div className="mb-3" style={{ fontSize: "2rem", display: "hidden" }}>
             Total: ${total}
-            </div>
-          <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="cart__btn">
-                        <a href="#">Continue Shopping</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="cart__btn update__btn">
-                        <a href="#"><span class="icon_loading"></span> Update cart</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="discount__content">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your coupon code"/>
-                            <button type="submit" class="site-btn">Apply</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-2">
-                    <div class="cart__total__procced">
-                        <h6>Cart total</h6>
-                        <ul>
-                            <li>Subtotal <span>$49.00</span></li>
-                            <li>Total <span>${total}</span></li>
-                        </ul>
-                        <Link to="/checkoutPage" class="primary-btn">Proceed to checkout</Link>
-                    </div>
-                </div>
           </div>
-          
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="cart__btn">
+                <a href="#">Continue Shopping</a>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="cart__btn update__btn">
+                <a href="#">
+                  <span class="icon_loading"></span> Update cart
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="discount__content">
+                <h6>Discount codes</h6>
+                <form action="#">
+                  <input type="text" placeholder="Enter your coupon code" />
+                  <button type="submit" class="site-btn">
+                    Apply
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-4 offset-lg-2">
+              <div class="cart__total__procced">
+                <h6>Cart total</h6>
+                <ul>
+                  <li>
+                    Subtotal <span>$49.00</span>
+                  </li>
+                  <li>
+                    Total <span>${total}</span>
+                  </li>
+                </ul>
+                <Link to="/checkoutPage" class="primary-btn">
+                  Proceed to checkout
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>

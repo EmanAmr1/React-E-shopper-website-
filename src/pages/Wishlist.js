@@ -18,12 +18,16 @@ const Wishlist = () => {
   const itemsid = useSelector((state) => state.total.itemsid);
   const [wishlistid, setWishlistid] = useState([]);
   const [wishlistitems, setWishlistitems] = useState([]);
+  const token = Cookies.get("token");
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     axiosInstance
-      .get(`/api/wishlist/list/${userID}`)
+      .get(`/api/wishlist/list/`, { headers })
       .then((res) => {
         console.log(res.data.wishlist_items);
         setWishlistitems(res.data.wishlist_items);
@@ -38,11 +42,14 @@ const Wishlist = () => {
     // e.preventDefault();
     if (!itemsid.includes(itemId)) {
       try {
-        const response = await axiosInstance.post(`/api/cart/add/`, {
-          item: itemId,
-          user: userID,
-          quantity: 1,
-        });
+        const response = await axiosInstance.post(
+          `/api/cart/add/`,
+          {
+            item: itemId,
+            quantity: 1,
+          },
+          { headers }
+        );
         console.log(response.data);
         dispatch(increaseCounter());
         const updatedItemsId = itemsid.concat(itemId);
@@ -56,7 +63,8 @@ const Wishlist = () => {
     // e.preventDefault();
     try {
       const response = await axiosInstance.delete(
-        `/api/wishlist/delete/${itemId}`
+        `/api/wishlist/delete/${itemId}`,
+        { headers }
       );
       setWishlistitems(wishlistitems.filter((item) => item.id !== itemId));
       dispatch(removeItem());

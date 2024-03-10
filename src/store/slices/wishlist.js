@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../apis/config";
+import Cookies from "js-cookie";
+
+const token = Cookies.get("token");
+const headers = {
+  Authorization: `Token ${token}`,
+};
 
 const wishlistSlice = createSlice({
   name: "wishlist",
@@ -28,7 +34,9 @@ export const { setTotalCount, setItems, addItem, removeItem } =
 
 export const fetchWishList = (userID) => async (dispatch) => {
   try {
-    const response = await axiosInstance.get(`/api/wishlist/list/${userID}`);
+    const response = await axiosInstance.get(`/api/wishlist/list/`, {
+      headers,
+    });
     dispatch(setItems(response.data.wishlist_items));
     dispatch(setTotalCount());
   } catch (error) {

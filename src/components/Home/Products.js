@@ -12,11 +12,12 @@ import { addItem, removeItem, setItems } from "../../store/slices/wishlist";
 const Products = () => {
   const dispatch = useDispatch();
   const itemsid = useSelector((state) => state.total.itemsid);
-  const userCookie = Cookies.get("user");
-  const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [product, setProduct] = useState([]);
   const [wishlistid, setWishlistid] = useState([]);
-  //   const [checkCart, setCheckCart] = useState(false);
+  const token = Cookies.get("token");
+  const headers = {
+    Authorization: `Token ${token}`,
+  };
 
   useEffect(() => {
     axiosInstance
@@ -26,10 +27,9 @@ const Products = () => {
   }, []);
   useEffect(() => {
     axiosInstance
-      .get(`/api/wishlist/list/${userID}`)
+      .get(`/api/wishlist/list/`, { headers })
       .then((res) => {
         console.log(res.data);
-        // console.log(userID);
         setWishlistid(res.data.wishlist_items.map((item) => item.item));
       })
       .catch((err) => console.log(err));
@@ -37,10 +37,13 @@ const Products = () => {
 
   const handleAddWish = async (itemId) => {
     try {
-      const response = await axiosInstance.post(`/api/wishlist/add/`, {
-        item: itemId,
-        user: userID,
-      });
+      const response = await axiosInstance.post(
+        `/api/wishlist/add/`,
+        {
+          item: itemId,
+        },
+        { headers }
+      );
 
       if (response.data.msg === "Item removed from wishlist") {
         dispatch(removeItem());
@@ -60,11 +63,14 @@ const Products = () => {
     // e.preventDefault();
     if (!itemsid.includes(itemId)) {
       try {
-        const response = await axiosInstance.post(`/api/cart/add/`, {
-          item: itemId,
-          user: userID,
-          quantity: 1,
-        });
+        const response = await axiosInstance.post(
+          `/api/cart/add/`,
+          {
+            item: itemId,
+            quantity: 1,
+          },
+          { headers }
+        );
         console.log(response.data);
         dispatch(increaseCounter());
         const updatedItemsId = itemsid.concat(itemId);
@@ -125,7 +131,7 @@ const Products = () => {
                         </li>
                         <li>
                           <a
-                            href=" "
+                            href={() => false}
                             style={{
                               backgroundColor:
                                 wishlistid.includes(prod.id) && "#ca1515",
@@ -137,7 +143,7 @@ const Products = () => {
                         </li>
                         <li>
                           <a
-                            href=" "
+                            href={() => false}
                             style={{
                               backgroundColor:
                                 itemsid.includes(prod.id) && "#ca1515",

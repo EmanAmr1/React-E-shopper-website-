@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../apis/config";
+import Cookies from "js-cookie";
+
+const token = Cookies.get("token");
+const headers = {
+  Authorization: `Token ${token}`,
+};
 
 const totalSlice = createSlice({
   name: "total",
@@ -38,9 +44,9 @@ export const {
   increaseCounterByAmount,
 } = totalSlice.actions;
 
-export const fetchTotalCount = (userID) => async (dispatch) => {
+export const fetchTotalCount = () => async (dispatch) => {
   try {
-    const response = await axiosInstance.get(`/api/cart/list/${userID}`);
+    const response = await axiosInstance.get(`/api/cart/list/`, { headers });
     dispatch(setTotalCount(response.data.total_items_count));
     dispatch(setItemsid(response.data.cart_items.map((item) => item.item)));
     // dispatch(setItems(response.data.cart_items));

@@ -3,7 +3,7 @@ import rev from "../imags/rev.png";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounterByAmount } from "../store/slices/total";
 import { addItem, removeItem, setItems } from "../store/slices/wishlist";
-
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -173,8 +173,10 @@ const ProductDetails = () => {
     setSelectedSize(e.target.value);
   };
 
-
-
+  const navigate = useNavigate();
+  const navigateToHome = () => {
+    navigate('/'); // Navigate to the home page
+  };
 
   return (
     <>
@@ -184,10 +186,10 @@ const ProductDetails = () => {
             <div class="col-lg-12">
               <div class="breadcrumb__links">
                 <a href="./index.html">
-                  <i class="fa fa-home"></i> Home
+                  <i class="fa fa-home">   </i>  Home
                 </a>
-                <a href=" ">Women’s </a>
-                <span>Essential structured blazer </span>
+                <a href=" " onClick={() => navigate(`/ProductList/`)}>Continue Shoping </a>
+
               </div>
             </div>
           </div>
@@ -467,10 +469,10 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row mt-5">
             <div className="col-lg-12 text-center">
               <div
-                className="related__title mt-5"
+                className="related__title mt-6"
                 style={{
                   fontSize: "24px",
                   fontWeight: "bold",
@@ -479,31 +481,77 @@ const ProductDetails = () => {
               >
                 RELATED PRODUCTS
               </div>
-              <div className="row justify-content-center align-items-stretch mt-5">
-                {relatedProducts.map((product) => (
-                  <div className="col-lg-3" key={product.id}>
-                    <div className="product__item d-flex flex-column h-100">
-                      <div
-                        className="product__item__pic"
-                        style={{ height: "200px" }}
-                      >
-                        <img
-                          src={`${baseImageUrl}${product.image}`}
-                          alt={product.name}
-                          style={{ height: "100%", width: "auto" }}
-                        />
-                      </div>
-                      <div className="product__item__text flex-grow-1 d-flex flex-column justify-content-between">
-                        <h6>{product.name}</h6>
-                        <p>
-                          <StarRating rating={product.ratings} />
-                          <span></span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              
+
+
+
+              <div className="row mt-5">
+      {relatedProducts.map((prod) => (
+        <div className="col-lg-3 col-md-4 col-sm-6 mix women" key={prod.id}>
+          <div className="product__item">
+            <div
+              className="product__item__pic set-bg"
+              style={{
+                backgroundImage: `url('${baseImageUrl}${prod.image}')`,
+              }}
+            >
+              {prod.new ? (
+                <div className="label new">New</div>
+              ) : prod.sale ? (
+                <div className="label sale">Sale</div>
+              ) : prod.stock === 0 ? (
+                <div className="label stockout">out of stock</div>
+              ) : null}
+              <ul className="product__hover">
+                <li>
+                  <a href={prod.image} className="image-popup">
+                  <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={() => false}
+                    style={{
+                      backgroundColor:
+                        wishlistid.includes(prod.id) && "#ca1515",
+                    }}
+                    onClick={() => handleAddWish(prod.id)}
+                  >
+                    <span className="icon_heart_alt"></span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={() => false}
+                    
+                    onClick={() => handleAdd(prod.id)}
+                  >
+                    <span className="icon_bag_alt"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="product__item__text">
+              <h6>
+                <a href="h">{prod.name}</a>
+              </h6>
+              <div className="rating">
+              <StarRating rating={prod.ratings} />
               </div>
+              {prod.sale ? (
+                <div className="product__price  " style={{ color: "#ca1515" }}>
+                  {prod.newprice} <span>{prod.price}</span>
+                </div>
+              ) : (
+                <div className="product__price">{prod.price}</div>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+</div>
+
+
             </div>
           </div>
         </div>

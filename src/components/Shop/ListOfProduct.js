@@ -31,7 +31,7 @@ const ListOfProduct = ({
               <ul className="product__hover">
                 <li>
                   <a href={prod.image} className="image-popup">
-                    <span className="arrow_expand"></span>
+                  <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
                   </a>
                 </li>
                 <li>

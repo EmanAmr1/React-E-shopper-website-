@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../apis/config";
 
 import Cookies from "js-cookie";
@@ -80,7 +80,7 @@ const Products = () => {
       }
     }
   };
-
+  const navigate = useNavigate();
   return (
     <>
       <section className="product spad">
@@ -109,6 +109,7 @@ const Products = () => {
               return (
                 <div className="col-lg-3 col-md-4 col-sm-6 mix women">
                   <div className="product__item">
+
                     <div
                       className="product__item__pic set-bg"
                       style={{
@@ -125,8 +126,8 @@ const Products = () => {
 
                       <ul className="product__hover">
                         <li>
-                          <a href={prod.image} className="image-popup">
-                            <span className="arrow_expand"></span>
+                          <a href={prod.image} className="image-popup" >
+                            <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
                           </a>
                         </li>
                         <li>
@@ -150,7 +151,9 @@ const Products = () => {
                             }}
                             onClick={() => handleAdd(prod.id)}
                           >
+
                             <span className="icon_bag_alt"></span>
+
                           </a>
                         </li>
                       </ul>
@@ -158,6 +161,8 @@ const Products = () => {
                     <div className="product__item__text">
                       <h6>
                         <a href="h">{prod.name}</a>
+
+
                       </h6>
                       <div className="rating">
                         <i className="fa fa-star"></i>

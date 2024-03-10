@@ -41,7 +41,7 @@ const Checkout = () => {
           .catch((err) => console.log(err));
       }, []);
 
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     /*if(!localStorage.getItem('auth_token')){
         navigate('/');
         swal("Warning","Login to goto Cart Page","error");
@@ -74,6 +74,10 @@ const Checkout = () => {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (items.length === 0) {
+            swal("Warning", "Your cart is empty. Add items before placing an order.", "warning");
+            return;
+        }
         if (!validateForm()) {
             return;
         }
@@ -101,19 +105,20 @@ const Checkout = () => {
 
         }
         
-        axiosInstance.post('/API/orders/new/',data).then(res=>{
+        axiosInstance.post('/API/orders/new/',data,{ headers }).then(res=>{
             
             setOrder_id(res.data.id);
-            
+            console.log('Response Status:', res.status); 
             if(res.data.status===200)
             {   
                 swal("Order Placed Successfully",res.data.message,"success");
-                window.location.href = `${API_URL}/API/create-checkout-session/${res.data.id}/`;
+                //window.location.href = `${API_URL}/API/create-checkout-session/${res.data.id}/`;
+                navigate('/thannk-you');
+                console.log('Navigating to /thank-you');
                 setError([]);
                 clearCart(); 
                
                 
-                //navigate('/thannk-you');
             }
             else if(res.data.status===422)
             {
@@ -318,9 +323,9 @@ const Checkout = () => {
             </div>
             
         </section>
-        <form action={`${API_URL}/API/create-checkout-session/${order_id}/`} method='POST'>
+        {/* <form action={`${API_URL}/API/create-checkout-session/${order_id}/`} method='POST'>
         <button  type="submit" className="site-btn">Place oder</button>
-        </form>
+        </form> */}
         {/*Checkout Section End */}
     </>
   )

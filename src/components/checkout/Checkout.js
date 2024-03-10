@@ -9,6 +9,10 @@ import { axiosInstance } from "../../apis/config";
 import { API_URL } from '../../apis/configpaln';
 
 const Checkout = () => {
+    const token = Cookies.get("token");
+    const headers = {
+      Authorization: `Token ${token}`,
+    };
     const clearCart = () => {
         setItems([]);
         setTotal(0);
@@ -22,10 +26,12 @@ const Checkout = () => {
     const [items, setItems] = useState([]);
     //const baseImageUrl = "http://127.0.0.1:8000";
     const [total, setTotal] = useState();
+    const [order_id, setOrder_id] = useState([]);
+
 
     useEffect(() => {
         axiosInstance
-          .get(`/api/cart/list/${userID}`)
+          .get(`/api/cart/list/`, { headers })
           .then((res) => {
             console.log(res.data);
             setItems(res.data.cart_items);
@@ -33,7 +39,7 @@ const Checkout = () => {
             console.log(userID);
           })
           .catch((err) => console.log(err));
-      }, [userID]);
+      }, []);
 
     //const navigate = useNavigate();
     /*if(!localStorage.getItem('auth_token')){
@@ -76,7 +82,8 @@ const Checkout = () => {
             quantity: 1,  
             price: product.item_price,
         }));
-        console.log(orderItems)
+        
+        //console.log(orderItems.product.item)
     
           
         const data = {
@@ -90,15 +97,22 @@ const Checkout = () => {
             phone_number:checoutInput.phone_number,
             email:checoutInput.email,
             order_Items: orderItems,
+            
 
         }
+        
         axiosInstance.post('/API/orders/new/',data).then(res=>{
+            
+            setOrder_id(res.data.id);
+            
             if(res.data.status===200)
-            {
+            {   
                 swal("Order Placed Successfully",res.data.message,"success");
+                window.location.href = `${API_URL}/API/create-checkout-session/${res.data.id}/`;
                 setError([]);
                 clearCart(); 
-
+               
+                
                 //navigate('/thannk-you');
             }
             else if(res.data.status===422)
@@ -124,7 +138,8 @@ const Checkout = () => {
         setError(errors);
         return isValid;
       };
-
+      
+      console.log("Order ID:", order_id);
   return (
     <>
       
@@ -152,8 +167,9 @@ const Checkout = () => {
                     here to enter your code.</h6>
                 </div>
             </div>
-            console.log({`${API_URL}/API/create-checkout-session/${checoutInput.order_Items.id}/`})
-            <form onSubmit={handleSubmit}  action={`${API_URL}/API/create-checkout-session/${checoutInput.order_Items.id}/`} className="checkout__form">
+            console.log({`${API_URL}/API/create-checkout-session/${order_id}/`})
+            
+            <form onSubmit={handleSubmit}  className="checkout__form" method='POST'>
                 <div className="row">
                     <div className="col-lg-8">
                         <h5>Billing detail</h5>
@@ -294,13 +310,17 @@ const Checkout = () => {
                                         <span className="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" className="site-btn">Place oder</button>
+                                <button  type="submit" className="site-btn">Place oder</button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
+            
         </section>
+        <form action={`${API_URL}/API/create-checkout-session/${order_id}/`} method='POST'>
+        <button  type="submit" className="site-btn">Place oder</button>
+        </form>
         {/*Checkout Section End */}
     </>
   )

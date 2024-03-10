@@ -30,14 +30,16 @@ function Login() {
       .then((res) => {
         console.log(res);
         const { token, user } = res.data;
-        console.log("token",token)
+        console.log("token",token);
         Cookies.set('token',token); // Store user data in a cookie
-
+  
         // Redirect based on the user type
         if (user.usertype === 'customer') {
           navigate("/CustomerProfile", { state: { user, token } });
         } else if (user.usertype === 'vendor') {
           navigate("/VendorProfile", { state: { user, token } });
+        } else if (user.usertype === 'DeliveryMan') {
+          navigate("/DeliveryMan", { state: { user, token } });
         }
       })
       .catch((err) => {
@@ -49,6 +51,7 @@ function Login() {
         }
       });
   };
+  
 
   return (
     <div className='all-login'>

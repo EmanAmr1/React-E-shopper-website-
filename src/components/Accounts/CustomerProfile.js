@@ -101,6 +101,15 @@ function CustomerProfile() {
   const handleDelete = () => {
     const token = Cookies.get('token'); // Retrieve the token from cookies
   
+    // Prompt the user to confirm account deletion with their password
+    const confirmPassword = prompt("To delete your account, please confirm by entering your password:");
+    if (!confirmPassword) {
+      // User canceled the deletion
+      return;
+    }
+  
+    // You may want to validate the password here before proceeding further
+    
     const headers = {
       Authorization: `Token ${token}`
     };
@@ -108,7 +117,8 @@ function CustomerProfile() {
     // Remove the token from cookies after setting headers
     Cookies.remove('token');
   
-    axios.delete('http://localhost:8000/api/profile/', { headers })
+    // Send the delete request along with the password
+    axios.delete('http://localhost:8000/api/profile/', { headers, data: { password: confirmPassword } })
       .then((res) => {
         console.log("Delete successful");
         navigate("/login");
@@ -117,6 +127,7 @@ function CustomerProfile() {
         console.error("Delete error:", error);
       });
   };
+  
   
 
   return (

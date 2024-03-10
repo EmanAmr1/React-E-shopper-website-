@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layouts/Layout";
+import {Navigate} from "react-router-dom";
+import Cookies from 'js-cookie';
 
 import { Suspense } from "react";
 
@@ -27,6 +29,7 @@ const EmailVerification = React.lazy(() =>
 );
 const Message = React.lazy(() => import("../components/Accounts/Message"));
 const Thankyou = React.lazy(() => import("../components/checkout/Thankyou"));
+const DeliveryMan = React.lazy(() => import("../components/Accounts/DeliveryMan"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
@@ -41,8 +44,14 @@ const Router = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="checkoutPage" element={<CheckoutPage />} />
-          <Route path="/customerprofile" element={<CustomerProfile />} />
+          <Route
+            path="/customerprofile"
+            element={
+              <CustomerProfileProtectedRoute />
+            }
+          />
           <Route path="/thannk-you" element={<Thankyou />} />
+          <Route path="/DeliveryMan" element={<DeliveryMan />} />
 
           {/* <Route path='Register' element={<Register />} /> */}
         </Route>
@@ -57,6 +66,14 @@ const Router = () => {
       </Routes>
     </Suspense>
   );
+};
+
+const CustomerProfileProtectedRoute = () => {
+  const token = Cookies.get('token'); // Retrieve the token from cookies
+  const isAuthenticated = !!token; // Check if token exists
+
+  // If user is authenticated, render CustomerProfile, else redirect to login
+  return isAuthenticated ? <CustomerProfile /> : <Navigate to="/login" />;
 };
 
 export default Router;

@@ -1,29 +1,20 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { faImage, faMoneyBillAlt, faTag, faBoxOpen, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Cookies from "js-cookie";
 import { axiosInstance } from "../apis/config";
+import { faImage, faMoneyBillAlt, faTag, faBoxOpen, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
 
 const AddProduct = () => {
-
+    const token = Cookies.get("token");
+    const headers = {
+        Authorization: `Token ${token}`,
+        'Content-Type': 'multipart/form-data'
+    };
 
     const [errors, setErrors] = useState([]);
     const [categories, setCategories] = useState([]);
-
-
-    useEffect(() => {
-        axiosInstance.get('/API/categories/')
-            .then(res => {
-                setCategories(res.data);
-            })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-            });
-    }, []);
-
-
-    const [addPro, setAddPro] = useState([{
+    const [addPro, setAddPro] = useState({
         name: '',
         description: '',
         price: '',
@@ -38,31 +29,29 @@ const AddProduct = () => {
         stock_M: '',
         stock_L: '',
         stock_XL: '',
-        images: [],
-
-
-    }]);
-
+        image: null
+    });
     const [successMessage, setSuccessMessage] = useState('');
+
+    useEffect(() => {
+        axiosInstance.get('/API/categories/', { headers })
+            .then(res => {
+                setCategories(res.data);
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
 
-
-
-        // Handle checkboxes
         if (type === 'checkbox') {
             setAddPro({
                 ...addPro,
                 [name]: checked
             });
-        } else if (type === 'file') {
-            setAddPro({
-                ...addPro,
-                [name]: e.target.files[0],
-
-            });
-        } else { // Handle other inputs
+        } else {
             setAddPro({
                 ...addPro,
                 [name]: value
@@ -70,47 +59,25 @@ const AddProduct = () => {
         }
     };
 
-
-
+    const handleImageChange = (e) => {
+        setAddPro({
+            ...addPro,
+            image: e.target.files[0]
+        });
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        const formData = new FormData();
 
-        if (!addPro.name || !addPro.description || !addPro.price || !addPro.brand || !addPro.stock || !addPro.category) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill in all required fields.']);
-            return;
-        }
+        Object.keys(addPro).forEach(key => {
+            formData.append(key, addPro[key]);
+        });
 
-
-        if (addPro.newprice && addPro.price && parseFloat(addPro.newprice) >= parseFloat(addPro.price)) {
-            setErrors(prevErrors => [...prevErrors, 'New price should be less than the original price.']);
-            return;
-        }
-
-
-        const data = {
-            name: addPro.name,
-            description: addPro.description,
-            price: addPro.price,
-            brand: addPro.brand,
-            stock: addPro.stock,
-            ratings: addPro.ratings,
-            new: addPro.new,
-            sale: addPro.sale,
-            newprice: addPro.newprice,
-            category: addPro.category,
-            stock_S: addPro.stock_S,
-            stock_M: addPro.stock_M,
-            stock_L: addPro.stock_L,
-            stock_XL: addPro.stock_XL,
-            images: addPro.images,
-        }
-        axiosInstance.post('/API/addProduct/', data)
+        axiosInstance.post('/API/addProduct/', formData, { headers })
             .then(res => {
                 setSuccessMessage('Product successfully added');
-                // Clear form after successful submission
-
                 setAddPro({
                     name: '',
                     description: '',
@@ -121,33 +88,21 @@ const AddProduct = () => {
                     new: true,
                     sale: true,
                     newprice: '',
-                    thumbnail: '',
                     category: '',
                     stock_S: '',
                     stock_M: '',
                     stock_L: '',
                     stock_XL: '',
-                    images: '',
+                    image: null
                 });
-
-
                 setErrors([]);
-
-
             })
-
-
             .catch(error => {
                 console.error('Error adding product:', error);
             });
     };
 
-
-
-
     return (
-
-
         <>
             <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
                 <h3 className="mb-0 " style={{ color: '#FFFFFF' }}>Add New Product</h3>
@@ -159,50 +114,50 @@ const AddProduct = () => {
                             <div className="card-body">
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <div className="mb-3">
-                                        <label htmlFor="name" className="form-label">
-                                            <FontAwesomeIcon icon={faTag} /> Product Name:
-                                        </label>
-                                        <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="description" className="form-label">
-                                            <FontAwesomeIcon icon={faWarehouse} /> Product Description:
-                                        </label>
-                                        <textarea id="description" name="description" value={addPro.description} onChange={handleChange} className="form-control"></textarea>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="price" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> Price:
-                                        </label>
-                                        <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="brand" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Brand:
-                                        </label>
-                                        <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="stock" className="form-label">
-                                            <FontAwesomeIcon icon={faBalanceScale} /> Stock:
-                                        </label>
-                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" />
-                                    </div>
-                                    <div className="mb-3 form-check">
-                                        <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
-                                        <label htmlFor="new" className="form-check-label">New</label>
-                                    </div>
-                                    <div className="mb-3 form-check">
-                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input" />
-                                        <label htmlFor="sale" className="form-check-label">Sale</label>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="ratings" className="form-label">
-                                            <FontAwesomeIcon icon={faStar} className="me-2" />
-                                            Ratings:
-                                        </label>
-                                        <input type="number" id="ratings" name="ratings" value={addPro.ratings} onChange={handleChange} className="form-control" />
-                                    </div>
+                                         <label htmlFor="name" className="form-label">
+                                             <FontAwesomeIcon icon={faTag} /> Product Name:
+                                         </label>
+                                         <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" />
+                                     </div>
+                                     <div className="mb-3">
+                                         <label htmlFor="description" className="form-label">
+                                             <FontAwesomeIcon icon={faWarehouse} /> Product Description:
+                                         </label>
+                                         <textarea id="description" name="description" value={addPro.description} onChange={handleChange} className="form-control"></textarea>
+                                     </div>
+                                     <div className="mb-3">
+                                         <label htmlFor="price" className="form-label">
+                                             <FontAwesomeIcon icon={faDollarSign} /> Price:
+                                         </label>
+                                         <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" />
+                                     </div>
+                                     <div className="mb-3">
+                                         <label htmlFor="brand" className="form-label">
+                                             <FontAwesomeIcon icon={faPlus} /> Brand:
+                                         </label>
+                                         <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" />
+                                     </div>
+                                     <div className="mb-3">
+                                         <label htmlFor="stock" className="form-label">
+                                             <FontAwesomeIcon icon={faBalanceScale} /> Stock:
+                                         </label>
+                                         <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" />
+                                     </div>
+                                     <div className="mb-3 form-check">
+                                         <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
+                                         <label htmlFor="new" className="form-check-label">New</label>
+                                     </div>
+                                     <div className="mb-3 form-check">
+                                         <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input" />
+                                         <label htmlFor="sale" className="form-check-label">Sale</label>
+                                     </div>
+                                     <div className="mb-3">
+                                         <label htmlFor="ratings" className="form-label">
+                                             <FontAwesomeIcon icon={faStar} className="me-2" />
+                                             Ratings:
+                                         </label>
+                                         <input type="number" id="ratings" name="ratings" value={addPro.ratings} onChange={handleChange} className="form-control" />
+                                     </div>
 
 
                                 </form>
@@ -214,18 +169,18 @@ const AddProduct = () => {
                             <div className="card-body">
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <div className="mb-3">
-                                        <label htmlFor="newprice" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> New Price:
-                                        </label>
-                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="category" className="form-label">
-                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
-                                        </label>
-                                        <select id="category" name="category" value={addPro.category} onChange={handleChange} className="form-control">
-                                            <option value="">Select Category</option>
-                                            {categories.map(category => (
+                                    <label htmlFor="newprice" className="form-label">
+                                             <FontAwesomeIcon icon={faDollarSign} /> New Price:
+                                         </label>
+                                         <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
+                                     </div>
+                                     <div className="mb-3">
+                                         <label htmlFor="category" className="form-label">
+                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
+                                         </label>
+                                         <select id="category" name="category" value={addPro.category} onChange={handleChange} className="form-control">
+                                             <option value="">Select Category</option>
+                                             {categories.map(category => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
                                         </select>
@@ -258,8 +213,10 @@ const AddProduct = () => {
                                         <label htmlFor="images" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Image:
                                         </label>
-                                        <input type="file" id="images" name="images" onChange={handleChange} className="form-control" multiple />
+                                        <input type="file" id="image" name="image" onChange={handleImageChange} required className="form-control" multiple />
                                     </div>
+                            
+                                  
                                     <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#ca1515', borderColor: '#ca1515' }} >Submit</button>
                                     {errors.length > 0 && (
                                         <div className="alert alert-danger" role="alert">
@@ -278,12 +235,10 @@ const AddProduct = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+                </div>
+               
         </>
-
-    )
-
+    );
 }
-
 
 export default AddProduct;

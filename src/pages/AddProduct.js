@@ -34,6 +34,7 @@ const AddProduct = () => {
         stock_M: '',
         stock_L: '',
         stock_XL: '',
+        sizeable:'',
         image: null,
         subImageOne: null,
         subImageTwo: null,
@@ -156,6 +157,7 @@ const AddProduct = () => {
                     stock_M: '',
                     stock_L: '',
                     stock_XL: '',
+                    sizeable:'',
                     image: null,
                     subImageOne: null,
                     subImageTwo: null,
@@ -218,6 +220,10 @@ const AddProduct = () => {
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input"  />
                                         <label htmlFor="sale" className="form-check-label">Sale</label>
+                                    </div>
+                                    <div className="mb-3 form-check">
+                                        <input type="checkbox" id="sizeable" name="sizeable" checked={addPro.sizeable} onChange={handleChange} className="form-check-input"  />
+                                        <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="ratings" className="form-label">

@@ -167,6 +167,15 @@ const ProductDetails = () => {
     }
   };
 
+  const [selectedSize, setSelectedSize] = useState('');
+
+  const handleSizeChange = (e) => {
+    setSelectedSize(e.target.value);
+  };
+
+
+
+
   return (
     <>
       <div class="breadcrumb-option ">
@@ -200,9 +209,8 @@ const ProductDetails = () => {
               <div class="product__details__pic">
                 <div class="thumbnail-container">
                   <a
-                    className={`pt ${
-                      selectedImage === proDetails.subImageOne ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageOne ? "active" : ""
+                      }`}
                     href="#product-1"
                     onClick={() => setSelectedImage(proDetails.subImageOne)}
                   >
@@ -212,9 +220,8 @@ const ProductDetails = () => {
                     />
                   </a>
                   <a
-                    className={`pt ${
-                      selectedImage === proDetails.subImageTwo ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageTwo ? "active" : ""
+                      }`}
                     href="#product-2"
                     onClick={() => setSelectedImage(proDetails.subImageTwo)}
                   >
@@ -224,9 +231,8 @@ const ProductDetails = () => {
                     />
                   </a>
                   <a
-                    className={`pt ${
-                      selectedImage === proDetails.subImageThree ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageThree ? "active" : ""
+                      }`}
                     href="#product-3"
                     onClick={() => setSelectedImage(proDetails.subImageThree)}
                   >
@@ -236,9 +242,8 @@ const ProductDetails = () => {
                     />
                   </a>
                   <a
-                    className={`pt ${
-                      selectedImage === proDetails.subImageFour ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageFour ? "active" : ""
+                      }`}
                     href="#product-4"
                     onClick={() => setSelectedImage(proDetails.subImageFour)}
                   >
@@ -263,7 +268,7 @@ const ProductDetails = () => {
                   )}
                 </div>
 
-                <hr></hr>
+
                 <span className="product__details__price">
                   $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
                 </span>
@@ -272,62 +277,23 @@ const ProductDetails = () => {
                   <StarRating rating={proDetails.ratings} />
                   <span>( {reviews.length} Reviews)</span>
                 </p>
+
+
                 <hr></hr>
+
+                <div className="basic">{proDetails.description}</div>
+
+                <span>
+                  <span className="basic">Brand:</span> {proDetails.brand}
+                </span>
+
                 <p>
-                  <div className="basic">{proDetails.description}</div>
+                  <span className="basic">Category: </span>
+                  {proDetails.category}
 
-                  <span>
-                    {" "}
-                    <span className="basic">Brand:</span> {proDetails.brand}
-                  </span>
-
-                  <div>
-                    <span className="basic">Category: </span>{" "}
-                    {proDetails.category}
-                  </div>
                 </p>
 
-                <div className="product__details__button">
-                  <div className="quantity">
-                    <span>Quantity:</span>
-                    <div className="pro-qt">
-                      <div class="category ps-4">
-                        <span class="counter-btn minus" onClick={decrease}>
-                          -
-                        </span>
-                        <span id="counter" class="counter-value">
-                          {quantity}
-                        </span>
-                        <span class="counter-btn plus" onClick={increase}>
-                          +
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <a href=" " className="cart-btn" onClick={handleAdd}>
-                    <span className="icon_bag_alt"></span> Add to cart
-                  </a>
-                  <ul>
-                    <li>
-                      <a
-                        href=" "
-                        style={{
-                          backgroundColor:
-                            wishlistid.includes(productId) && "#ca1515",
-                          // color: wishlistid.includes(productId) && "#ffffff",
-                        }}
-                        onClick={handleAddWish}
-                      >
-                        <span className="icon_heart_alt"></span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href=" ">
-                        <span className="icon_adjust-horiz"></span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+
                 <div className="product__details__widget">
                   <ul>
                     <li>
@@ -345,63 +311,109 @@ const ProductDetails = () => {
                         </label>
                       </div>
                     </li>
+                    <p className="product__details__widget">
+                      <ul>
+                        <li>
+                          <span>Available size:</span>
+                          <div className="size__btn">
+                            {proDetails.stock_S > 0 && (
+                              <label htmlFor="xs-btn">
+                                <input type="radio" id="xs-btn" />S
+                              </label>
+                            )}
+                            {proDetails.stock_M > 0 && (
+                              <label htmlFor="s-btn">
+                                <input type="radio" id="s-btn" />M
+                              </label>
+                            )}
+                            {proDetails.stock_L > 0 && (
+                              <label htmlFor="m-btn">
+                                <input type="radio" id="m-btn" />L
+                              </label>
+                            )}
+                            {proDetails.stock_XL > 0 && (
+                              <label htmlFor="l-btn">
+                                <input type="radio" id="l-btn" />XL
+                              </label>
+                            )}
+                          </div>
+                        </li>
+                      </ul>
+                    </p>
+
                     <li>
-                      <span>Available color:</span>
-                      <div className="color__checkbox">
-                        <label htmlFor="red">
-                          <input
-                            type="radio"
-                            name="color__radio"
-                            id="red"
-                            checked
-                          />
-                          <span className="checkmark"></span>
-                        </label>
-                        <label htmlFor="black">
-                          <input type="radio" name="color__radio" id="black" />
-                          <span className="checkmark black-bg"></span>
-                        </label>
-                        <label htmlFor="grey">
-                          <input type="radio" name="color__radio" id="grey" />
-                          <span className="checkmark grey-bg"></span>
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <span>Available size:</span>
+                      <span>Select size:</span>
                       <div className="size__btn">
-                        {proDetails.stock_S > 0 && (
-                          <label htmlFor="xs-btn">
-                            <input type="radio" id="xs-btn" />S
-                          </label>
-                        )}
-                        {proDetails.stock_M > 0 && (
-                          <label htmlFor="s-btn">
-                            <input type="radio" id="s-btn" />M
-                          </label>
-                        )}
-                        {proDetails.stock_L > 0 && (
-                          <label htmlFor="m-btn">
-                            <input type="radio" id="m-btn" />L
-                          </label>
-                        )}
-                        {proDetails.stock_XL > 0 && (
-                          <label htmlFor="l-btn">
-                            <input type="radio" id="l-btn" />
-                            XL
-                          </label>
-                        )}
+                        <select onChange={handleSizeChange} value={selectedSize}>
+                          <option value="">Select Size</option>
+                          {proDetails.stock_S > 0 && (
+                            <option value="S">S</option>
+                          )}
+                          {proDetails.stock_M > 0 && (
+                            <option value="M">M</option>
+                          )}
+                          {proDetails.stock_L > 0 && (
+                            <option value="L">L</option>
+                          )}
+                          {proDetails.stock_XL > 0 && (
+                            <option value="XL">XL</option>
+                          )}
+                        </select>
                       </div>
                     </li>
-                    <li>
-                      <span>Promotions:</span>
-                      <p>Free shipping</p>
-                    </li>
+
                   </ul>
+
+
+                  <div className="product__details__button mt-4">
+                    <div className="quantity">
+                      <span>Quantity:</span>
+                      <div className="pro-qt">
+                        <div class="category ps-4">
+                          <span class="counter-btn minus" onClick={decrease}>
+                            -
+                          </span>
+                          <span id="counter" class="counter-value">
+                            {quantity}
+                          </span>
+                          <span class="counter-btn plus" onClick={increase}>
+                            +
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <a href=" " className="cart-btn" onClick={handleAdd}>
+                      <span className="icon_bag_alt"></span> Add to cart
+                    </a>
+                    <ul>
+                      <li>
+                        <a
+                          href=" "
+                          style={{
+                            backgroundColor:
+                              wishlistid.includes(productId) && "#ca1515",
+                            // color: wishlistid.includes(productId) && "#ffffff",
+                          }}
+                          onClick={handleAddWish}
+                        >
+                          <span className="icon_heart_alt"></span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href=" ">
+                          <span className="icon_adjust-horiz"></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+
                 </div>
               </div>
             </div>
           </div>
+
+
 
           <div className="row">
             <div className="col-lg-11 mx-auto">

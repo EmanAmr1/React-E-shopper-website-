@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 
 import { Suspense } from "react";
 
+
 const Home = React.lazy(() => import("../pages/Home"));
 const ProductDetails = React.lazy(() => import("../pages/ProductDetails"));
 const ProductList = React.lazy(() => import("../pages/ProductList"));
@@ -23,6 +24,7 @@ const VendorProfile = React.lazy(() =>
 );
 
 const AddProduct = React.lazy(() => import("../pages/AddProduct"));
+const UpdateProduct = React.lazy(() => import("../pages/UpdateProduct"));
 const Vendorplan = React.lazy(() => import("../pages/Vendorplan"));
 const EmailVerification = React.lazy(() =>
   import("../components/Accounts/EmailVerification")
@@ -61,6 +63,7 @@ const Router = () => {
         <Route path="/vendorprofile" element={<VendorProfile />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/addProduct" element={<AddProduct />} />
+        <Route path="/updateProduct/:id" element={<UpdateProduct />} />
         <Route path="/Vendorplan" element={<Vendorplan />} />
         <Route path="/message" element={<Message />} />
       </Routes>

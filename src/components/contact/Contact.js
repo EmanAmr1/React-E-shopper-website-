@@ -1,28 +1,49 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { axiosInstance } from "../../apis/config";
-
+import { useState } from 'react';
 
 const Contact = () => {
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: '',
+      });
     
-    const formData = new FormData(e.target);
+      const handleChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+      };
     
-    try {
-      const response = await axiosInstance.post('/API/contact/', formData);
-      
-
-      if (response.status === 201) {
-        console.log('Message sent successfully!');
-        // Optionally, reset the form or navigate to another page.
-      } else {
-        console.error('Failed to send message');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        // Additional validation if needed
+        if (!formData.name || !formData.email || !formData.message) {
+          console.error('Please fill in all fields.');
+          return;
+        }
+    
+        try {
+          const response = await axiosInstance.post('/API/contact/', formData);
+    
+          if (response.status === 201) {
+            console.log('Message sent successfully!');
+            // Optionally, reset the form or navigate to another page.
+            setFormData({
+              name: '',
+              email: '',
+              message: '',
+            });
+          } else {
+            console.error('Failed to send message');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
   return (
     <>
      {/* Breadcrumb Begin  */}
@@ -66,10 +87,10 @@ const Contact = () => {
                         <div className="contact__form">
                             <h5>SEND MESSAGE</h5>
                             <form onSubmit={handleSubmit}>
-                            <input type="text" name="name" placeholder="Name" />
-                            <input type="text" name="email" placeholder="Email" />
+                            <input type="text" name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
+                            <input type="text" name="email" placeholder="Email"  value={formData.email} onChange={handleChange} required/>
                             {/* <input type="text" name="website" placeholder="Website" /> */}
-                            <textarea name="message" placeholder="Message"></textarea>
+                            <textarea name="message" placeholder="Message" value={formData.message} onChange={handleChange} required ></textarea>
                             <button type="submit" className="site-btn">Send Message</button>
                             </form>
                         </div>

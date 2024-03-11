@@ -11,12 +11,12 @@ const ProductRating = ({ rating }) => {
 
         // Full stars
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<FontAwesomeIcon icon={faStar} key={i} style={{ color: 'goldenrod' }} />);
+            stars.push(<FontAwesomeIcon icon={faStar} key={i} style={{ color: '#fff220' }} />);
         }
 
         // Half star (if applicable)
         if (hasHalfStar) {
-            stars.push(<FontAwesomeIcon icon={faStarHalfAlt} style={{ color: 'goldenrod' }} key="half" />);
+            stars.push(<FontAwesomeIcon icon={faStarHalfAlt} style={{ color: '#fff220' }} key="half" />);
         }
 
         // Empty stars

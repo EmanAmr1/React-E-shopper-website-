@@ -12,6 +12,7 @@ import Cookies from "js-cookie";
 import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
 import StarRating from "./StarRating";
 
+
 const ProductDetails = () => {
   const dispatch = useDispatch();
   const userCookie = Cookies.get("token");
@@ -66,15 +67,36 @@ const ProductDetails = () => {
 
   const baseImageUrl = "http://127.0.0.1:8000";
 
+  // useEffect(() => {
+  //   axiosInstance
+  //     .get(`/API/getProduct/${params.id}/`)
+  //     .then((res) => {
+  //       setProDetails(res.data.product);
+  //       setProductId(res.data.product.id);
+  //       const userRating = res.data.product.rates.find(rate => rate.user === userID);
+  //       if (userRating) {
+  //         // If the user has rated, set the rating in the local state
+  //         setRating(userRating.rating);
+  //       }
+  //     })
+  //     })
+  //     .catch((err) => console.log(err));
+  // },  [params.id, userID]);
   useEffect(() => {
     axiosInstance
       .get(`/API/getProduct/${params.id}/`)
       .then((res) => {
         setProDetails(res.data.product);
         setProductId(res.data.product.id);
+        const userRating = res.data.product.rates.find(rate => rate.user === userID);
+        if (userRating) {
+          // If the user has rated, set the rating in the local state
+          setRating(userRating.rating);
+        }
       })
       .catch((err) => console.log(err));
-  }, [params.id]);
+  }, [params.id, userID]);
+  
 
   useEffect(() => {
     // Set the selected image to the main image URL when component mounts
@@ -178,6 +200,58 @@ const ProductDetails = () => {
     navigate('/'); // Navigate to the home page
   };
 
+  /////////////////////////////////////////////////////
+  const [rating, setRating] = useState(0);
+
+  const handleRate = async (value) => {
+    try {
+      // Check if the user has already rated this product
+      const existingRating = proDetails.rates.find(rate => rate.user === userID);
+  
+      if (existingRating) {
+        // If the user has already rated, update the existing rating
+        const response = await axiosInstance.post(`http://127.0.0.1:8000/API/${productId}/rate`, {
+          rating: value
+        }, {
+          headers: {
+            Authorization: `Token ${token}`,
+          }
+        });
+  
+        if (response.status === 200) {
+          console.log('Rating updated successfully');
+          // Update the local state if the update is successful
+          setRating(value);
+        } else {
+          console.error('Failed to update rating');
+        }
+      } else {
+        // If the user hasn't rated, create a new rating
+        const response = await axiosInstance.post(`http://127.0.0.1:8000/API/${productId}/rate`, {
+          rating: value
+        }, {
+          headers: {
+            Authorization: `Token ${token}`,
+          }
+        });
+  
+        if (response.status === 200) {
+          console.log('Rating added successfully');
+          // Update the local state if the creation is successful
+          setRating(value);
+        } else {
+          console.error('Failed to add rating');
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      // Add code here to provide user feedback about the error
+    }
+  };
+  
+
+
+
   return (
     <>
       <div class="breadcrumb-option ">
@@ -276,7 +350,9 @@ const ProductDetails = () => {
                 </span>
 
                 <p>
-                  <StarRating rating={proDetails.ratings} />
+                  <div className="rating-stars">
+                    <StarRating rating={rating} handleRate={handleRate}/>
+                  </div>
                   <span>( {reviews.length} Reviews)</span>
                 </p>
 
@@ -481,75 +557,75 @@ const ProductDetails = () => {
               >
                 RELATED PRODUCTS
               </div>
-              
+
 
 
 
               <div className="row mt-5">
-      {relatedProducts.map((prod) => (
-        <div className="col-lg-3 col-md-4 col-sm-6 mix women" key={prod.id}>
-          <div className="product__item">
-            <div
-              className="product__item__pic set-bg"
-              style={{
-                backgroundImage: `url('${baseImageUrl}${prod.image}')`,
-              }}
-            >
-              {prod.new ? (
-                <div className="label new">New</div>
-              ) : prod.sale ? (
-                <div className="label sale">Sale</div>
-              ) : prod.stock === 0 ? (
-                <div className="label stockout">out of stock</div>
-              ) : null}
-              <ul className="product__hover">
-                <li>
-                  <a href={prod.image} className="image-popup">
-                  <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={() => false}
-                    style={{
-                      backgroundColor:
-                        wishlistid.includes(prod.id) && "#ca1515",
-                    }}
-                    onClick={() => handleAddWish(prod.id)}
-                  >
-                    <span className="icon_heart_alt"></span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={() => false}
-                    
-                    onClick={() => handleAdd(prod.id)}
-                  >
-                    <span className="icon_bag_alt"></span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="product__item__text">
-              <h6>
-                <a href="h">{prod.name}</a>
-              </h6>
-              <div className="rating">
-              <StarRating rating={prod.ratings} />
+                {relatedProducts.map((prod) => (
+                  <div className="col-lg-3 col-md-4 col-sm-6 mix women" key={prod.id}>
+                    <div className="product__item">
+                      <div
+                        className="product__item__pic set-bg"
+                        style={{
+                          backgroundImage: `url('${baseImageUrl}${prod.image}')`,
+                        }}
+                      >
+                        {prod.new ? (
+                          <div className="label new">New</div>
+                        ) : prod.sale ? (
+                          <div className="label sale">Sale</div>
+                        ) : prod.stock === 0 ? (
+                          <div className="label stockout">out of stock</div>
+                        ) : null}
+                        <ul className="product__hover">
+                          <li>
+                            <a href={prod.image} className="image-popup">
+                              <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href={() => false}
+                              style={{
+                                backgroundColor:
+                                  wishlistid.includes(prod.id) && "#ca1515",
+                              }}
+                              onClick={() => handleAddWish(prod.id)}
+                            >
+                              <span className="icon_heart_alt"></span>
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href={() => false}
+
+                              onClick={() => handleAdd(prod.id)}
+                            >
+                              <span className="icon_bag_alt"></span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="product__item__text">
+                        <h6>
+                          <a href="h">{prod.name}</a>
+                        </h6>
+                        <div className="rating">
+                          <StarRating rating={prod.ratings} />
+                        </div>
+                        {prod.sale ? (
+                          <div className="product__price  " style={{ color: "#ca1515" }}>
+                            {prod.newprice} <span>{prod.price}</span>
+                          </div>
+                        ) : (
+                          <div className="product__price">{prod.price}</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-              {prod.sale ? (
-                <div className="product__price  " style={{ color: "#ca1515" }}>
-                  {prod.newprice} <span>{prod.price}</span>
-                </div>
-              ) : (
-                <div className="product__price">{prod.price}</div>
-              )}
-            </div>
-          </div>
-        </div>
-      ))}
-</div>
 
 
             </div>

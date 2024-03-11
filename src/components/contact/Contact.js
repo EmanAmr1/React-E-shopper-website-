@@ -1,7 +1,28 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { axiosInstance } from "../../apis/config";
+
 
 const Contact = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    
+    try {
+      const response = await axiosInstance.post('/API/contact/', formData);
+      
+
+      if (response.status === 201) {
+        console.log('Message sent successfully!');
+        // Optionally, reset the form or navigate to another page.
+      } else {
+        console.error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   return (
     <>
      {/* Breadcrumb Begin  */}
@@ -44,12 +65,12 @@ const Contact = () => {
                         </div>
                         <div className="contact__form">
                             <h5>SEND MESSAGE</h5>
-                            <form action="#">
-                                <input type="text" placeholder="Name"/>
-                                <input type="text" placeholder="Email"/>
-                                <input type="text" placeholder="Website"/>
-                                <textarea placeholder="Message"></textarea>
-                                <button type="submit" className="site-btn">Send Message</button>
+                            <form onSubmit={handleSubmit}>
+                            <input type="text" name="name" placeholder="Name" />
+                            <input type="text" name="email" placeholder="Email" />
+                            {/* <input type="text" name="website" placeholder="Website" /> */}
+                            <textarea name="message" placeholder="Message"></textarea>
+                            <button type="submit" className="site-btn">Send Message</button>
                             </form>
                         </div>
                     </div>

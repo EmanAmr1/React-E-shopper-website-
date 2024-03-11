@@ -84,7 +84,7 @@ const ProductDetails = () => {
   // },  [params.id, userID]);
   useEffect(() => {
     axiosInstance
-      .get(`/API/getProduct/${params.id}/`)
+      .get(`/API/getProduct/${params.id}/` ,{ headers } )
       .then((res) => {
         setProDetails(res.data.product);
         setProductId(res.data.product.id);

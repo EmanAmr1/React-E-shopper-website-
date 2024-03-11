@@ -53,7 +53,7 @@ const UpdateProduct = () => {
 
 
     useEffect(() => {
-        axiosInstance.get(`/API/getProduct/${params.id}/`)
+        axiosInstance.get(`/API/getProduct/${params.id}/`,{ headers } )
             .then(res => {
                 setUpdatePro(res.data.product);
                 setErrors([]);

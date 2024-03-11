@@ -6,7 +6,7 @@ import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { Link } from 'react-router-dom';
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
@@ -96,7 +96,7 @@ const ProductDetails = () => {
       })
       .catch((err) => console.log(err));
   }, [params.id, userID]);
-  
+
 
   useEffect(() => {
     // Set the selected image to the main image URL when component mounts
@@ -115,7 +115,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     axiosInstance
-      .get(`/API/Review/listReviwes/`)
+      .get(`/API/Review/listReviwes/`, { headers })
       .then((res) => {
         const productReviewss = res.data.data.filter(
           (review) => review.product_id === proDetails.id
@@ -172,8 +172,8 @@ const ProductDetails = () => {
       const response = await axiosInstance.post("/API/Review/addReview/", {
         product_id: productId,
         comment: comment,
-        user: userId,
-      });
+        user_id: userId,
+      }, { headers });
       console.log(response.data);
 
       // Update reviews state with the new review
@@ -207,7 +207,7 @@ const ProductDetails = () => {
     try {
       // Check if the user has already rated this product
       const existingRating = proDetails.rates.find(rate => rate.user === userID);
-  
+
       if (existingRating) {
         // If the user has already rated, update the existing rating
         const response = await axiosInstance.post(`http://127.0.0.1:8000/API/${productId}/rate`, {
@@ -217,7 +217,7 @@ const ProductDetails = () => {
             Authorization: `Token ${token}`,
           }
         });
-  
+
         if (response.status === 200) {
           console.log('Rating updated successfully');
           // Update the local state if the update is successful
@@ -234,7 +234,7 @@ const ProductDetails = () => {
             Authorization: `Token ${token}`,
           }
         });
-  
+
         if (response.status === 200) {
           console.log('Rating added successfully');
           // Update the local state if the creation is successful
@@ -248,7 +248,7 @@ const ProductDetails = () => {
       // Add code here to provide user feedback about the error
     }
   };
-  
+
 
 
 
@@ -284,50 +284,52 @@ const ProductDetails = () => {
 
               <div class="product__details__pic">
                 <div class="thumbnail-container">
-                  <a
-                    className={`pt ${selectedImage === proDetails.subImageOne ? "active" : ""
-                      }`}
-                    href="#product-1"
+                  <Link
+                    className={`pt ${selectedImage === proDetails.subImageOne ? "active" : ""}`}
                     onClick={() => setSelectedImage(proDetails.subImageOne)}
                   >
                     <img
                       src={`${baseImageUrl}${proDetails.subImageOne}`}
                       alt="Thumbnail 1"
                     />
-                  </a>
-                  <a
+                  </Link>
+
+
+                  <Link
                     className={`pt ${selectedImage === proDetails.subImageTwo ? "active" : ""
                       }`}
-                    href="#product-2"
+
                     onClick={() => setSelectedImage(proDetails.subImageTwo)}
                   >
                     <img
                       src={`${baseImageUrl}${proDetails.subImageTwo}`}
                       alt="Thumbnail 2"
                     />
-                  </a>
-                  <a
+                  </Link>
+
+
+                  <Link
                     className={`pt ${selectedImage === proDetails.subImageThree ? "active" : ""
                       }`}
-                    href="#product-3"
+
                     onClick={() => setSelectedImage(proDetails.subImageThree)}
                   >
                     <img
                       src={`${baseImageUrl}${proDetails.subImageThree}`}
                       alt="Thumbnail 3"
                     />
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className={`pt ${selectedImage === proDetails.subImageFour ? "active" : ""
                       }`}
-                    href="#product-4"
+
                     onClick={() => setSelectedImage(proDetails.subImageFour)}
                   >
                     <img
                       src={`${baseImageUrl}${proDetails.subImageFour}`}
                       alt="Thumbnail 4"
                     />
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -351,7 +353,7 @@ const ProductDetails = () => {
 
                 <p>
                   <div className="rating-stars">
-                    <StarRating rating={rating} handleRate={handleRate}/>
+                    <StarRating rating={rating} handleRate={handleRate} />
                   </div>
                   <span>( {reviews.length} Reviews)</span>
                 </p>
@@ -494,7 +496,7 @@ const ProductDetails = () => {
 
 
           <div className="row">
-            <div className="col-lg-11 mx-auto">
+            <div className="col-lg-6 mx-auto">
               <h3 className="reviews__title">Reviews</h3>
               {reviews.length > 0 ? (
                 <ul className="reviews__list">
@@ -507,7 +509,7 @@ const ProductDetails = () => {
                           alt="User Avatar"
                         />
                         <div className="review__meta">
-                          <span className="review__author">Eman Amr</span>
+                          <span className="review__author">{review.user}</span>
                           <span className="review__date">{review.date}</span>
                         </div>
                       </div>
@@ -521,29 +523,33 @@ const ProductDetails = () => {
                 <p>No reviews yet</p>
               )}
             </div>
-          </div>
 
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-9">
-                <div className="add-review-form p-4 border rounded">
-                  <h3 className="mb-3">Add your Review</h3>
-                  <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                      <textarea
-                        id="comment"
-                        className="form-control"
-                        rows="3"
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                      />
-                    </div>
-                    <button type="submit">Add Review</button>
-                  </form>
-                </div>
+            <div className="col-lg-6 mt-5">
+              <div className="add-review-form p-4 border rounded mt-5">
+                <h3 className="mb-3">Add your Review</h3>
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <textarea
+                      id="comment"
+                      className="form-control"
+                      rows="3"
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                  </div>
+                  <button type="submit">Add Review</button>
+                </form>
               </div>
             </div>
+
+
+
+
+
+
           </div>
+
+
 
           <div className="row mt-5">
             <div className="col-lg-12 text-center">
@@ -611,9 +617,7 @@ const ProductDetails = () => {
                         <h6>
                           <a href="h">{prod.name}</a>
                         </h6>
-                        <div className="rating">
-                          <StarRating rating={prod.ratings} />
-                        </div>
+
                         {prod.sale ? (
                           <div className="product__price  " style={{ color: "#ca1515" }}>
                             {prod.newprice} <span>{prod.price}</span>

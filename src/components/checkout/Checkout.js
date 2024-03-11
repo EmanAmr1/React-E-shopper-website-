@@ -1,33 +1,46 @@
 import React from 'react'
-//import ReactDOM from 'react-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { axiosInstance } from "../../apis/config";
 import { useState, useEffect } from 'react';
+import { API_URL } from '../../apis/configpaln';
 import Cookies from "js-cookie";
 import swal from 'sweetalert';
-import { Link, useNavigate,useParams } from 'react-router-dom';
-import { axiosInstance } from "../../apis/config";
-//import { event } from 'jquery';
-import { API_URL } from '../../apis/configpaln';
 
 const Checkout = () => {
     const token = Cookies.get("token");
     const headers = {
       Authorization: `Token ${token}`,
     };
+
+
+    const userCookie = Cookies.get("user");
+    const userID = userCookie ? JSON.parse(userCookie).id : null;
+    const [items, setItems] = useState([]);
+    const [total, setTotal] = useState();
+    const [order_id, setOrder_id] = useState([]);
+    const [error, setError] = useState([]);
+    const [isOrderPlaced, setIsOrderPlaced] = useState(false);
+
+
+
     const clearCart = () => {
         setItems([]);
         setTotal(0);
-        // Any other necessary updates to the cart state
-      };
-      //let { order_id } = useParams();
-    
-    const userCookie = Cookies.get("user");
-  
-    const userID = userCookie ? JSON.parse(userCookie).id : null;
-    const [items, setItems] = useState([]);
-    //const baseImageUrl = "http://127.0.0.1:8000";
-    const [total, setTotal] = useState();
-    const [order_id, setOrder_id] = useState([]);
+        setCheckoutInput({
+            first_name: '',
+            last_name: '',
+            country: '',
+            city: '',
+            zip_code: '',
+            state: '',
+            street: '',
+            phone_number: '',
+            email: '',
+            order_Items: [],
+        });
+    };
 
+    
 
     useEffect(() => {
         axiosInstance
@@ -48,7 +61,6 @@ const Checkout = () => {
     }*/
     
     //const [loading, setLoading] = useState(true);
-    const [error, setError] = useState([]);
     const [checoutInput,setCheckoutInput]=useState({
         first_name:'',
         last_name: '',
@@ -61,17 +73,20 @@ const Checkout = () => {
         email: '',
         order_Items: [],
     });
-    const handleInput = (event) => {
 
+
+
+    const handleInput = (event) => {
         const { name, value } = event.target;
-        
-    
         setCheckoutInput({
             ...checoutInput,
             [name]: value
         });
         
     };
+
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (items.length === 0) {
@@ -87,7 +102,7 @@ const Checkout = () => {
             price: product.item_price,
         }));
         
-        //console.log(orderItems.product.item)
+
     
           
         const data = {
@@ -111,40 +126,42 @@ const Checkout = () => {
             console.log('Response Status:', res.status); 
             if(res.data.status===200)
             {   
-                swal("Order Placed Successfully",res.data.message,"success");
-                //window.location.href = `${API_URL}/API/create-checkout-session/${res.data.id}/`;
-                navigate('/thannk-you');
+                swal("Order Placed Successfully",res.data.message,"success")
+                setIsOrderPlaced(true);
                 console.log('Navigating to /thank-you');
                 setError([]);
-                clearCart(); 
-               
-                
+                clearCart();
+                  
             }
             else if(res.data.status===422)
             {
                 swal.apply("All fields are mondetory","","error")
                 setError(res.data.errors);
             }
+
+
+            setIsOrderPlaced(true);  
+            
+            
+            
         });
+        
     };
     
     const validateForm = () => {
         let isValid = true;
         const errors = {};
-    
-        // Basic validation, you can enhance this based on your requirements
         for (const key in checoutInput) {
           if (!checoutInput[key]) {
             errors[key] = 'This field is required';
             isValid = false;
           }
         }
-    
         setError(errors);
         return isValid;
       };
       
-      console.log("Order ID:", order_id);
+      //console.log("Order ID:", order_id);
   return (
     <>
       
@@ -315,7 +332,18 @@ const Checkout = () => {
                                         <span className="checkmark"></span>
                                     </label>
                                 </div>
-                                <button  type="submit" className="site-btn">Place oder</button>
+                                {isOrderPlaced ? (
+                                    <form action={`${API_URL}/API/create-checkout-session/${order_id}/`} method='POST'>
+                                    <button  type="submit" className="site-btn">pay</button>
+                                    </form>
+                            // <button type="button" className="site-btn" onClick={() => navigate('/thank-you')}>
+                            //     Pay
+                            // </button>
+                        ) : (
+                            <button type="submit" className="site-btn">
+                                Place Order
+                            </button>
+                        )}
                             </div>
                         </div>
                     </div>
@@ -323,9 +351,7 @@ const Checkout = () => {
             </div>
             
         </section>
-        {/* <form action={`${API_URL}/API/create-checkout-session/${order_id}/`} method='POST'>
-        <button  type="submit" className="site-btn">Place oder</button>
-        </form> */}
+        
         {/*Checkout Section End */}
     </>
   )

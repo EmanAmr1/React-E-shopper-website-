@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { axiosInstance } from "../../apis/config";
+const ShopCategory = ({ minPrice, maxPrice, handlePriceChange}) => {
+  const [maxPriceFromAPI, setMaxPriceFromAPI] = useState(null);
+  useEffect(() => {
+    axiosInstance.get('http://127.0.0.1:8000/API/allproducts/')
+      .then(res => {
+        
+        const maxPrice = Math.max(...res.data.results.products.map(product => parseFloat(product.price)));
+        setMaxPriceFromAPI(maxPrice+20);
 
-const ShopCategory = ({ minPrice, maxPrice, handlePriceChange }) => {
+      })
+      .catch(error => {
+        console.error('Error fetching maximum price:', error);
+      });
+  }, []);
+
   return (
     <div className="sidebar__filter">
       <div className="section-title">
@@ -11,7 +25,7 @@ const ShopCategory = ({ minPrice, maxPrice, handlePriceChange }) => {
           type="range"
           className="custom-range"
           min="0"
-          max="100"
+          max={maxPriceFromAPI}
           step="1"
           value={minPrice}
           onChange={handlePriceChange}
@@ -21,7 +35,7 @@ const ShopCategory = ({ minPrice, maxPrice, handlePriceChange }) => {
           type="range"
           className="custom-range"
           min="0"
-          max="100"
+          max={maxPriceFromAPI}
           step="1"
           value={maxPrice}
           onChange={handlePriceChange}

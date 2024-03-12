@@ -35,17 +35,22 @@ const Cart = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleAddMore = async (itemId) => {
+  const handleAddMore = async (proID, proSize, cartID) => {
     try {
-      const response = await axiosInstance.put(
-        `/api/cart/addmore/${itemId}`,
-        null,
+      console.log(`pro size = ${proSize}`);
+      const response = await axiosInstance.post(
+        `/api/cart/add/`,
+        {
+          item: proID,
+          quantity: 1,
+          size: proSize,
+        },
         {
           headers,
         }
       );
       console.log(response.data);
-      const updatedItemIndex = items.findIndex((item) => item.id === itemId);
+      const updatedItemIndex = items.findIndex((item) => item.id === cartID);
       const updatedItem = { ...items[updatedItemIndex] };
       updatedItem.quantity += 1;
       updatedItem.subtotal_price =
@@ -144,6 +149,10 @@ const Cart = () => {
                             <span className="text-muted">price: </span>
                             {product.item_price}
                           </p>
+                          <p>
+                            <span className="text-muted">size: </span>
+                            {product.size}
+                          </p>
                         </div>
                         <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                           <div className="d-flex my-3 align-items-center">
@@ -155,7 +164,13 @@ const Cart = () => {
                             </button>
                             <p className="mb-0 mx-4"> {product.quantity} </p>
                             <button
-                              onClick={() => handleAddMore(product.id)}
+                              onClick={() =>
+                                handleAddMore(
+                                  product.item,
+                                  product.size,
+                                  product.id
+                                )
+                              }
                               className="btn btn-success"
                             >
                               +
@@ -169,6 +184,7 @@ const Cart = () => {
                           <i
                             onClick={() => handleDelete(product.id)}
                             className="fas fa-trash fa-lg text-danger"
+                            style={{ cursor: "pointer" }}
                           />
                         </div>
                       </div>

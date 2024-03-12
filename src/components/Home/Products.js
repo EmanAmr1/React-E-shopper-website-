@@ -14,6 +14,7 @@ const Products = () => {
   const itemsid = useSelector((state) => state.total.itemsid);
   const [product, setProduct] = useState([]);
   const [wishlistid, setWishlistid] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("");
   const token = Cookies.get("token");
   const headers = {
     Authorization: `Token ${token}`,
@@ -59,25 +60,70 @@ const Products = () => {
     }
   };
 
-  const handleAdd = async (itemId) => {
+  const handleAdd = async (item) => {
     // e.preventDefault();
-    if (!itemsid.includes(itemId)) {
+    if (!itemsid.includes(item)) {
       try {
-        const response = await axiosInstance.post(
-          `/api/cart/add/`,
+        const response = await axiosInstance.get(
+          `/API/getProduct/${item.item}`,
           {
-            item: itemId,
-            quantity: 1,
-          },
-          { headers }
+            headers,
+          }
         );
-        console.log(response.data);
-        dispatch(increaseCounter());
-        const updatedItemsId = itemsid.concat(itemId);
-        dispatch(setItemsid(updatedItemsId));
+        console.log(response.data.product);
+        const proDetails = response.data.product;
+        let selectedSize = "";
+
+        if (proDetails.stock_S > 0) {
+          selectedSize = "S";
+        } else if (proDetails.stock_M > 0) {
+          selectedSize = "M";
+        } else if (proDetails.stock_L > 0) {
+          selectedSize = "L";
+        } else if (proDetails.stock_XL > 0) {
+          selectedSize = "XL";
+        } else {
+          selectedSize = "one_size";
+        }
+        setSelectedSize(selectedSize);
+
+        try {
+          console.log(selectedSize);
+          const response = await axiosInstance.post(
+            `/api/cart/add/`,
+            {
+              item: item.item,
+              quantity: 1,
+              size: selectedSize,
+            },
+            { headers }
+          );
+          console.log(response.data);
+          dispatch(increaseCounter());
+          const updatedItemsId = itemsid.concat(item.item);
+          dispatch(setItemsid(updatedItemsId));
+        } catch (error) {
+          console.error("Error:", error);
+        }
       } catch (error) {
-        console.error("Error:", error.response.data);
+        console.error("Error:", error);
       }
+      // try {
+      //   const response = await axiosInstance.post(
+      //     `/api/cart/add/`,
+      //     {
+      //       item: itemId,
+      //       quantity: 1,
+      //     },
+      //     { headers }
+      //   );
+      //   console.log(response.data);
+      //   dispatch(increaseCounter());
+      //   const updatedItemsId = itemsid.concat(itemId);
+      //   dispatch(setItemsid(updatedItemsId));
+      // } catch (error) {
+      //   console.error("Error:", error.response.data);
+      // }
     }
   };
   const navigate = useNavigate();
@@ -109,7 +155,6 @@ const Products = () => {
               return (
                 <div className="col-lg-3 col-md-4 col-sm-6 mix women">
                   <div className="product__item">
-
                     <div
                       className="product__item__pic set-bg"
                       style={{
@@ -126,8 +171,11 @@ const Products = () => {
 
                       <ul className="product__hover">
                         <li>
-                          <a href={prod.image} className="image-popup" >
-                            <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
+                          <a href={prod.image} className="image-popup">
+                            <a href={`/productDetails/${prod.id}`}>
+                              {" "}
+                              <span className="arrow_expand"></span>
+                            </a>
                           </a>
                         </li>
                         <li>
@@ -139,7 +187,12 @@ const Products = () => {
                             }}
                             onClick={() => handleAddWish(prod.id)}
                           >
-                            <span className="icon_heart_alt"></span>
+                            <span
+                              style={{
+                                color: itemsid.includes(prod.id) && "#ffffff",
+                              }}
+                              className="icon_heart_alt"
+                            ></span>
                           </a>
                         </li>
                         <li>
@@ -149,11 +202,14 @@ const Products = () => {
                               backgroundColor:
                                 itemsid.includes(prod.id) && "#ca1515",
                             }}
-                            onClick={() => handleAdd(prod.id)}
+                            onClick={() => handleAdd(prod)}
                           >
-
-                            <span className="icon_bag_alt"></span>
-
+                            <span
+                              style={{
+                                color: itemsid.includes(prod.id) && "#ffffff",
+                              }}
+                              className="icon_bag_alt"
+                            ></span>
                           </a>
                         </li>
                       </ul>
@@ -161,8 +217,6 @@ const Products = () => {
                     <div className="product__item__text">
                       <h6>
                         <a href="h">{prod.name}</a>
-
-
                       </h6>
                       <div className="rating">
                         <i className="fa fa-star"></i>

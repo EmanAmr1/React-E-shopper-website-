@@ -1,17 +1,16 @@
 import React from "react";
 import rev from "../imags/rev.png";
 import { useDispatch, useSelector } from "react-redux";
-import { increaseCounterByAmount } from "../store/slices/total";
+import { increaseCounterByAmount, setItemsid } from "../store/slices/total";
 import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
 import StarRating from "./StarRating";
-
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -28,8 +27,14 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
+  const [cartitems, setCartitems] = useState([]);
+  const [count, setCount] = useState(0);
+
+  const [selectedSize, setSelectedSize] = useState("");
 
   const [relatedProducts, setRelatedProducts] = useState([]);
+
+  const itemsid = useSelector((state) => state.total.itemsid);
 
   const token = Cookies.get("token");
   const headers = {
@@ -48,6 +53,17 @@ const ProductDetails = () => {
       .get(`/API/allproducts/?category=${proDetails.category}`)
       .then((res) => {
         setRelatedProducts(res.data.results.products);
+        if (proDetails.stock_S > 0) {
+          setSelectedSize("S");
+        } else if (proDetails.stock_M > 0) {
+          setSelectedSize("M");
+        } else if (proDetails.stock_L > 0) {
+          setSelectedSize("L");
+        } else if (proDetails.stock_XL > 0) {
+          setSelectedSize("XL");
+        } else {
+          setSelectedSize("one_size");
+        }
       })
       .catch((err) => console.log(err));
   }, [proDetails.category]);
@@ -84,11 +100,13 @@ const ProductDetails = () => {
   // },  [params.id, userID]);
   useEffect(() => {
     axiosInstance
-      .get(`/API/getProduct/${params.id}/` ,{ headers } )
+      .get(`/API/getProduct/${params.id}/`, { headers })
       .then((res) => {
         setProDetails(res.data.product);
         setProductId(res.data.product.id);
-        const userRating = res.data.product.rates.find(rate => rate.user === userID);
+        const userRating = res.data.product.rates.find(
+          (rate) => rate.user === userID
+        );
         if (userRating) {
           // If the user has rated, set the rating in the local state
           setRating(userRating.rating);
@@ -97,6 +115,23 @@ const ProductDetails = () => {
       .catch((err) => console.log(err));
   }, [params.id, userID]);
 
+  useEffect(() => {
+    axiosInstance
+      .get(`/api/cart/list/`, { headers })
+      .then((res) => {
+        const filteredCartItems = res.data.cart_items.filter(
+          (item) => item.item === parseInt(params.id)
+        );
+        setCartitems(filteredCartItems);
+
+        const totalCount = filteredCartItems.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        setCount(totalCount);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     // Set the selected image to the main image URL when component mounts
@@ -109,6 +144,7 @@ const ProductDetails = () => {
       .then((res) => {
         console.log(res.data);
         setWishlistid(res.data.wishlist_items.map((item) => item.item));
+        console.log(wishlistid);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -128,19 +164,27 @@ const ProductDetails = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    console.log(cartitems);
+    // if (!itemsid.includes(proDetails.id)) {
     try {
       const response = await axiosInstance.post(
         `/api/cart/add/`,
         {
           item: productId,
           quantity: quantity,
+          size: selectedSize,
         },
         { headers }
       );
+      console.log(cartitems);
+      const updatedItemsId = itemsid.concat(proDetails.id);
+      dispatch(setItemsid(updatedItemsId));
       dispatch(increaseCounterByAmount(response.data.quantity));
+      setCount((prevCount) => prevCount + response.data.quantity);
     } catch (error) {
       console.error("Error:", error.response.data);
     }
+    // }
   };
 
   const handleAddWish = async (e) => {
@@ -169,11 +213,15 @@ const ProductDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post("/API/Review/addReview/", {
-        product_id: productId,
-        comment: comment,
-        user_id: userId,
-      }, { headers });
+      const response = await axiosInstance.post(
+        "/API/Review/addReview/",
+        {
+          product_id: productId,
+          comment: comment,
+          user_id: userId,
+        },
+        { headers }
+      );
       console.log(response.data);
 
       // Update reviews state with the new review
@@ -189,15 +237,13 @@ const ProductDetails = () => {
     }
   };
 
-  const [selectedSize, setSelectedSize] = useState('');
-
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
   };
 
   const navigate = useNavigate();
   const navigateToHome = () => {
-    navigate('/'); // Navigate to the home page
+    navigate("/"); // Navigate to the home page
   };
 
   /////////////////////////////////////////////////////
@@ -206,51 +252,58 @@ const ProductDetails = () => {
   const handleRate = async (value) => {
     try {
       // Check if the user has already rated this product
-      const existingRating = proDetails.rates.find(rate => rate.user === userID);
+      const existingRating = proDetails.rates.find(
+        (rate) => rate.user === userID
+      );
 
       if (existingRating) {
         // If the user has already rated, update the existing rating
-        const response = await axiosInstance.post(`http://127.0.0.1:8000/API/${productId}/rate`, {
-          rating: value
-        }, {
-          headers: {
-            Authorization: `Token ${token}`,
+        const response = await axiosInstance.post(
+          `http://127.0.0.1:8000/API/${productId}/rate`,
+          {
+            rating: value,
+          },
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
           }
-        });
+        );
 
         if (response.status === 200) {
-          console.log('Rating updated successfully');
+          console.log("Rating updated successfully");
           // Update the local state if the update is successful
           setRating(value);
         } else {
-          console.error('Failed to update rating');
+          console.error("Failed to update rating");
         }
       } else {
         // If the user hasn't rated, create a new rating
-        const response = await axiosInstance.post(`http://127.0.0.1:8000/API/${productId}/rate`, {
-          rating: value
-        }, {
-          headers: {
-            Authorization: `Token ${token}`,
+        const response = await axiosInstance.post(
+          `http://127.0.0.1:8000/API/${productId}/rate`,
+          {
+            rating: value,
+          },
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
           }
-        });
+        );
 
         if (response.status === 200) {
-          console.log('Rating added successfully');
+          console.log("Rating added successfully");
           // Update the local state if the creation is successful
           setRating(value);
         } else {
-          console.error('Failed to add rating');
+          console.error("Failed to add rating");
         }
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
       // Add code here to provide user feedback about the error
     }
   };
-
-
-
 
   return (
     <>
@@ -260,10 +313,11 @@ const ProductDetails = () => {
             <div class="col-lg-12">
               <div class="breadcrumb__links">
                 <a href="./index.html">
-                  <i class="fa fa-home">   </i>  Home
+                  <i class="fa fa-home"> </i> Home
                 </a>
-                <a href=" " onClick={() => navigate(`/ProductList/`)}>Continue Shoping </a>
-
+                <a href=" " onClick={() => navigate(`/ProductList/`)}>
+                  Continue Shoping{" "}
+                </a>
               </div>
             </div>
           </div>
@@ -285,7 +339,9 @@ const ProductDetails = () => {
               <div class="product__details__pic">
                 <div class="thumbnail-container">
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageOne ? "active" : ""}`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageOne ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageOne)}
                   >
                     <img
@@ -294,11 +350,10 @@ const ProductDetails = () => {
                     />
                   </Link>
 
-
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageTwo ? "active" : ""
-                      }`}
-
+                    className={`pt ${
+                      selectedImage === proDetails.subImageTwo ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageTwo)}
                   >
                     <img
@@ -307,11 +362,10 @@ const ProductDetails = () => {
                     />
                   </Link>
 
-
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageThree ? "active" : ""
-                      }`}
-
+                    className={`pt ${
+                      selectedImage === proDetails.subImageThree ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageThree)}
                   >
                     <img
@@ -320,9 +374,9 @@ const ProductDetails = () => {
                     />
                   </Link>
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageFour ? "active" : ""
-                      }`}
-
+                    className={`pt ${
+                      selectedImage === proDetails.subImageFour ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageFour)}
                   >
                     <img
@@ -346,7 +400,6 @@ const ProductDetails = () => {
                   )}
                 </div>
 
-
                 <span className="product__details__price">
                   $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
                 </span>
@@ -357,7 +410,6 @@ const ProductDetails = () => {
                   </div>
                   <span>( {reviews.length} Reviews)</span>
                 </p>
-
 
                 <hr></hr>
 
@@ -370,9 +422,7 @@ const ProductDetails = () => {
                 <p>
                   <span className="basic">Category: </span>
                   {proDetails.category}
-
                 </p>
-
 
                 <div className="product__details__widget">
                   <ul>
@@ -413,7 +463,8 @@ const ProductDetails = () => {
                             )}
                             {proDetails.stock_XL > 0 && (
                               <label htmlFor="l-btn">
-                                <input type="radio" id="l-btn" />XL
+                                <input type="radio" id="l-btn" />
+                                XL
                               </label>
                             )}
                           </div>
@@ -424,8 +475,11 @@ const ProductDetails = () => {
                     <li>
                       <span>Select size:</span>
                       <div className="size__btn">
-                        <select onChange={handleSizeChange} value={selectedSize}>
-                          <option value="">Select Size</option>
+                        <select
+                          required
+                          onChange={handleSizeChange}
+                          value={selectedSize}
+                        >
                           {proDetails.stock_S > 0 && (
                             <option value="S">S</option>
                           )}
@@ -441,9 +495,7 @@ const ProductDetails = () => {
                         </select>
                       </div>
                     </li>
-
                   </ul>
-
 
                   <div className="product__details__button mt-4">
                     <div className="quantity">
@@ -463,12 +515,15 @@ const ProductDetails = () => {
                       </div>
                     </div>
                     <a href=" " className="cart-btn" onClick={handleAdd}>
-                      <span className="icon_bag_alt"></span> Add to cart
+                      <span className="icon_bag_alt"></span>{" "}
+                      {itemsid.includes(proDetails.id)
+                        ? `Add More ${count}`
+                        : `Add to Cart ${count}`}
                     </a>
                     <ul>
                       <li>
                         <a
-                          href=" "
+                          href={() => false}
                           style={{
                             backgroundColor:
                               wishlistid.includes(productId) && "#ca1515",
@@ -486,14 +541,10 @@ const ProductDetails = () => {
                       </li>
                     </ul>
                   </div>
-
-
                 </div>
               </div>
             </div>
           </div>
-
-
 
           <div className="row">
             <div className="col-lg-6 mx-auto">
@@ -541,15 +592,7 @@ const ProductDetails = () => {
                 </form>
               </div>
             </div>
-
-
-
-
-
-
           </div>
-
-
 
           <div className="row mt-5">
             <div className="col-lg-12 text-center">
@@ -564,12 +607,12 @@ const ProductDetails = () => {
                 RELATED PRODUCTS
               </div>
 
-
-
-
               <div className="row mt-5">
                 {relatedProducts.map((prod) => (
-                  <div className="col-lg-3 col-md-4 col-sm-6 mix women" key={prod.id}>
+                  <div
+                    className="col-lg-3 col-md-4 col-sm-6 mix women"
+                    key={prod.id}
+                  >
                     <div className="product__item">
                       <div
                         className="product__item__pic set-bg"
@@ -587,7 +630,10 @@ const ProductDetails = () => {
                         <ul className="product__hover">
                           <li>
                             <a href={prod.image} className="image-popup">
-                              <a href={`/productDetails/${prod.id}`}>    <span className="arrow_expand"  ></span></a>
+                              <a href={`/productDetails/${prod.id}`}>
+                                {" "}
+                                <span className="arrow_expand"></span>
+                              </a>
                             </a>
                           </li>
                           <li>
@@ -599,13 +645,18 @@ const ProductDetails = () => {
                               }}
                               onClick={() => handleAddWish(prod.id)}
                             >
-                              <span className="icon_heart_alt"></span>
+                              <span
+                                style={{
+                                  color:
+                                    wishlistid.includes(prod.id) && "#ffffff",
+                                }}
+                                className="icon_heart_alt"
+                              ></span>
                             </a>
                           </li>
                           <li>
                             <a
                               href={() => false}
-
                               onClick={() => handleAdd(prod.id)}
                             >
                               <span className="icon_bag_alt"></span>
@@ -619,7 +670,10 @@ const ProductDetails = () => {
                         </h6>
 
                         {prod.sale ? (
-                          <div className="product__price  " style={{ color: "#ca1515" }}>
+                          <div
+                            className="product__price  "
+                            style={{ color: "#ca1515" }}
+                          >
                             {prod.newprice} <span>{prod.price}</span>
                           </div>
                         ) : (
@@ -630,8 +684,6 @@ const ProductDetails = () => {
                   </div>
                 ))}
               </div>
-
-
             </div>
           </div>
         </div>

@@ -15,6 +15,7 @@ const ProductList = () => {
   const userCookie = Cookies.get("user");
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [wishlistid, setWishlistid] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("");
   const token = Cookies.get("token");
   const headers = {
     Authorization: `Token ${token}`,
@@ -61,25 +62,70 @@ const ProductList = () => {
     }
   };
 
-  const handleAdd = async (itemId) => {
+  const handleAdd = async (item) => {
     // e.preventDefault();
-    if (!itemsid.includes(itemId)) {
+    if (!itemsid.includes(item)) {
       try {
-        const response = await axiosInstance.post(
-          `/api/cart/add/`,
+        const response = await axiosInstance.get(
+          `/API/getProduct/${item.item}`,
           {
-            item: itemId,
-            quantity: 1,
-          },
-          { headers }
+            headers,
+          }
         );
-        console.log(response.data);
-        dispatch(increaseCounter());
-        const updatedItemsId = itemsid.concat(itemId);
-        dispatch(setItemsid(updatedItemsId));
+        console.log(response.data.product);
+        const proDetails = response.data.product;
+        let selectedSize = "";
+
+        if (proDetails.stock_S > 0) {
+          selectedSize = "S";
+        } else if (proDetails.stock_M > 0) {
+          selectedSize = "M";
+        } else if (proDetails.stock_L > 0) {
+          selectedSize = "L";
+        } else if (proDetails.stock_XL > 0) {
+          selectedSize = "XL";
+        } else {
+          selectedSize = "one_size";
+        }
+        setSelectedSize(selectedSize);
+
+        try {
+          console.log(selectedSize);
+          const response = await axiosInstance.post(
+            `/api/cart/add/`,
+            {
+              item: item.item,
+              quantity: 1,
+              size: selectedSize,
+            },
+            { headers }
+          );
+          console.log(response.data);
+          dispatch(increaseCounter());
+          const updatedItemsId = itemsid.concat(item.item);
+          dispatch(setItemsid(updatedItemsId));
+        } catch (error) {
+          console.error("Error:", error);
+        }
       } catch (error) {
-        console.error("Error:", error.response.data);
+        console.error("Error:", error);
       }
+      // try {
+      //   const response = await axiosInstance.post(
+      //     `/api/cart/add/`,
+      //     {
+      //       item: itemId,
+      //       quantity: 1,
+      //     },
+      //     { headers }
+      //   );
+      //   console.log(response.data);
+      //   dispatch(increaseCounter());
+      //   const updatedItemsId = itemsid.concat(itemId);
+      //   dispatch(setItemsid(updatedItemsId));
+      // } catch (error) {
+      //   console.error("Error:", error.response.data);
+      // }
     }
   };
 

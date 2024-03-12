@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { increaseCounter, setItemsid } from "../store/slices/total";
+import {
+  increaseCounter,
+  setItemsid,
+  decreaseCounterByAmount,
+} from "../store/slices/total";
 import {
   addItem,
   removeItem,
@@ -10,6 +14,7 @@ import {
   fetchWishList,
 } from "../store/slices/wishlist";
 import { Link } from "react-router-dom";
+import { clearAllListeners } from "@reduxjs/toolkit";
 
 const Wishlist = () => {
   const userCookie = Cookies.get("user");
@@ -19,6 +24,7 @@ const Wishlist = () => {
   const [wishlistid, setWishlistid] = useState([]);
   const [wishlistitems, setWishlistitems] = useState([]);
   const token = Cookies.get("token");
+  const [selectedSize, setSelectedSize] = useState("");
   const headers = {
     Authorization: `Token ${token}`,
   };
@@ -37,27 +43,83 @@ const Wishlist = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleAdd = async (itemId) => {
-    // console.log(itemId);
-    // e.preventDefault();
-    if (!itemsid.includes(itemId)) {
+  const handleAdd = async (item) => {
+    if (!itemsid.includes(item.item)) {
       try {
-        const response = await axiosInstance.post(
-          `/api/cart/add/`,
+        const response = await axiosInstance.get(
+          `/API/getProduct/${item.item}`,
           {
-            item: itemId,
-            quantity: 1,
-          },
-          { headers }
+            headers,
+          }
         );
-        console.log(response.data);
-        dispatch(increaseCounter());
-        const updatedItemsId = itemsid.concat(itemId);
-        dispatch(setItemsid(updatedItemsId));
+        console.log(response.data.product);
+        const proDetails = response.data.product;
+        let selectedSize = "";
+
+        if (proDetails.stock_S > 0) {
+          selectedSize = "S";
+        } else if (proDetails.stock_M > 0) {
+          selectedSize = "M";
+        } else if (proDetails.stock_L > 0) {
+          selectedSize = "L";
+        } else if (proDetails.stock_XL > 0) {
+          selectedSize = "XL";
+        } else {
+          selectedSize = "one_size";
+        }
+        setSelectedSize(selectedSize);
+
+        try {
+          console.log(selectedSize);
+          const response = await axiosInstance.post(
+            `/api/cart/add/`,
+            {
+              item: item.item,
+              quantity: 1,
+              size: selectedSize,
+            },
+            { headers }
+          );
+          console.log(response.data);
+          dispatch(increaseCounter());
+          const updatedItemsId = itemsid.concat(item.item);
+          dispatch(setItemsid(updatedItemsId));
+        } catch (error) {
+          console.error("Error:", error);
+        }
       } catch (error) {
-        console.error("Error:", error.response.data);
+        console.error("Error:", error);
       }
     }
+    // else {
+    //   try {
+    //     const response = await axiosInstance.get(`/api/cart/list/`, {
+    //       headers,
+    //     });
+    //     console.log(response.data.cart_items);
+    //     const cartitems = response.data.cart_items;
+    //     try {
+    //       const cartItem = cartitems.find(
+    //         (item) => item.item === itemId.item && item.user === itemId.user
+    //       );
+    //       console.log(cartItem);
+    //       const response = await axiosInstance.delete(
+    //         `/api/cart/delete/${cartItem.id}`,
+    //         { headers }
+    //       );
+    //       console.log(response.data);
+    //       const updatedItemsId = itemsid.filter((item) => item !== itemId.item);
+    //       dispatch(setItemsid(updatedItemsId));
+
+    //       console.log(cartItem.quantity);
+    //       dispatch(decreaseCounterByAmount(cartItem.quantity));
+    //     } catch (error) {
+    //       console.error("Error:", error);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching cart items:", error);
+    //   }
+    // }
   };
   const handleRemoveWish = async (itemId) => {
     // e.preventDefault();
@@ -103,13 +165,17 @@ const Wishlist = () => {
                   </div>
                   <button
                     // onClick={() => naviate(/details/${movie.id})}
-                    class="btn btn-warning"
-                    onClick={() => handleAdd(item.item)}
+                    class="btn"
+                    style={{
+                      backgroundColor: itemsid.includes(item.item)
+                        ? "gray"
+                        : "#ca1515",
+                      color: "#ffffff",
+                    }}
+                    onClick={() => handleAdd(item)}
                   >
                     {/* {item.id} */}
-                    {itemsid.includes(item.item)
-                      ? "Added to cart"
-                      : "Add to cart"}
+                    {itemsid.includes(item.item) ? "Added" : "Add to Cart"}
                   </button>
                 </div>
               </div>

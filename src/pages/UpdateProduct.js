@@ -14,7 +14,7 @@ const UpdateProduct = () => {
         'Content-Type': 'multipart/form-data'
     };
 
-
+    const [subcategories, setSubCategories] = useState([]);
     const [errors, setErrors] = useState([]);
     const [categories, setCategories] = useState([]);
     const [updatePro, setUpdatePro] = useState({
@@ -28,6 +28,7 @@ const UpdateProduct = () => {
         sale: true,
         newprice: '',
         category: '',
+        subcategory: '',
         stock_S: '',
         stock_M: '',
         stock_L: '',
@@ -64,7 +65,7 @@ const UpdateProduct = () => {
     }, [params.id, setUpdatePro]);
 
 
-
+  
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -121,7 +122,12 @@ const UpdateProduct = () => {
 
     };
 
-
+    const handleCategoryChange = (e) => {
+        const selectedCategoryId = e.target.value;
+        const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
+        setSubCategories(selectedCategory.subcategories);
+        setUpdatePro({ ...updatePro, category: selectedCategoryId, subcategory: '' });
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -233,13 +239,26 @@ const UpdateProduct = () => {
                                         <label htmlFor="category" className="form-label">
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
                                         </label>
-                                        <select id="category" name="category" value={updatePro?.category || ''} onChange={handleChange} className="form-control" >
-                                            <option value="">Select Category</option>
+                                        <select id="category" name="category" value={updatePro?.category || ''} onChange={handleCategoryChange} className="form-control" >
+                                          
                                             {categories.map(category => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
                                         </select>
                                     </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="subcategory" className="form-label">
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:
+                                        </label>
+                                        <select id="subcategory" name="subcategory" value={updatePro?.subcategory || ''} onChange={handleChange} className="form-control" >
+                                          
+                                            {subcategories.map(subcategory => (
+                                                <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
 
                                 </form>
                             </div>

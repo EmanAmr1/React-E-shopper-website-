@@ -1,16 +1,11 @@
 import React from "react";
-import rev from "../imags/rev.png";
 import { useDispatch, useSelector } from "react-redux";
-import { increaseCounterByAmount, setItemsid } from "../store/slices/total";
-import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
-import UpdateProduct from "./UpdateProduct";
-import DeleteProduct from "./DeleteProduct";
 
 const VendorProduct = () => {
     const dispatch = useDispatch();

@@ -312,9 +312,7 @@ const ProductDetails = () => {
           <div class="row">
             <div class="col-lg-12">
               <div class="breadcrumb__links">
-                <a href="./index.html">
-                  <i class="fa fa-home"> </i> Home
-                </a>
+               
                 <a href=" " onClick={() => navigate(`/ProductList/`)}>
                   Continue Shoping{" "}
                 </a>
@@ -419,10 +417,7 @@ const ProductDetails = () => {
                   <span className="basic">Brand:</span> {proDetails.brand}
                 </span>
 
-                <p>
-                  <span className="basic">Category: </span>
-                  {proDetails.category}
-                </p>
+               
 
                 <div className="product__details__widget">
                   <ul>
@@ -441,6 +436,9 @@ const ProductDetails = () => {
                         </label>
                       </div>
                     </li>
+
+                    {proDetails.sizeable ? (
+  <>
                     <p className="product__details__widget">
                       <ul>
                         <li>
@@ -471,7 +469,10 @@ const ProductDetails = () => {
                         </li>
                       </ul>
                     </p>
+                    </> ) : null}
 
+
+                    {proDetails.sizeable ? (
                     <li>
                       <span>Select size:</span>
                       <div className="size__btn">
@@ -494,7 +495,9 @@ const ProductDetails = () => {
                           )}
                         </select>
                       </div>
-                    </li>
+                    </li>) : null}
+
+
                   </ul>
 
                   <div className="product__details__button mt-4">

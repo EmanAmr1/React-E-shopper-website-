@@ -135,11 +135,34 @@ const AddProduct = () => {
 
         const formData = new FormData();
 
-
-        if (!addPro.name || !addPro.description || !addPro.price || !addPro.brand || !addPro.stock || !addPro.category) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill in all required fields.']);
+        if (!addPro.name) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;
         }
+
+
+        if (!addPro.description ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill description.']);
+            return;
+        }
+
+        if ( !addPro.price ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill price']);
+            return;
+        }
+
+        if ( !addPro.brand ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill brand.']);
+            return;
+        }
+
+        if ( !addPro.stock ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
+            return;
+        }
+
+      
+
 
 
         if (addPro.newprice && addPro.price && parseFloat(addPro.newprice) >= parseFloat(addPro.price)) {
@@ -268,14 +291,14 @@ const AddProduct = () => {
                                         </label>
                                         <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
                                     </div>
-                                   
+
 
                                     <div className="mb-3">
                                         <label htmlFor="category" className="form-label">
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
                                         </label>
                                         <select id="category" name="category" value={addPro.category} onChange={handleCategoryChange} className="form-control" >
-                                            <option value="">Select Category</option>
+                                           
                                             {categories.map(category => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
@@ -286,7 +309,7 @@ const AddProduct = () => {
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:
                                         </label>
                                         <select id="subcategory" name="subcategory" value={addPro.subcategory} onChange={handleChange} className="form-control" >
-                                            <option value="">Select Subcategory</option>
+                                          
                                             {subcategories.map(subcategory => (
                                                 <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>
                                             ))}

@@ -16,6 +16,8 @@ const ProductList = () => {
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null); 
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const token = Cookies.get("token");
   const headers = {
     Authorization: `Token ${token}`,
@@ -140,14 +142,26 @@ const ProductList = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchProducts();
-  }, [minPrice, maxPrice, currentPage]);
+    fetchProducts(); // Fetch products initially
+  }, [selectedCategory, selectedSubcategory, minPrice, maxPrice, currentPage]); // Refetch products when any filter changes
 
   const fetchProducts = () => {
+    let url = `/API/allproducts/?page=${currentPage}`;
+
+    // Add selected category and subcategory to the URL if they are not null
+    if (selectedCategory) {
+      url += `&category=${selectedCategory}`;
+    }
+
+    if (selectedSubcategory) {
+      url += `&subcategory=${selectedSubcategory}`;
+    }
+
+    // Add price range to the URL
+    url += `&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+
     axiosInstance
-      .get(
-        `/API/allproducts/?minPrice=${minPrice}&maxPrice=${maxPrice}&page=${currentPage}`
-      )
+      .get(url)
       .then((res) => {
         setProducts(res.data.results.products);
         const totalPages = Math.ceil(res.data.count / 12); // Calculate total pages
@@ -157,7 +171,6 @@ const ProductList = () => {
         console.log(err);
       });
   };
-
   const handlePriceChange = (event) => {
     const { name, value } = event.target;
     if (name === "minPrice") {
@@ -182,16 +195,11 @@ const ProductList = () => {
                 </div>
                 <div className="categories__accordion">
                   <div className="accordion" id="accordionExample">
-                    {category.map((cat) => {
+                  {category.map((cat) => {
                       return (
                         <>
                           <div className="card" key={cat.id}>
-                            <div
-                              className={`card-heading ${
-                                activeAccordion === cat.id ? "active" : ""
-                              }`}
-                              onClick={() => toggleAccordion(cat.id)}
-                            >
+                            <div className="card-heading">
                               <Link
                                 data-toggle="collapse"
                                 data-target={`#collapse${cat.id}`}
@@ -201,16 +209,22 @@ const ProductList = () => {
                             </div>
                             <div
                               id={`collapse${cat.id}`}
-                              className={`collapse ${
-                                activeAccordion === cat.id ? "show" : ""
-                              }`}
+                              className="collapse"
                               data-parent="#accordionExample"
                             >
                               <div className="card-body">
                                 <ul>
                                   {cat.subcategories.map((subcat) => (
                                     <li key={subcat.id}>
-                                      <Link to="h">{subcat.name}</Link>
+                                      <Link
+                                        to="#"
+                                        onClick={() => {
+                                          setSelectedCategory(cat.id); // Set selected category
+                                          setSelectedSubcategory(subcat.id); // Set selected subcategory
+                                        }}
+                                      >
+                                        {subcat.name}
+                                      </Link>
                                     </li>
                                   ))}
                                 </ul>

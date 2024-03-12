@@ -88,7 +88,7 @@ function CustomerProfile() {
     axios.post('http://localhost:8000/api/logout/', null, { headers })
       .then(() => {
         console.log("Logout successful");
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Logout error:", error);

@@ -6,16 +6,40 @@ import { fetchTotalCount } from "../../store/slices/total";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWishList } from "../../store/slices/wishlist";
+import axios from 'axios';
+import { useNavigate} from "react-router-dom";
+import "./Header.css";
+
+
+
 const Header = () => {
   const total = useSelector((state) => state.total.count);
   const count = useSelector((state) => state.wishlist.count);
   // const [total, setTotal] = useState();
   const dispatch = useDispatch();
+  const isAuthenticated = Cookies.get("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchTotalCount());
     dispatch(fetchWishList());
   }, []);
+
+  const handleLogout = () => {
+    const token = Cookies.get('token'); 
+    Cookies.remove('token');
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+    axios.post('http://localhost:8000/api/logout/', null, { headers })
+      .then(() => {
+        console.log("Logout successful");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+      });
+  };
 
   return (
     <>
@@ -105,8 +129,14 @@ const Header = () => {
             <div class="col-lg-3">
               <div class="header__right">
                 <div class="header__right__auth">
-                  <Link to="/login">Login</Link>
-                  <Link to="/register">Register</Link>
+                {isAuthenticated ? (
+                    <Link className="header__right__auth__link" to="#" onClick={handleLogout}>Logout</Link>
+                  ) : (
+                    <>
+                      <Link className="header__right__auth__link" to="/login">Login</Link>
+                      <Link className="header__right__auth__link" to="/register">Register</Link>
+                    </>
+                  )}
                 </div>
                 <ul class="header__right__widget">
                   <li>

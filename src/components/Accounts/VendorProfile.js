@@ -7,42 +7,63 @@ import UpdateProduct from'../../pages/UpdateProduct'
 import DeleteProduct from'../../pages/DeleteProduct'
 
 function VendorProfile() {
-  const location = useLocation();
-  const { user, token } = location.state || {};
   const navigate = useNavigate();
-  const oneHourFromNow = new Date();
-  oneHourFromNow.setTime(oneHourFromNow.getTime() + 60 * 60 * 1000);
-
   const [products, setProducts] = useState([]);
   const baseImageUrl = "http://127.0.0.1:8000";
-  Cookies.set('token', token, { expires: oneHourFromNow, secure: true });
   const handleLogout = () => {
-    // Clear JWT token and user data cookies
-    Cookies.remove('jwt');
-    Cookies.remove('user');
+    const token = Cookies.get('token'); 
     Cookies.remove('token');
-
-    // Call the logout API
-    axios.post('http://localhost:8000/api/logout/')
-      .then((res) => {
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+    axios.post('http://localhost:8000/api/logout/', null, { headers })
+      .then(() => {
         console.log("Logout successful");
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Logout error:", error);
       });
-
-
-      
   };
+  
+/////////////////////////////////////////////////////////
 
-
+  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState({
+    first_name:'',
+    last_name:'',
+    address:'',
+    phone:'',
+    birthdate:''
+});
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+  
+    axios.get('http://localhost:8000/api/profile/', { headers })
+      .then((res) => {
+        setUser(res.data.message);
+        setUserId(res.data.message.id);
+        setUpdatedUser(res.data.message); 
+        
+      })
+      .catch((error) => {
+        console.error("Fetch user error:", error);
+        
+      });
+  }, []);
+  
   useEffect(() => {
     
     axios
       .get(`http://127.0.0.1:8000/API/allproducts/`)
       .then((res) => {
-        setProducts(res.data.results.products);
+       
+        const filteredProducts = res.data.results.products.filter(product => product.vendor === userId);
+        setProducts(filteredProducts);
       })
       .catch((err) => console.log(err));
   }, );
@@ -55,8 +76,6 @@ function VendorProfile() {
       <h1>Welcome {user ? user.first_name : ''}</h1>
       {user && (
         <div>
-          <p>token: {token}</p>
-
           <p>Email: {user.email}</p>
           <p>firstname: {user.first_name}</p>
           <p>lastname: {user.last_name}</p>

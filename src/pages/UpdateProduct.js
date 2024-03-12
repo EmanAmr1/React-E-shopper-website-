@@ -14,6 +14,39 @@ const UpdateProduct = () => {
         'Content-Type': 'multipart/form-data'
     };
 
+
+
+/////////////////////////////////////////////////////////
+
+const [userId, setUserId] = useState(null);
+const [user, setUser] = useState(null);
+const [updatedUser, setUpdatedUser] = useState({
+  first_name:'',
+  last_name:'',
+  address:'',
+  phone:'',
+  birthdate:''
+});
+useEffect(() => {
+  const token = Cookies.get('token');
+  const headers = {
+    Authorization: `Token ${token}`
+  };
+
+  axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+    .then((res) => {
+      setUser(res.data.message);
+      setUserId(res.data.message.id);
+      setUpdatedUser(res.data.message); 
+      
+    })
+    .catch((error) => {
+      console.error("Fetch user error:", error);
+      
+    });
+}, []);
+
+
     const [subcategories, setSubCategories] = useState([]);
     const [errors, setErrors] = useState([]);
     const [categories, setCategories] = useState([]);

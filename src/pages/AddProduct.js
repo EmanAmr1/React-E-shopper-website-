@@ -46,6 +46,31 @@ const AddProduct = () => {
     const [successMessage, setSuccessMessage] = useState('');
 
 
+  /////////////////////////////////////////////////////////
+
+  const [userId, setUser] = useState(null);
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+  
+    axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+      .then((res) => {
+        setUser(res.data.message.id);
+        console.log("ssss",res.data.message.id);
+  
+      })
+      .catch((error) => {
+        console.error("Fetch user error:", error);
+
+      });
+  }, []);
+
+
+
+
+
     useEffect(() => {
         axiosInstance.get('/API/categories/', { headers })
             .then(res => {
@@ -179,7 +204,7 @@ const AddProduct = () => {
         });
 
 
-
+        formData.append('vendor', userId)
         axiosInstance.post('/API/addProduct/', formData, { headers })
             .then(res => {
                 setSuccessMessage('Product successfully added');

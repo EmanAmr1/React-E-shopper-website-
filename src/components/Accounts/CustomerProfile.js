@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate,Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import './CustomerProfile.css'
@@ -148,6 +148,9 @@ function CustomerProfile() {
                <div>
                <a className='btn2'  onClick={handleDelete}>Delete Account</a>
                </div>
+               <Link to="/VerifyOTP" className="btn btn-primary">
+                  Change Password
+                </Link>
                </div>
                </li>
           </ul>

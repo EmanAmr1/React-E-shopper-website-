@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, setItemsid } from "../store/slices/total";
 import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 import ListOfProduct from "../components/Shop/ListOfProduct";
+import { Form, Button } from "react-bootstrap";
+import './ProductList.css'
+
 
 const ProductList = () => {
   const [category, setCategory] = useState([]);
@@ -156,7 +159,9 @@ const ProductList = () => {
     if (selectedSubcategory) {
       url += `&subcategory=${selectedSubcategory}`;
     }
-
+    if (keyword) {
+      url += `&keyword=${keyword}`;
+    }
     // Add price range to the URL
     url += `&minPrice=${minPrice}&maxPrice=${maxPrice}`;
 
@@ -183,9 +188,35 @@ const ProductList = () => {
     setCurrentPage(page);
   };
 
+  const [keyword, setKeyword] = useState(""); 
+
+  const handleSearchChange = (event) => {
+    setKeyword(event.target.value); 
+  };
+  
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    setCurrentPage(1); 
+    fetchProducts(); 
+  };
+  
+
   return (
     <section className="shop spad">
       <div className="container">
+        <div className="productSearch mb-3">
+        <Form className="d-flex" onSubmit={handleSearchSubmit}> {/* Add onSubmit event handler */}
+  <Form.Control
+    type="search"
+    placeholder="Search"
+    className="me-2"
+    aria-label="Search"
+    value={keyword} // Bind value to keyword state
+    onChange={handleSearchChange} // Add onChange event handler
+  />
+<Button variant="outline-success" type="submit" className="search-button">Search</Button>
+</Form>
+        </div>
         <div className="row">
           <div className="col-lg-3 col-md-3">
             <div className="shop__sidebar">

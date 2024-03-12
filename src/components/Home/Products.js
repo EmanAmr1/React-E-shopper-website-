@@ -1,9 +1,9 @@
 import React from "react";
-
+import ProductRating from '../Shop/ProductRating'
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../apis/config";
-
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, setItemsid } from "../../store/slices/total";
@@ -18,6 +18,11 @@ const Products = () => {
   const token = Cookies.get("token");
   const headers = {
     Authorization: `Token ${token}`,
+  };
+  const [selectedCategory, setSelectedCategory] = useState("*");
+  const handleCategoryFilter = (category) => {
+    console.log('Selected Category:', category);
+    setSelectedCategory(category);
   };
 
   useEffect(() => {
@@ -139,20 +144,31 @@ const Products = () => {
             </div>
             <div className="col-lg-8 col-md-8">
               <ul className="filter__controls">
-                <li className="active" data-filter="*">
+                <li className={selectedCategory === "*" ? "active" : ""}
+                  onClick={() => handleCategoryFilter("*")}>
                   All
                 </li>
-                <li data-filter=".women">Women’s</li>
-                <li data-filter=".men">Men’s</li>
-                <li data-filter=".kid">Kid’s</li>
-                <li data-filter=".accessories">Accessories</li>
-                <li data-filter=".cosmetic">Cosmetics</li>
+                <li className={selectedCategory === "women" ? "active" : ""}
+                  onClick={() => handleCategoryFilter(1)}>Women’s</li>
+                <li className={selectedCategory === "men" ? "active" : ""}
+                  onClick={() => handleCategoryFilter(2)}>Men’s</li>
+                <li className={selectedCategory === "kid" ? "active" : ""}
+                  onClick={() => handleCategoryFilter(3)}>Kid’s</li>
+                <li className={selectedCategory === "accessories" ? "active" : ""}
+                  onClick={() => handleCategoryFilter(4)}>Accessories</li>
+                <li className={selectedCategory === "cosmetic" ? "active" : ""}
+                  onClick={() => handleCategoryFilter(5)}>Cosmetics</li>
               </ul>
             </div>
           </div>
           <div className="row property__gallery">
-            {product.map((prod) => {
+            {product.filter((prod) =>selectedCategory === "*" ? true : prod.category === selectedCategory
+            ).map((prod) => {
+                  console.log('Selected Category:', selectedCategory);
+                console.log('Filter Result:', selectedCategory === '*' || prod.category === selectedCategory);
+                console.log('Rendered Product:', prod);
               return (
+                
                 <div className="col-lg-3 col-md-4 col-sm-6 mix women">
                   <div className="product__item">
                     <div
@@ -218,13 +234,7 @@ const Products = () => {
                       <h6>
                         <a href="h">{prod.name}</a>
                       </h6>
-                      <div className="rating">
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                      </div>
+                      <ProductRating rating={prod.ratings} />
                       {prod.sale ? (
                         <div
                           className="product__price  "

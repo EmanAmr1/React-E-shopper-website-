@@ -11,18 +11,18 @@ const ProductRating = ({ rating }) => {
 
         // Full stars
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<FontAwesomeIcon icon={faStar} key={i} style={{ color: '#fff220' }} />);
+            stars.push(<FontAwesomeIcon icon={faStar} key={i} style={{ color: '#e3c01c', fontSize: '12px' }} />);
         }
 
         // Half star (if applicable)
         if (hasHalfStar) {
-            stars.push(<FontAwesomeIcon icon={faStarHalfAlt} style={{ color: '#fff220' }} key="half" />);
+            stars.push(<FontAwesomeIcon icon={faStarHalfAlt} style={{ color: '#e3c01c', fontSize: '12px' }} key="half" />);
         }
 
         // Empty stars
         const emptyStars = 5 - stars.length;
         for (let i = 0; i < emptyStars; i++) {
-            stars.push(<FontAwesomeIcon icon={farStar} key={`empty-${i}`} />);
+            stars.push(<FontAwesomeIcon icon={farStar} style={{ fontSize: '12px' }} key={`empty-${i}`} />);
         }
 
         return stars;

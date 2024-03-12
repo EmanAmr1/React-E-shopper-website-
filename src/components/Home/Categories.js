@@ -1,7 +1,7 @@
 
 import { useState,useEffect } from "react";
 import { axiosInstance } from "../../apis/config";
-
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   
@@ -27,12 +27,12 @@ const Categories = () => {
               <div className="col-lg-6 p-0">
                 <div
                   className="categories__item categories__large__item set-bg"
-                  style={{ backgroundImage: `url(${category[0].image})` }}
+                  style={{ backgroundImage: `url(${category[0].imageUrl})` }}
                 >
                   <div className="categories__text">
                     <h1>{category[0].name}</h1>
                     <p>{category[0].description}</p>
-                    <a href="/">Shop now</a>
+                    <Link to="/ProductList">Shop now</Link>
                   </div>
                 </div>
               </div>
@@ -45,12 +45,12 @@ const Categories = () => {
                     >
                       <div
                         className="categories__item set-bg"
-                        style={{ backgroundImage: `url(${cat.image})` }}
+                        style={{ backgroundImage: `url(${cat.imageUrl})` }}
                       >
                         <div className="categories__text">
                           <h4>{cat.name}</h4>
                           <p>{cat.itemCount} items</p>
-                          <a href="/">Shop now</a>
+                          <Link to="/ProductList">Shop now</Link>
                         </div>
                       </div>
                     </div>

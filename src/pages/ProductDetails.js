@@ -17,13 +17,13 @@ const ProductDetails = () => {
   const userCookie = Cookies.get("token");
   console.log(userCookie);
   // const userID = userCookie ? JSON.parse(userCookie).id : null;
-  const userID = 2;
+  // const userID = 2;
   const [loading, setLoading] = useState(true);
   const [proDetails, setProDetails] = useState({});
   const [comment, setComment] = useState("");
   const [productId, setProductId] = useState("");
   const [reviews, setReviews] = useState([]);
-  const [userId, setUserId] = useState("");
+  const [userId, setUser] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedImage, setSelectedImage] = useState("");
@@ -98,6 +98,40 @@ const ProductDetails = () => {
   //     })
   //     .catch((err) => console.log(err));
   // },  [params.id, userID]);
+
+
+
+
+////////////////////////////////////////////
+useEffect(() => {
+  const token = Cookies.get('token');
+  const headers = {
+    Authorization: `Token ${token}`
+  };
+
+  axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+    .then((res) => {
+      setUser(res.data.message.id);
+      console.log("ssss",res.data.message.id);
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error("Fetch user error:", error);
+      setLoading(false);
+    });
+}, []);
+
+
+
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     axiosInstance
       .get(`/API/getProduct/${params.id}/`, { headers })
@@ -105,7 +139,7 @@ const ProductDetails = () => {
         setProDetails(res.data.product);
         setProductId(res.data.product.id);
         const userRating = res.data.product.rates.find(
-          (rate) => rate.user === userID
+          (rate) => rate.user === userId
         );
         if (userRating) {
           // If the user has rated, set the rating in the local state
@@ -113,7 +147,7 @@ const ProductDetails = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, [params.id, userID]);
+  }, [params.id, userId]);
 
   useEffect(() => {
     axiosInstance
@@ -253,7 +287,7 @@ const ProductDetails = () => {
     try {
       // Check if the user has already rated this product
       const existingRating = proDetails.rates.find(
-        (rate) => rate.user === userID
+        (rate) => rate.user === userId
       );
 
       if (existingRating) {

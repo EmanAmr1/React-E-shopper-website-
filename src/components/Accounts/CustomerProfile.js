@@ -7,6 +7,7 @@ import './CustomerProfile.css'
 function CustomerProfile() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [defaultUser, setDefaultUser] = useState(user);
   const [loading, setLoading] = useState(true);
   const [updatedUser, setUpdatedUser] = useState({
       first_name:'',
@@ -16,6 +17,18 @@ function CustomerProfile() {
       birthdate:''
   });
   const [isModified, setIsModified] = useState(false);
+  useEffect(() => {
+    if (user) {
+      setDefaultUser(user);
+      setUpdatedUser({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        address: user.address,
+        phone: user.phone,
+        birthdate: user.birthdate
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     const token = Cookies.get('token');

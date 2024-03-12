@@ -35,6 +35,8 @@ const Message = React.lazy(() => import("../components/Accounts/Message"));
 const Thankyou = React.lazy(() => import("../components/checkout/Thankyou"));
 const DeliveryMan = React.lazy(() => import("../components/Accounts/DeliveryMan"));
 const ContacePage= React.lazy(() => import("../pages/ContacePage"));
+const ChangePassword = React.lazy(() => import("../components/Accounts/ChangePassword"));
+const VerifyOTP = React.lazy(() => import("../components/Accounts/VerifyOTP"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
@@ -73,6 +75,8 @@ const Router = () => {
         <Route path="/Vendorplan" element={<Vendorplan />} />
         <Route path="/message" element={<Message />} />
         <Route path="vendorPro/:id" element={<VendorPro />} />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
+        <Route path="/VerifyOTP" element={<VerifyOTP />} />
 
       </Routes>
     </Suspense>

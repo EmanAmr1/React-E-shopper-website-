@@ -19,6 +19,7 @@ const AddProduct = () => {
 
     const [errors, setErrors] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [subcategories, setSubCategories] = useState([]);
     const [addPro, setAddPro] = useState({
         name: '',
         description: '',
@@ -30,11 +31,12 @@ const AddProduct = () => {
         sale: true,
         newprice: '',
         category: '',
+        subcategory: '',
         stock_S: '',
         stock_M: '',
         stock_L: '',
         stock_XL: '',
-        sizeable:'',
+        sizeable: '',
         image: null,
         subImageOne: null,
         subImageTwo: null,
@@ -55,6 +57,10 @@ const AddProduct = () => {
     }, []);
 
 
+
+
+
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
 
@@ -69,6 +75,13 @@ const AddProduct = () => {
                 [name]: value
             });
         }
+
+
+
+
+
+
+
     };
 
 
@@ -109,6 +122,12 @@ const AddProduct = () => {
 
     };
 
+    const handleCategoryChange = (e) => {
+        const selectedCategoryId = e.target.value;
+        const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
+        setSubCategories(selectedCategory.subcategories);
+        setAddPro({ ...addPro, category: selectedCategoryId, subcategory: '' });
+    };
 
 
     const handleSubmit = (event) => {
@@ -153,17 +172,18 @@ const AddProduct = () => {
                     sale: true,
                     newprice: '',
                     category: '',
+                    subcategory: '',
                     stock_S: '',
                     stock_M: '',
                     stock_L: '',
                     stock_XL: '',
-                    sizeable:'',
+                    sizeable: '',
                     image: null,
                     subImageOne: null,
                     subImageTwo: null,
                     subImageThree: null,
                     subImageFour: null
-    
+
                 });
                 setErrors([]);
             })
@@ -171,6 +191,15 @@ const AddProduct = () => {
                 console.error('Error adding product:', error);
             });
     };
+
+
+
+
+
+
+
+
+
 
     return (
         <>
@@ -199,30 +228,30 @@ const AddProduct = () => {
                                         <label htmlFor="price" className="form-label">
                                             <FontAwesomeIcon icon={faDollarSign} /> Price:
                                         </label>
-                                        <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" required  />
+                                        <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" required />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="brand" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Brand:
                                         </label>
-                                        <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" required  />
+                                        <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" required />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock" className="form-label">
                                             <FontAwesomeIcon icon={faBalanceScale} /> Stock:
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" required  />
+                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" required />
                                     </div>
                                     <div className="mb-3 form-check">
-                                        <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input"    />
+                                        <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="new" className="form-check-label">New</label>
                                     </div>
                                     <div className="mb-3 form-check">
-                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input"  />
+                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sale" className="form-check-label">Sale</label>
                                     </div>
                                     <div className="mb-3 form-check">
-                                        <input type="checkbox" id="sizeable" name="sizeable" checked={addPro.sizeable} onChange={handleChange} className="form-check-input"  />
+                                        <input type="checkbox" id="sizeable" name="sizeable" checked={addPro.sizeable} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
                                     <div className="mb-3">
@@ -237,19 +266,36 @@ const AddProduct = () => {
                                         <label htmlFor="newprice" className="form-label">
                                             <FontAwesomeIcon icon={faDollarSign} /> New Price:
                                         </label>
-                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control"  />
+                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
                                     </div>
+                                   
+
                                     <div className="mb-3">
                                         <label htmlFor="category" className="form-label">
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
                                         </label>
-                                        <select id="category" name="category" value={addPro.category} onChange={handleChange} className="form-control" >
+                                        <select id="category" name="category" value={addPro.category} onChange={handleCategoryChange} className="form-control" >
                                             <option value="">Select Category</option>
                                             {categories.map(category => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
                                         </select>
                                     </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="subcategory" className="form-label">
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:
+                                        </label>
+                                        <select id="subcategory" name="subcategory" value={addPro.subcategory} onChange={handleChange} className="form-control" >
+                                            <option value="">Select Subcategory</option>
+                                            {subcategories.map(subcategory => (
+                                                <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+
+
+
 
                                 </form>
                             </div>
@@ -289,13 +335,13 @@ const AddProduct = () => {
                                         <label htmlFor="images" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Image:
                                         </label>
-                                        <input type="file" id="image" name="image" onChange={handleImageChange} required className="form-control" multiple defaultValue=""  />
+                                        <input type="file" id="image" name="image" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageOne" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product subImageOne:
                                         </label>
-                                        <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} required className="form-control" multiple  defaultValue="" />
+                                        <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
@@ -308,14 +354,14 @@ const AddProduct = () => {
                                         <label htmlFor="subImageThree" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product subImageThree:
                                         </label>
-                                        <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} required className="form-control" multiple defaultValue=""  />
+                                        <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageFour" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product subImageFour:
                                         </label>
-                                        <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} required className="form-control" multiple  defaultValue="" />
+                                        <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
 

@@ -9,6 +9,7 @@ import { Suspense } from "react";
 
 const Home = React.lazy(() => import("../pages/Home"));
 const ProductDetails = React.lazy(() => import("../pages/ProductDetails"));
+const VendorPro = React.lazy(() => import("../pages/vendorPro"));
 const ProductList = React.lazy(() => import("../pages/ProductList"));
 const Cart = React.lazy(() => import("../pages/Cart"));
 const Wishlist = React.lazy(() => import("../pages/Wishlist"));
@@ -71,6 +72,8 @@ const Router = () => {
         <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
         <Route path="/Vendorplan" element={<Vendorplan />} />
         <Route path="/message" element={<Message />} />
+        <Route path="vendorPro/:id" element={<VendorPro />} />
+
       </Routes>
     </Suspense>
   );

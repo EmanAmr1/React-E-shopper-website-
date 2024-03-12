@@ -34,9 +34,12 @@ const DeleteProduct = () => {
     return (
         <div>
             {isDeleted ? (
-                <p>Product deleted successfully.</p>
+
+                <p className="mt-5 ">Product deleted successfully.</p>
             ) : (
-                <button onClick={handleDelete}>Delete Product</button>
+                <>
+                    <p>Are You sure to delete this Product ?</p>
+                    <button onClick={handleDelete}>Delete Product</button></>
             )}
             {error && <p>{error}</p>}
         </div>

@@ -147,10 +147,23 @@ const WomanPage = () => {
   };
   const [products, setProducts] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(200);
+  const [maxPrice, setMaxPrice] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [maxPriceFromAPI, setMaxPriceFromAPI] = useState(null);
+  useEffect(() => {
+    axiosInstance.get('http://127.0.0.1:8000/API/allproducts/')
+      .then(res => {
+        
+        const maxPrice = Math.max(...res.data.results.products.map(product => parseFloat(product.price)));
+        setMaxPriceFromAPI(maxPrice+20);
+        setMaxPrice(maxPrice+20);
 
+      })
+      .catch(error => {
+        console.error('Error fetching maximum price:', error);
+      });
+  }, []);
   useEffect(() => {
     fetchProducts(); // Fetch products initially
   }, [ selectedSubcategory, minPrice, maxPrice, currentPage]); // Refetch products when any filter changes
@@ -279,6 +292,7 @@ const WomanPage = () => {
               <ShopCategory
                 minPrice={minPrice}
                 maxPrice={maxPrice}
+                maxPriceFromAPI={maxPriceFromAPI}
                 handlePriceChange={handlePriceChange}
               />
               <div className="sidebar__sizes">

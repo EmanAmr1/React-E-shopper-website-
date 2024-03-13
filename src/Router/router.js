@@ -36,9 +36,9 @@ const EmailVerification = React.lazy(() =>
 );
 const Message = React.lazy(() => import("../components/Accounts/Message"));
 const Thankyou = React.lazy(() => import("../components/checkout/Thankyou"));
-const DeliveryMan = React.lazy(() =>
-  import("../components/Accounts/DeliveryMan")
-);
+// const Deliveryman = React.lazy(() =>
+//   import("../components/Accounts/Deliveryman")
+// );
 const ContacePage = React.lazy(() => import("../pages/ContacePage"));
 const ChangePassword = React.lazy(() =>
   import("../components/Accounts/ChangePassword")
@@ -58,7 +58,10 @@ const Router = () => {
           <Route path="WomanPage" element={<WomanPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/deliveryman" element={<Deliveryman />} />
+          <Route
+            path="/deliveryman"
+            element={<DeliveryManProfileProtectedRoute />}
+          />
           <Route
             path="/deliveryman/orderdetails/:id"
             element={<Orderdetails />}
@@ -69,7 +72,7 @@ const Router = () => {
             element={<CustomerProfileProtectedRoute />}
           />
           <Route path="/thannk-you" element={<Thankyou />} />
-          <Route path="/DeliveryMan" element={<DeliveryMan />} />
+          {/* <Route path="/Deliveryman" element={<Deliveryman />} /> */}
           <Route path="/contact" element={<ContacePage />} />
 
           {/* <Route path='Register' element={<Register />} /> */}
@@ -109,12 +112,12 @@ const VendorProfileProtectedRoute = () => {
   return isAuthenticated ? <VendorProfile /> : <Navigate to="/login" />;
 };
 
-// const DeliveryManProfileProtectedRoute = () => {
-//   const token = Cookies.get('token'); // Retrieve the token from cookies
-//   const isAuthenticated = !!token; // Check if token exists
+const DeliveryManProfileProtectedRoute = () => {
+  const token = Cookies.get("token"); // Retrieve the token from cookies
+  const isAuthenticated = !!token; // Check if token exists
 
-//   // If user is authenticated, render CustomerProfile, else redirect to login
-//   return isAuthenticated ? <DeliveryMan /> : <Navigate to="/login" />;
-// };
+  // If user is authenticated, render CustomerProfile, else redirect to login
+  return isAuthenticated ? <Deliveryman /> : <Navigate to="/login" />;
+};
 
 export default Router;

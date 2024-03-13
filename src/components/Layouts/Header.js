@@ -16,7 +16,26 @@ const Header = () => {
   const isAuthenticated = Cookies.get("token");
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation(); // Using useLocation hook to get the current location
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const headers = {
+      Authorization: `Token ${token}`
+    };
+  
+    axios.get('http://localhost:8000/api/profile/', { headers })
+      .then((res) => {
+        setUser(res.data.message);
+        // setUpdatedUser(res.data.message); 
+        // setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Fetch user error:", error);
+        // setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTotalCount());
@@ -43,6 +62,7 @@ const Header = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  
 
   return (
     <>
@@ -57,9 +77,9 @@ const Header = () => {
           +
         </div>
         <ul className="offcanvas__widget">
-          {/* <li>
-            <span className="icon_search search-switch"></span>
-          </li> */}
+          <li>
+          <span class="fa-regular fa-user"></span>
+          </li>
           <li>
             <Link to="H">
               <span className="icon_heart_alt"></span>
@@ -177,9 +197,23 @@ const Header = () => {
                   )}
                 </div>
                 <ul className="header__right__widget">
-                  {/* <li>
-                    <span className="icon_search search-switch"></span>
-                  </li> */}
+                <li>
+  {user && user.usertype === "customer" && (
+    <Link to="/customerprofile">
+      <span className="fa-regular fa-user"></span>
+    </Link>
+  )}
+  {user && user.usertype === "vendor" && (
+    <Link to="/vendorprofile">
+      <span className="fa-regular fa-user"></span>
+    </Link>
+  )}
+  {user && user.usertype === "DeliveryMan" && (
+    <Link to="/deliverymanprofile">
+      <span className="fa-regular fa-user"></span>
+    </Link>
+  )}
+</li>
                   <li>
                     <Link to="wishlist">
                       <span className="icon_heart_alt"></span>

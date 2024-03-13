@@ -71,7 +71,7 @@ const Router = () => {
         <Route path="*" element={<NotFound />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/vendorprofile" element={<VendorProfile />} />
+        <Route path="/vendorprofile" element={<VendorProfileProtectedRoute />} />
         <Route path="/verify-email" element={<EmailVerification />} />
         <Route path="/addProduct" element={<AddProduct />} />
         <Route path="/updateProduct/:id" element={<UpdateProduct />} />
@@ -88,11 +88,23 @@ const Router = () => {
 };
 
 const CustomerProfileProtectedRoute = () => {
-  const token = Cookies.get('token'); // Retrieve the token from cookies
-  const isAuthenticated = !!token; // Check if token exists
-
-  // If user is authenticated, render CustomerProfile, else redirect to login
+  const token = Cookies.get('token');
+  const isAuthenticated = !!token; 
   return isAuthenticated ? <CustomerProfile /> : <Navigate to="/login" />;
 };
+
+const VendorProfileProtectedRoute = () => {
+  const token = Cookies.get('token'); 
+  const isAuthenticated = !!token; 
+  return isAuthenticated ? <VendorProfile /> : <Navigate to="/login" />;
+};
+
+// const DeliveryManProfileProtectedRoute = () => {
+//   const token = Cookies.get('token'); // Retrieve the token from cookies
+//   const isAuthenticated = !!token; // Check if token exists
+
+//   // If user is authenticated, render CustomerProfile, else redirect to login
+//   return isAuthenticated ? <DeliveryMan /> : <Navigate to="/login" />;
+// };
 
 export default Router;

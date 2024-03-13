@@ -547,17 +547,18 @@ const ProductDetails = () => {
                           style={{
                             backgroundColor:
                               wishlistid.includes(productId) && "#ca1515",
-                            // color: wishlistid.includes(productId) && "#ffffff",
+                            color: wishlistid.includes(productId) && "#ffffff",
                           }}
                           onClick={handleAddWish}
+                          className="icon_heart_alt"
                         >
-                          <span className="icon_heart_alt"></span>
+                          {/* <span className="icon_heart_alt"></span> */}
                         </a>
                       </li>
                       <li>
-                        <a href=" ">
+                        {/* <a href=" ">
                           <span className="icon_adjust-horiz"></span>
-                        </a>
+                        </a> */}
                       </li>
                     </ul>
                   </div>

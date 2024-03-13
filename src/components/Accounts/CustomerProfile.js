@@ -123,29 +123,27 @@ function CustomerProfile() {
       });
   };
   return (
-    <div>
-      <div className='row mt-3 ' style={{width:'100%'}}>
-        <div className="col-md-4 col-sm-12">
+    <div style={{background:'rgb(238 238 238 / 48%)'}} >
+      <div className='row pt-5 pb-5 ddd' style={{width:'100%'}} >
+        <div className="col-md-3 col-sm-12 pt-3 "  >
           <ul>
             <li>
-              <h4>Welcome { user ? user.first_name : ''}</h4>
+              <h4 style={{fontWeight:'600', }}>Welcome { user ? user.first_name : ''}</h4>
             </li>
-            <li><h5>{user ? user.email : ''}</h5></li>
-            <li className='mt-5'>
-              <div className='btns'>
-                <div>
-               <Link className='btn1' onClick={handleLogout} style={{ textDecoration: 'none' }}>Logout</Link>
-               </div>
-               <div>
-               <Link className='btn2'  onClick={handleDelete}>Delete Account</Link>
-               </div>
-               <Link to="/VerifyOTP" className="btn btn-primary">
+            <li><h5 >{user ? user.email : ''}</h5></li>
+          <li className='mt-5'>
+          <Link to="/VerifyOTP" className="header__right__auth__link" style={{color:'#007bff'}}>
                   Change Password
                 </Link>
+          </li>
+               <li>
+            <div>
+               <Link className='header__right__auth__link'  style={{color:'red'}} onClick={handleDelete}>Delete Account</Link>
                </div>
-               </li>
+            </li>
           </ul>
         </div>
+        
         {user && (
         <div className='col-md-8 mt-3 '>
           <form onSubmit={handleUpdate} className='ml-2'>

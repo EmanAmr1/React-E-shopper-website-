@@ -275,11 +275,9 @@ const ProductList = () => {
               />
               <div className="sidebar__sizes">
                 <div className="section-title">
-                  <h4>Shop by size</h4>
+                  
                 </div>
-                <div className="size__list">
-                  {/* Your size options go here */}
-                </div>
+             
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layouts/Layout";
+import VendorLayout from "../components/Layouts/VendorLayout";
 import {Navigate} from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -64,6 +65,7 @@ const Router = () => {
 
           {/* <Route path='Register' element={<Register />} /> */}
         </Route>
+        <Route element={<VendorLayout />}>
         <Route path="*" element={<NotFound />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -77,7 +79,7 @@ const Router = () => {
         <Route path="vendorPro/:id" element={<VendorPro />} />
         <Route path="/ChangePassword" element={<ChangePassword />} />
         <Route path="/VerifyOTP" element={<VerifyOTP />} />
-
+        </Route>
       </Routes>
     </Suspense>
   );

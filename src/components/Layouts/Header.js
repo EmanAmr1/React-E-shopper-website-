@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logoImage from "../../imags/logo.png";
-import { fetchTotalCount } from "../../store/slices/total";
-import { fetchWishList } from "../../store/slices/wishlist";
+import { fetchTotalCount, setTotalCount } from "../../store/slices/total";
+import { fetchWishList, setWishTotalCount } from "../../store/slices/wishlist";
 import "./Header.css";
 
 const Header = () => {
@@ -20,15 +20,16 @@ const Header = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     const headers = {
-      Authorization: `Token ${token}`
+      Authorization: `Token ${token}`,
     };
-  
-    axios.get('http://localhost:8000/api/profile/', { headers })
+
+    axios
+      .get("http://localhost:8000/api/profile/", { headers })
       .then((res) => {
         setUser(res.data.message);
-        // setUpdatedUser(res.data.message); 
+        // setUpdatedUser(res.data.message);
         // setLoading(false);
       })
       .catch((error) => {
@@ -52,6 +53,8 @@ const Header = () => {
       .post("http://localhost:8000/api/logout/", null, { headers })
       .then(() => {
         console.log("Logout successful");
+        // dispatch(setTotalCount(0));
+        // dispatch(setWishTotalCount(0));
         navigate("/");
       })
       .catch((error) => {
@@ -62,7 +65,6 @@ const Header = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  
 
   return (
     <>
@@ -70,26 +72,24 @@ const Header = () => {
         className={`offcanvas-menu-overlay ${isMenuOpen ? "active" : ""}`}
         onClick={toggleMenu}
       ></div>
-      <div
-        className={`offcanvas-menu-wrapper ${isMenuOpen ? "active" : ""}`}
-      >
+      <div className={`offcanvas-menu-wrapper ${isMenuOpen ? "active" : ""}`}>
         <div className="offcanvas__close" onClick={toggleMenu}>
           +
         </div>
         <ul className="offcanvas__widget">
           <li>
-          <span class="fa-regular fa-user"></span>
+            <span class="fa-regular fa-user"></span>
           </li>
           <li>
             <Link to="H">
               <span className="icon_heart_alt"></span>
-              <div className="tip">2</div>
+              <div className="tip">{count}</div>
             </Link>
           </li>
           <li>
             <Link to="H">
               <span className="icon_bag_alt"></span>
-              <div className="tip">2</div>
+              <div className="tip">{total}</div>
             </Link>
           </li>
         </ul>
@@ -110,7 +110,9 @@ const Header = () => {
             <li className={location.pathname === "/h" ? "active" : ""}>
               <Link to="/h">Men’s</Link>
             </li>
-            <li className={location.pathname === "/ProductList" ? "active" : ""}>
+            <li
+              className={location.pathname === "/ProductList" ? "active" : ""}
+            >
               <Link to="/ProductList">Shop</Link>
             </li>
             <li className={location.pathname === "/contact" ? "active" : ""}>
@@ -156,16 +158,26 @@ const Header = () => {
                   <li className={location.pathname === "/" ? "active" : ""}>
                     <Link to="/">Home</Link>
                   </li>
-                  <li className={location.pathname === "/WomanPage" ? "active" : ""}>
+                  <li
+                    className={
+                      location.pathname === "/WomanPage" ? "active" : ""
+                    }
+                  >
                     <Link to="WomanPage">Women’s</Link>
                   </li>
                   <li className={location.pathname === "/h" ? "active" : ""}>
                     <Link to="/h">Men’s</Link>
                   </li>
-                  <li className={location.pathname === "/ProductList" ? "active" : ""}>
+                  <li
+                    className={
+                      location.pathname === "/ProductList" ? "active" : ""
+                    }
+                  >
                     <Link to="/ProductList">Shop</Link>
                   </li>
-                  <li className={location.pathname === "/contact" ? "active" : ""}>
+                  <li
+                    className={location.pathname === "/contact" ? "active" : ""}
+                  >
                     <Link to="/contact">Contact</Link>
                   </li>
                 </ul>
@@ -197,23 +209,23 @@ const Header = () => {
                   )}
                 </div>
                 <ul className="header__right__widget">
-                <li>
-  {user && user.usertype === "customer" && (
-    <Link to="/customerprofile">
-      <span className="fa-regular fa-user"></span>
-    </Link>
-  )}
-  {user && user.usertype === "vendor" && (
-    <Link to="/vendorprofile">
-      <span className="fa-regular fa-user"></span>
-    </Link>
-  )}
-  {user && user.usertype === "DeliveryMan" && (
-    <Link to="/deliverymanprofile">
-      <span className="fa-regular fa-user"></span>
-    </Link>
-  )}
-</li>
+                  <li>
+                    {user && user.usertype === "customer" && (
+                      <Link to="/customerprofile">
+                        <span className="fa-regular fa-user"></span>
+                      </Link>
+                    )}
+                    {user && user.usertype === "vendor" && (
+                      <Link to="/vendorprofile">
+                        <span className="fa-regular fa-user"></span>
+                      </Link>
+                    )}
+                    {user && user.usertype === "DeliveryMan" && (
+                      <Link to="/deliverymanprofile">
+                        <span className="fa-regular fa-user"></span>
+                      </Link>
+                    )}
+                  </li>
                   <li>
                     <Link to="wishlist">
                       <span className="icon_heart_alt"></span>

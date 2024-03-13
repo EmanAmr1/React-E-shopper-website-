@@ -99,38 +99,25 @@ const ProductDetails = () => {
   //     .catch((err) => console.log(err));
   // },  [params.id, userID]);
 
+  ////////////////////////////////////////////
+  useEffect(() => {
+    const token = Cookies.get("token");
+    const headers = {
+      Authorization: `Token ${token}`,
+    };
 
-
-
-////////////////////////////////////////////
-useEffect(() => {
-  const token = Cookies.get('token');
-  const headers = {
-    Authorization: `Token ${token}`
-  };
-
-  axiosInstance.get('http://localhost:8000/api/profile/', { headers })
-    .then((res) => {
-      setUser(res.data.message.id);
-      console.log("ssss",res.data.message.id);
-      setLoading(false);
-    })
-    .catch((error) => {
-      console.error("Fetch user error:", error);
-      setLoading(false);
-    });
-}, []);
-
-
-
-
-
-
-
-
-
-
-
+    axiosInstance
+      .get("http://localhost:8000/api/profile/", { headers })
+      .then((res) => {
+        setUser(res.data.message.id);
+        console.log("ssss", res.data.message.id);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Fetch user error:", error);
+        setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     axiosInstance
@@ -346,7 +333,6 @@ useEffect(() => {
           <div class="row">
             <div class="col-lg-12">
               <div class="breadcrumb__links">
-               
                 <a href=" " onClick={() => navigate(`/ProductList/`)}>
                   Continue Shoping{" "}
                 </a>
@@ -451,8 +437,6 @@ useEffect(() => {
                   <span className="basic">Brand:</span> {proDetails.brand}
                 </span>
 
-               
-
                 <div className="product__details__widget">
                   <ul>
                     <li>
@@ -472,66 +456,65 @@ useEffect(() => {
                     </li>
 
                     {proDetails.sizeable ? (
-  <>
-                    <p className="product__details__widget">
-                      <ul>
-                        <li>
-                          <span>Available size:</span>
-                          <div className="size__btn">
-                            {proDetails.stock_S > 0 && (
-                              <label htmlFor="xs-btn">
-                                <input type="radio" id="xs-btn" />S
-                              </label>
-                            )}
-                            {proDetails.stock_M > 0 && (
-                              <label htmlFor="s-btn">
-                                <input type="radio" id="s-btn" />M
-                              </label>
-                            )}
-                            {proDetails.stock_L > 0 && (
-                              <label htmlFor="m-btn">
-                                <input type="radio" id="m-btn" />L
-                              </label>
-                            )}
-                            {proDetails.stock_XL > 0 && (
-                              <label htmlFor="l-btn">
-                                <input type="radio" id="l-btn" />
-                                XL
-                              </label>
-                            )}
-                          </div>
-                        </li>
-                      </ul>
-                    </p>
-                    </> ) : null}
-
+                      <>
+                        <p className="product__details__widget">
+                          <ul>
+                            <li>
+                              <span>Available size:</span>
+                              <div className="size__btn">
+                                {proDetails.stock_S > 0 && (
+                                  <label htmlFor="xs-btn">
+                                    <input type="radio" id="xs-btn" />S
+                                  </label>
+                                )}
+                                {proDetails.stock_M > 0 && (
+                                  <label htmlFor="s-btn">
+                                    <input type="radio" id="s-btn" />M
+                                  </label>
+                                )}
+                                {proDetails.stock_L > 0 && (
+                                  <label htmlFor="m-btn">
+                                    <input type="radio" id="m-btn" />L
+                                  </label>
+                                )}
+                                {proDetails.stock_XL > 0 && (
+                                  <label htmlFor="l-btn">
+                                    <input type="radio" id="l-btn" />
+                                    XL
+                                  </label>
+                                )}
+                              </div>
+                            </li>
+                          </ul>
+                        </p>
+                      </>
+                    ) : null}
 
                     {proDetails.sizeable ? (
-                    <li>
-                      <span>Select size:</span>
-                      <div className="size__btn">
-                        <select
-                          required
-                          onChange={handleSizeChange}
-                          value={selectedSize}
-                        >
-                          {proDetails.stock_S > 0 && (
-                            <option value="S">S</option>
-                          )}
-                          {proDetails.stock_M > 0 && (
-                            <option value="M">M</option>
-                          )}
-                          {proDetails.stock_L > 0 && (
-                            <option value="L">L</option>
-                          )}
-                          {proDetails.stock_XL > 0 && (
-                            <option value="XL">XL</option>
-                          )}
-                        </select>
-                      </div>
-                    </li>) : null}
-
-
+                      <li>
+                        <span>Select size:</span>
+                        <div className="size__btn">
+                          <select
+                            required
+                            onChange={handleSizeChange}
+                            value={selectedSize}
+                          >
+                            {proDetails.stock_S > 0 && (
+                              <option value="S">S</option>
+                            )}
+                            {proDetails.stock_M > 0 && (
+                              <option value="M">M</option>
+                            )}
+                            {proDetails.stock_L > 0 && (
+                              <option value="L">L</option>
+                            )}
+                            {proDetails.stock_XL > 0 && (
+                              <option value="XL">XL</option>
+                            )}
+                          </select>
+                        </div>
+                      </li>
+                    ) : null}
                   </ul>
 
                   <div className="product__details__button mt-4">

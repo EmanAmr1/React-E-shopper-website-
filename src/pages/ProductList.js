@@ -8,8 +8,7 @@ import { increaseCounter, setItemsid } from "../store/slices/total";
 import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 import ListOfProduct from "../components/Shop/ListOfProduct";
 import { Form, Button } from "react-bootstrap";
-import './ProductList.css'
-
+import "./ProductList.css";
 
 const ProductList = () => {
   const [category, setCategory] = useState([]);
@@ -19,7 +18,7 @@ const ProductList = () => {
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null); 
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const token = Cookies.get("token");
   const headers = {
@@ -71,12 +70,9 @@ const ProductList = () => {
     // e.preventDefault();
     if (!itemsid.includes(item)) {
       try {
-        const response = await axiosInstance.get(
-          `/API/getProduct/${item.item}`,
-          {
-            headers,
-          }
-        );
+        const response = await axiosInstance.get(`/API/getProduct/${item.id}`, {
+          headers,
+        });
         console.log(response.data.product);
         const proDetails = response.data.product;
         let selectedSize = "";
@@ -99,7 +95,7 @@ const ProductList = () => {
           const response = await axiosInstance.post(
             `/api/cart/add/`,
             {
-              item: item.item,
+              item: item.id,
               quantity: 1,
               size: selectedSize,
             },
@@ -107,7 +103,7 @@ const ProductList = () => {
           );
           console.log(response.data);
           dispatch(increaseCounter());
-          const updatedItemsId = itemsid.concat(item.item);
+          const updatedItemsId = itemsid.concat(item.id);
           dispatch(setItemsid(updatedItemsId));
         } catch (error) {
           console.error("Error:", error);
@@ -188,34 +184,41 @@ const ProductList = () => {
     setCurrentPage(page);
   };
 
-  const [keyword, setKeyword] = useState(""); 
+  const [keyword, setKeyword] = useState("");
 
   const handleSearchChange = (event) => {
-    setKeyword(event.target.value); 
+    setKeyword(event.target.value);
   };
-  
+
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    setCurrentPage(1); 
-    fetchProducts(); 
+    setCurrentPage(1);
+    fetchProducts();
   };
-  
 
   return (
     <section className="shop spad">
       <div className="container">
         <div className="productSearch mb-3">
-        <Form className="d-flex" onSubmit={handleSearchSubmit}> {/* Add onSubmit event handler */}
-  <Form.Control
-    type="search"
-    placeholder="Search"
-    className="me-2"
-    aria-label="Search"
-    value={keyword} // Bind value to keyword state
-    onChange={handleSearchChange} // Add onChange event handler
-  />
-<Button variant="outline-success" type="submit" className="search-button">Search</Button>
-</Form>
+          <Form className="d-flex" onSubmit={handleSearchSubmit}>
+            {" "}
+            {/* Add onSubmit event handler */}
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              value={keyword} // Bind value to keyword state
+              onChange={handleSearchChange} // Add onChange event handler
+            />
+            <Button
+              variant="outline-success"
+              type="submit"
+              className="search-button"
+            >
+              Search
+            </Button>
+          </Form>
         </div>
         <div className="row">
           <div className="col-lg-3 col-md-3">
@@ -226,7 +229,7 @@ const ProductList = () => {
                 </div>
                 <div className="categories__accordion">
                   <div className="accordion" id="accordionExample">
-                  {category.map((cat) => {
+                    {category.map((cat) => {
                       return (
                         <>
                           <div className="card" key={cat.id}>
@@ -274,10 +277,7 @@ const ProductList = () => {
                 handlePriceChange={handlePriceChange}
               />
               <div className="sidebar__sizes">
-                <div className="section-title">
-                  
-                </div>
-             
+                <div className="section-title"></div>
               </div>
             </div>
           </div>

@@ -1,9 +1,9 @@
 import React from "react";
-import ProductRating from '../Shop/ProductRating'
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../apis/config";
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, setItemsid } from "../../store/slices/total";
@@ -18,11 +18,6 @@ const Products = () => {
   const token = Cookies.get("token");
   const headers = {
     Authorization: `Token ${token}`,
-  };
-  const [selectedCategory, setSelectedCategory] = useState("*");
-  const handleCategoryFilter = (category) => {
-    console.log('Selected Category:', category);
-    setSelectedCategory(category);
   };
 
   useEffect(() => {
@@ -66,15 +61,11 @@ const Products = () => {
   };
 
   const handleAdd = async (item) => {
-    // e.preventDefault();
-    if (!itemsid.includes(item)) {
+    if (!itemsid.includes(item.id)) {
       try {
-        const response = await axiosInstance.get(
-          `/API/getProduct/${item.item}`,
-          {
-            headers,
-          }
-        );
+        const response = await axiosInstance.get(`/API/getProduct/${item.id}`, {
+          headers,
+        });
         console.log(response.data.product);
         const proDetails = response.data.product;
         let selectedSize = "";
@@ -97,7 +88,7 @@ const Products = () => {
           const response = await axiosInstance.post(
             `/api/cart/add/`,
             {
-              item: item.item,
+              item: item.id,
               quantity: 1,
               size: selectedSize,
             },
@@ -105,7 +96,7 @@ const Products = () => {
           );
           console.log(response.data);
           dispatch(increaseCounter());
-          const updatedItemsId = itemsid.concat(item.item);
+          const updatedItemsId = itemsid.concat(item.id);
           dispatch(setItemsid(updatedItemsId));
         } catch (error) {
           console.error("Error:", error);
@@ -113,22 +104,6 @@ const Products = () => {
       } catch (error) {
         console.error("Error:", error);
       }
-      // try {
-      //   const response = await axiosInstance.post(
-      //     `/api/cart/add/`,
-      //     {
-      //       item: itemId,
-      //       quantity: 1,
-      //     },
-      //     { headers }
-      //   );
-      //   console.log(response.data);
-      //   dispatch(increaseCounter());
-      //   const updatedItemsId = itemsid.concat(itemId);
-      //   dispatch(setItemsid(updatedItemsId));
-      // } catch (error) {
-      //   console.error("Error:", error.response.data);
-      // }
     }
   };
   const navigate = useNavigate();
@@ -144,31 +119,20 @@ const Products = () => {
             </div>
             <div className="col-lg-8 col-md-8">
               <ul className="filter__controls">
-                <li className={selectedCategory === "*" ? "active" : ""}
-                  onClick={() => handleCategoryFilter("*")}>
+                <li className="active" data-filter="*">
                   All
                 </li>
-                <li className={selectedCategory === "women" ? "active" : ""}
-                  onClick={() => handleCategoryFilter(1)}>Women’s</li>
-                <li className={selectedCategory === "men" ? "active" : ""}
-                  onClick={() => handleCategoryFilter(2)}>Men’s</li>
-                <li className={selectedCategory === "kid" ? "active" : ""}
-                  onClick={() => handleCategoryFilter(3)}>Kid’s</li>
-                <li className={selectedCategory === "accessories" ? "active" : ""}
-                  onClick={() => handleCategoryFilter(4)}>Accessories</li>
-                <li className={selectedCategory === "cosmetic" ? "active" : ""}
-                  onClick={() => handleCategoryFilter(5)}>Cosmetics</li>
+                <li data-filter=".women">Women’s</li>
+                <li data-filter=".men">Men’s</li>
+                <li data-filter=".kid">Kid’s</li>
+                <li data-filter=".accessories">Accessories</li>
+                <li data-filter=".cosmetic">Cosmetics</li>
               </ul>
             </div>
           </div>
           <div className="row property__gallery">
-            {product.filter((prod) =>selectedCategory === "*" ? true : prod.category === selectedCategory
-            ).map((prod) => {
-                  console.log('Selected Category:', selectedCategory);
-                console.log('Filter Result:', selectedCategory === '*' || prod.category === selectedCategory);
-                console.log('Rendered Product:', prod);
+            {product.map((prod) => {
               return (
-                
                 <div className="col-lg-3 col-md-4 col-sm-6 mix women">
                   <div className="product__item">
                     <div
@@ -205,7 +169,8 @@ const Products = () => {
                           >
                             <span
                               style={{
-                                color: itemsid.includes(prod.id) && "#ffffff",
+                                color:
+                                  wishlistid.includes(prod.id) && "#ffffff",
                               }}
                               className="icon_heart_alt"
                             ></span>
@@ -234,7 +199,13 @@ const Products = () => {
                       <h6>
                         <a href="h">{prod.name}</a>
                       </h6>
-                      <ProductRating rating={prod.ratings} />
+                      <div className="rating">
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                        <i className="fa fa-star"></i>
+                      </div>
                       {prod.sale ? (
                         <div
                           className="product__price  "

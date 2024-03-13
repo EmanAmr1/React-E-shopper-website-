@@ -227,9 +227,9 @@ const Cart = () => {
               <div class="cart__total__procced">
                 <h6>Cart total</h6>
                 <ul>
-                  <li>
+                  {/* <li>
                     Subtotal <span>$49.00</span>
-                  </li>
+                  </li> */}
                   <li>
                     Total <span>${total}</span>
                   </li>

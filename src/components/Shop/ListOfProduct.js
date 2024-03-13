@@ -49,7 +49,7 @@ const ListOfProduct = ({
                   >
                     <span
                       style={{
-                        color: itemsid.includes(prod.id) && "#ffffff",
+                        color: wishlistid.includes(prod.id) && "#ffffff",
                       }}
                       className="icon_heart_alt"
                     ></span>

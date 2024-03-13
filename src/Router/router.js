@@ -74,13 +74,12 @@ const Router = () => {
           <Route path="/thannk-you" element={<Thankyou />} />
           {/* <Route path="/Deliveryman" element={<Deliveryman />} /> */}
           <Route path="/contact" element={<ContacePage />} />
-
+          
+          
           {/* <Route path='Register' element={<Register />} /> */}
         </Route>
         <Route element={<VendorLayout />}>
-          <Route path="*" element={<NotFound />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+         
           <Route
             path="/vendorprofile"
             element={<VendorProfileProtectedRoute />}
@@ -90,11 +89,16 @@ const Router = () => {
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
           <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
           <Route path="/Vendorplan" element={<Vendorplan />} />
-          <Route path="/message" element={<Message />} />
+    
           <Route path="vendorPro/:id" element={<VendorPro />} />
-          <Route path="/ChangePassword" element={<ChangePassword />} />
-          <Route path="/VerifyOTP" element={<VerifyOTP />} />
+       
         </Route>
+        <Route path="*" element={<NotFound />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/VerifyOTP" element={<VerifyOTP />} />
+          <Route path="/ChangePassword" element={<ChangePassword />} />
+          <Route path="/message" element={<Message />} />
       </Routes>
     </Suspense>
   );

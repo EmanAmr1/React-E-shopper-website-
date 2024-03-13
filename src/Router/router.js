@@ -12,6 +12,7 @@ const ProductDetails = React.lazy(() => import("../pages/ProductDetails"));
 const VendorPro = React.lazy(() => import("../pages/vendorPro"));
 const ProductList = React.lazy(() => import("../pages/ProductList"));
 const WomanPage = React.lazy(() => import("../pages/WomanPage"));
+const MenPage = React.lazy(() => import("../pages/MenPage"));
 const Cart = React.lazy(() => import("../pages/Cart"));
 const Wishlist = React.lazy(() => import("../pages/Wishlist"));
 const Deliveryman = React.lazy(() => import("../pages/Delivaryman"));
@@ -56,6 +57,7 @@ const Router = () => {
           <Route path="productDetails/:id" element={<ProductDetails />} />
           <Route path="ProductList" element={<ProductList />} />
           <Route path="WomanPage" element={<WomanPage />} />
+          <Route path="MenPage" element={<MenPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route

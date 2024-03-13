@@ -104,11 +104,11 @@ const Header = () => {
             <li className={location.pathname === "/" ? "active" : ""}>
               <Link to="/">Home</Link>
             </li>
-            <li className={location.pathname === "/h" ? "active" : ""}>
+            <li className={location.pathname === "WomanPage" ? "active" : ""}>
               <Link to="WomanPage">Women’s</Link>
             </li>
-            <li className={location.pathname === "/h" ? "active" : ""}>
-              <Link to="/h">Men’s</Link>
+            <li className={location.pathname === "MenPage" ? "active" : ""}>
+              <Link to="/MenPage">Men’s</Link>
             </li>
             <li
               className={location.pathname === "/ProductList" ? "active" : ""}
@@ -165,8 +165,8 @@ const Header = () => {
                   >
                     <Link to="WomanPage">Women’s</Link>
                   </li>
-                  <li className={location.pathname === "/h" ? "active" : ""}>
-                    <Link to="/h">Men’s</Link>
+                  <li className={location.pathname === "/MenPage" ? "active" : ""}>
+                    <Link to="/MenPage">Men’s</Link>
                   </li>
                   <li
                     className={

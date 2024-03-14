@@ -76,19 +76,13 @@ const HeaderDelivary = () => {
         </div>
         <div id="mobile-menu-wrap"></div>
         <nav className="header_menu">
-          {/* <ul>
+          <ul>
             <li
-              className={location.pathname === "/vendorprofile" ? "active" : ""}
+              className={location.pathname === "/deliveryman" ? "active" : ""}
             >
-              <Link to="/vendorprofile">Home</Link>
+              <Link to="/deliveryman">Orders</Link>
             </li>
-            <li className={location.pathname === "/addProduct" ? "active" : ""}>
-              <Link to="/addProduct">Create Product</Link>
-            </li>
-            <li className={location.pathname === "/Vendorplan" ? "active" : ""}>
-              <Link to="/Vendorplan">Plan</Link>
-            </li>
-          </ul> */}
+          </ul>
         </nav>
         <div className="offcanvas__auth">
           {isAuthenticated ? (
@@ -121,29 +115,15 @@ const HeaderDelivary = () => {
             </div>
             <div className="col-xl-6 col-lg-7">
               <nav className="header__menu">
-                {/* <ul>
+                <ul>
                   <li
                     className={
-                      location.pathname === "/vendorprofile" ? "active" : ""
+                      location.pathname === "/deliveryman" ? "active" : ""
                     }
                   >
-                    <Link to="/vendorprofile">Home</Link>
+                    <Link to="/deliveryman">Orders</Link>
                   </li>
-                  <li
-                    className={
-                      location.pathname === "/addProduct" ? "active" : ""
-                    }
-                  >
-                    <Link to="/addProduct">Create Product</Link>
-                  </li>
-                  <li
-                    className={
-                      location.pathname === "/Vendorplan" ? "active" : ""
-                    }
-                  >
-                    <Link to="/Vendorplan">Plan</Link>
-                  </li>
-                </ul> */}
+                </ul>
               </nav>
             </div>
             <div className="col-lg-3">

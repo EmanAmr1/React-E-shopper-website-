@@ -252,7 +252,7 @@ function Register() {
               <option value="">Select User Type</option>
               <option value="customer">Customer</option>
               <option value="vendor">Vendor</option>
-              <option value="DeliveryMan">DeliveryMan</option>
+              {/* <option value="DeliveryMan">DeliveryMan</option> */}
             </select>
           </div>
           <div className="col-md-6">
@@ -291,7 +291,7 @@ function Register() {
                 value={userForm.shopname}
                 onChange={handleFieldChange}
                 name="shopname"
-                disabled={userForm.usertype === "customer" || userForm.usertype === "DeliveryMan"}
+                disabled={userForm.usertype === "customer" }
                 required
               />
               {userForm.usertype === "vendor" &&

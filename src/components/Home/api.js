@@ -138,12 +138,12 @@ export const bannerapi = [
   {
     "id": "2",
     "title": "The Chloe Collection",
-    "image": require('../../imags/banner/banner-2.jpg')
+    "image": require('../../imags/categories/category-1.jpg')
   },
   {
     "id": "3",
     "title": "The Chloe Collection",
-    "image": require('../../imags/banner/banner-3.jpg')
+    "image": require('../../imags/categories/category-2.jpg')
   },
   
 

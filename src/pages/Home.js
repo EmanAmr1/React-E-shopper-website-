@@ -14,7 +14,7 @@ const Home = () => {
       <Categories />
       <Products />
       <Banner />
-      <Trend />
+      {/* <Trend /> */}
       <Discount />
       <Services />
       <Instagram />

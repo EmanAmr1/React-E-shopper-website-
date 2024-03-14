@@ -27,7 +27,7 @@ const Categories = () => {
               <div className="col-lg-6 p-0">
                 <div
                   className="categories__item categories__large__item set-bg"
-                  style={{ backgroundImage: `url(${category[0].imageUrl})` }}
+                  style={{ backgroundImage: `url(${category[0].image})` }}
                 >
                   <div className="categories__text">
                     <h1>{category[0].name}</h1>
@@ -45,7 +45,7 @@ const Categories = () => {
                     >
                       <div
                         className="categories__item set-bg"
-                        style={{ backgroundImage: `url(${cat.imageUrl})` }}
+                        style={{ backgroundImage: `url(${cat.image})` }}
                       >
                         <div className="categories__text">
                           <h4>{cat.name}</h4>

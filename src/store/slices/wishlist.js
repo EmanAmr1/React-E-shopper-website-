@@ -20,6 +20,9 @@ const wishlistSlice = createSlice({
     setWishTotalCount: (state, action) => {
       state.count = state.items.length;
     },
+    resetWishTotalCount: (state, action) => {
+      state.count = action.payload;
+    },
     setItems: (state, action) => {
       state.items = action.payload;
     },
@@ -38,6 +41,7 @@ export const {
   addItem,
   removeItem,
   setWishTotalCount,
+  resetWishTotalCount,
 } = wishlistSlice.actions;
 
 export const fetchWishList = (userID) => async (dispatch) => {

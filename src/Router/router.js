@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "../components/Layouts/Layout";
 import VendorLayout from "../components/Layouts/VendorLayout";
+import DelivaryLayout from "../components/Layouts/DelivaryLayout";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -60,14 +61,7 @@ const Router = () => {
           <Route path="MenPage" element={<MenPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route
-            path="/deliveryman"
-            element={<DeliveryManProfileProtectedRoute />}
-          />
-          <Route
-            path="/deliveryman/orderdetails/:id"
-            element={<Orderdetails />}
-          />
+
           <Route path="checkoutPage" element={<CheckoutPage />} />
           <Route
             path="/customerprofile"
@@ -76,12 +70,10 @@ const Router = () => {
           <Route path="/thannk-you" element={<Thankyou />} />
           {/* <Route path="/Deliveryman" element={<Deliveryman />} /> */}
           <Route path="/contact" element={<ContacePage />} />
-          
-          
+
           {/* <Route path='Register' element={<Register />} /> */}
         </Route>
         <Route element={<VendorLayout />}>
-         
           <Route
             path="/vendorprofile"
             element={<VendorProfileProtectedRoute />}
@@ -91,16 +83,26 @@ const Router = () => {
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
           <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
           <Route path="/Vendorplan" element={<Vendorplan />} />
-    
+
           <Route path="vendorPro/:id" element={<VendorPro />} />
-       
         </Route>
         <Route path="*" element={<NotFound />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/VerifyOTP" element={<VerifyOTP />} />
-          <Route path="/ChangePassword" element={<ChangePassword />} />
-          <Route path="/message" element={<Message />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/VerifyOTP" element={<VerifyOTP />} />
+        <Route path="/ChangePassword" element={<ChangePassword />} />
+        <Route path="/message" element={<Message />} />
+
+        <Route element={<DelivaryLayout />}>
+          <Route
+            path="/deliveryman"
+            element={<DeliveryManProfileProtectedRoute />}
+          />
+          <Route
+            path="/deliveryman/orderdetails/:id"
+            element={<Orderdetails />}
+          />
+        </Route>
       </Routes>
     </Suspense>
   );

@@ -154,7 +154,10 @@ const Orderdetails = () => {
           {orderdetails.orderItems &&
             orderdetails.orderItems.map((product) => {
               return (
-                <ol className="list-group list-group-numbered ">
+                <ol
+                  key={product.id}
+                  className="list-group list-group-numbered "
+                >
                   <li className="list-group-item d-flex justify-content-center align-items-start">
                     <div className="ms-2 me-auto">
                       <div className="fw-bold">{product.name}</div>

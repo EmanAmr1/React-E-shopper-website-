@@ -130,7 +130,7 @@ const Cart = () => {
             <div className="col-10">
               {items.map((product) => {
                 return (
-                  <div className="card rounded-3 mb-4">
+                  <div key={product.id} className="card rounded-3 mb-4">
                     <div className="card-body p-4">
                       <div className="row d-flex justify-content-between align-items-cente ">
                         <div className="col-md-2 col-lg-2 col-xl-2">

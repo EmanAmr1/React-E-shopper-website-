@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
-import './login.css';
-import hello from '../../imags/register/hello.jpg';
+import Cookies from "js-cookie";
+import "./login.css";
+import hello from "../../imags/register/hello.jpg";
 
 function Login() {
   const [loginForm, setLoginForm] = useState({
@@ -26,62 +26,81 @@ function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/api/login/', loginForm)
+    axios
+      .post("http://localhost:8000/api/login/", loginForm)
       .then((res) => {
         console.log(res);
         const { token, user } = res.data;
-        console.log("token",token);
-        Cookies.set('token',token); // Store user data in a cookie
-  
+        console.log("token", token);
+        Cookies.set("token", token); // Store user data in a cookie
+
         // Redirect based on the user type
-        if (user.usertype === 'customer') {
+        if (user.usertype === "customer") {
           navigate("/CustomerProfile", { state: { user, token } });
-        } else if (user.usertype === 'vendor') {
+        } else if (user.usertype === "vendor") {
           navigate("/VendorProfile", { state: { user, token } });
-        } else if (user.usertype === 'DeliveryMan') {
+        } else if (user.usertype === "DeliveryMan") {
           navigate("/DeliveryMan", { state: { user, token } });
         }
       })
       .catch((err) => {
         console.log(err);
         if (err.response && err.response.status === 401) {
-          setErrorMessage("Invalid email or password. Please try again."); 
+          setErrorMessage("Invalid email or password. Please try again.");
         } else {
-          setErrorMessage("An error occurred. Please try again."); 
+          setErrorMessage("An error occurred. Please try again.");
         }
       });
   };
-  
 
   return (
-    <div className='all-login'>
+    <div className="all-login">
       <div className="containerr">
-      <div className='row mt-3 ' style={{width:'100%'}}>
-        
-        <img src={hello} alt="Welcome" className='col-md-5 mt-3 imgss ' />
-        <div className="form col-md-7 mt-3 d-flex align-items-center w-100">
-        <form onSubmit={handleSubmit} style={{width:'100%'}} >
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1" className="form-label"><b>Email address</b></label>
-            <input type="email" className="form-control" id="exampleInputEmail1" onChange={handleFieldChange} name="email"/>
+        <div className="row mt-3 " style={{ width: "100%" }}>
+          <img src={hello} alt="Welcome" className="col-md-5 mt-3 imgss " />
+          <div className="form col-md-7 mt-3 d-flex align-items-center w-100">
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+              <div className="form-group">
+                <label htmlFor="exampleInputEmail1" className="form-label">
+                  <b>Email address</b>
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  onChange={handleFieldChange}
+                  name="email"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="exampleInputPassword1" className="form-label">
+                  <b>Password</b>
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  onChange={handleFieldChange}
+                  name="password"
+                />
+              </div>
+              <button type="submit" className="btn btn-dark">
+                Submit
+              </button>
+              <br />
+              {errorMessage && (
+                <span className="text-danger">{errorMessage}</span>
+              )}{" "}
+              {/* Display error message */}
+            </form>
           </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1" className="form-label"><b>Password</b></label>
-            <input type="password" className="form-control" id="exampleInputPassword1" onChange={handleFieldChange} name="password"/>
-          </div>
-          <button type="submit" className="btn btn-dark">Submit</button>
-          <br />
-          {errorMessage && <span className="text-danger">{errorMessage}</span>} {/* Display error message */}
-        </form>
-      
-     
+        </div>
       </div>
-      </div>
-
-      </div>
-      <div className='register_btn' >
-        <p className='paragraph'>Don't Have an Account? </p>
-        <Link to="/register" className="link">Register</Link>
+      <div className="register_btn">
+        <p className="paragraph">Don't Have an Account? </p>
+        <Link to="/register" className="link">
+          Register
+        </Link>
       </div>
     </div>
   );

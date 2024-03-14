@@ -5,41 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logoImage from "../../imags/logo.png";
-import { fetchTotalCount, setTotalCount } from "../../store/slices/total";
-import {
-  fetchWishList,
-  resetWishTotalCount,
-} from "../../store/slices/wishlist";
-import "./Header.css";
+import { fetchTotalCount } from "../../store/slices/total";
+import { fetchWishList } from "../../store/slices/wishlist";
+import "./HeaderVendor.css";
 
-const Header = () => {
-  const total = useSelector((state) => state.total.count);
-  const count = useSelector((state) => state.wishlist.count);
+const HeaderDelivary = () => {
   const dispatch = useDispatch();
   const isAuthenticated = Cookies.get("token");
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const token = Cookies.get("token");
-    const headers = {
-      Authorization: `Token ${token}`,
-    };
-
-    axios
-      .get("http://localhost:8000/api/profile/", { headers })
-      .then((res) => {
-        setUser(res.data.message);
-        // setUpdatedUser(res.data.message);
-        // setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Fetch user error:", error);
-        // setLoading(false);
-      });
-  }, []);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchTotalCount());
@@ -56,8 +31,6 @@ const Header = () => {
       .post("http://localhost:8000/api/logout/", null, { headers })
       .then(() => {
         console.log("Logout successful");
-        dispatch(setTotalCount(0));
-        dispatch(resetWishTotalCount(0));
         navigate("/");
       })
       .catch((error) => {
@@ -80,20 +53,20 @@ const Header = () => {
           +
         </div>
         <ul className="offcanvas__widget">
+          {/* <li>
+            <span className="icon_search search-switch"></span>
+          </li> */}
           <li>
-            <span class="fa-regular fa-user"></span>
-          </li>
-          <li>
-            <Link to="H">
+            {/* <Link to="H">
               <span className="icon_heart_alt"></span>
-              <div className="tip">{count}</div>
+              <div className="tip">2</div>
             </Link>
           </li>
           <li>
             <Link to="H">
               <span className="icon_bag_alt"></span>
-              <div className="tip">{total}</div>
-            </Link>
+              <div className="tip">2</div>
+            </Link> */}
           </li>
         </ul>
         <div className="offcanvas__logo">
@@ -103,25 +76,19 @@ const Header = () => {
         </div>
         <div id="mobile-menu-wrap"></div>
         <nav className="header_menu">
-          <ul>
-            <li className={location.pathname === "/" ? "active" : ""}>
-              <Link to="/">Home</Link>
-            </li>
-            <li className={location.pathname === "WomanPage" ? "active" : ""}>
-              <Link to="WomanPage">Women’s</Link>
-            </li>
-            <li className={location.pathname === "MenPage" ? "active" : ""}>
-              <Link to="/MenPage">Men’s</Link>
-            </li>
+          {/* <ul>
             <li
-              className={location.pathname === "/ProductList" ? "active" : ""}
+              className={location.pathname === "/vendorprofile" ? "active" : ""}
             >
-              <Link to="/ProductList">Shop</Link>
+              <Link to="/vendorprofile">Home</Link>
             </li>
-            <li className={location.pathname === "/contact" ? "active" : ""}>
-              <Link to="/contact">Contact</Link>
+            <li className={location.pathname === "/addProduct" ? "active" : ""}>
+              <Link to="/addProduct">Create Product</Link>
             </li>
-          </ul>
+            <li className={location.pathname === "/Vendorplan" ? "active" : ""}>
+              <Link to="/Vendorplan">Plan</Link>
+            </li>
+          </ul> */}
         </nav>
         <div className="offcanvas__auth">
           {isAuthenticated ? (
@@ -136,9 +103,6 @@ const Header = () => {
             <>
               <Link className="header__right__auth__link" to="/login">
                 Login
-              </Link>
-              <Link className="header__right__auth__link" to="/register">
-                Register
               </Link>
             </>
           )}
@@ -157,35 +121,29 @@ const Header = () => {
             </div>
             <div className="col-xl-6 col-lg-7">
               <nav className="header__menu">
-                <ul>
-                  <li className={location.pathname === "/" ? "active" : ""}>
-                    <Link to="/">Home</Link>
+                {/* <ul>
+                  <li
+                    className={
+                      location.pathname === "/vendorprofile" ? "active" : ""
+                    }
+                  >
+                    <Link to="/vendorprofile">Home</Link>
                   </li>
                   <li
                     className={
-                      location.pathname === "/WomanPage" ? "active" : ""
+                      location.pathname === "/addProduct" ? "active" : ""
                     }
                   >
-                    <Link to="WomanPage">Women’s</Link>
-                  </li>
-                  <li
-                    className={location.pathname === "/MenPage" ? "active" : ""}
-                  >
-                    <Link to="/MenPage">Men’s</Link>
+                    <Link to="/addProduct">Create Product</Link>
                   </li>
                   <li
                     className={
-                      location.pathname === "/ProductList" ? "active" : ""
+                      location.pathname === "/Vendorplan" ? "active" : ""
                     }
                   >
-                    <Link to="/ProductList">Shop</Link>
+                    <Link to="/Vendorplan">Plan</Link>
                   </li>
-                  <li
-                    className={location.pathname === "/contact" ? "active" : ""}
-                  >
-                    <Link to="/contact">Contact</Link>
-                  </li>
-                </ul>
+                </ul> */}
               </nav>
             </div>
             <div className="col-lg-3">
@@ -194,6 +152,11 @@ const Header = () => {
                   {isAuthenticated ? (
                     <Link
                       className="header__right__auth__link"
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "15px",
+                        color: "black",
+                      }}
                       to="#"
                       onClick={handleLogout}
                     >
@@ -201,38 +164,22 @@ const Header = () => {
                     </Link>
                   ) : (
                     <>
-                      <Link className="header__right__auth__link" to="/login">
-                        Login
-                      </Link>
                       <Link
                         className="header__right__auth__link"
-                        to="/register"
+                        style={{ fontWeight: "500", color: "black" }}
+                        to="/login"
                       >
-                        Register
+                        Login
                       </Link>
                     </>
                   )}
                 </div>
                 <ul className="header__right__widget">
+                  {/* <li>
+                    <span className="icon_search search-switch"></span>
+                  </li> */}
                   <li>
-                    {user && user.usertype === "customer" && (
-                      <Link to="/customerprofile">
-                        <span className="fa-regular fa-user"></span>
-                      </Link>
-                    )}
-                    {user && user.usertype === "vendor" && (
-                      <Link to="/vendorprofile">
-                        <span className="fa-regular fa-user"></span>
-                      </Link>
-                    )}
-                    {user && user.usertype === "DeliveryMan" && (
-                      <Link to="/deliverymanprofile">
-                        <span className="fa-regular fa-user"></span>
-                      </Link>
-                    )}
-                  </li>
-                  <li>
-                    <Link to="wishlist">
+                    {/* <Link to="wishlist">
                       <span className="icon_heart_alt"></span>
                       <div className="tip">{count}</div>
                     </Link>
@@ -241,7 +188,7 @@ const Header = () => {
                     <Link to="Cart">
                       <span className="icon_bag_alt"></span>
                       <div className="tip">{total}</div>
-                    </Link>
+                    </Link> */}
                   </li>
                 </ul>
               </div>
@@ -256,4 +203,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderDelivary;

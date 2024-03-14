@@ -232,17 +232,21 @@ button:hover {
     background-color: #dc3545;
     color: #fff;
 }
+
 .reviews__list {
-    column-count: 2; /* Split the list into two columns */
-    column-gap: 20px; /* Add some gap between columns */
-  }
-  
-  .review__item {
-    break-inside: avoid; /* Ensure each review stays within its column */
-  }
+    column-count: 2;
+    /* Split the list into two columns */
+    column-gap: 20px;
+    /* Add some gap between columns */
+}
+
+.review__item {
+    break-inside: avoid;
+    /* Ensure each review stays within its column */
+}
 
 
-  body {
+body {
     font-family: 'Roboto', Arial, sans-serif;
     background-color: #f4f4f4;
 }
@@ -262,4 +266,9 @@ h1 {
 
 p {
     margin-bottom: 10px;
+}
+
+
+.topheight {
+    margin-top: -80px;
 }

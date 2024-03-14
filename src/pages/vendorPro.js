@@ -86,10 +86,10 @@ const VendorProduct = () => {
         <>
 
 
-            <section className="product-details spad">
+            <section className="product-details spad topheight">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-6">
+                        <div className="col-lg-5">
                             <div className="product__big__img__container myimg">
                                 <img
                                     className="mypic"
@@ -146,7 +146,7 @@ const VendorProduct = () => {
                             </div>
                         </div>
 
-                        <div className="col-lg-6">
+                        <div className="col-lg-5">
                             <div className="product__details__text">
                                 <div className="label-container">
                                     <h3>{proDetails.name}</h3>
@@ -197,37 +197,44 @@ const VendorProduct = () => {
                                                 </label>
                                             </div>
                                         </li>
-                                        <p className="product__details__widget">
-                                            <ul>
-                                                <li>
-                                                    <span>Available size:</span>
-                                                    <div className="size__btn">
-                                                        {proDetails.stock_S > 0 && (
-                                                            <label htmlFor="xs-btn">
-                                                                <input type="radio" id="xs-btn" />S
-                                                            </label>
-                                                        )}
-                                                        {proDetails.stock_M > 0 && (
-                                                            <label htmlFor="s-btn">
-                                                                <input type="radio" id="s-btn" />M
-                                                            </label>
-                                                        )}
-                                                        {proDetails.stock_L > 0 && (
-                                                            <label htmlFor="m-btn">
-                                                                <input type="radio" id="m-btn" />L
-                                                            </label>
-                                                        )}
-                                                        {proDetails.stock_XL > 0 && (
-                                                            <label htmlFor="l-btn">
-                                                                <input type="radio" id="l-btn" />
-                                                                XL
-                                                            </label>
-                                                        )}
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </p>
 
+
+
+
+                                        {proDetails.sizeable ? (
+                                            <>
+                                                <p className="product__details__widget">
+                                                    <ul>
+                                                        <li>
+                                                            <span>Available size:</span>
+                                                            <div className="size__btn">
+                                                                {proDetails.stock_S > 0 && (
+                                                                    <label htmlFor="xs-btn">
+                                                                        <input type="radio" id="xs-btn" />S
+                                                                    </label>
+                                                                )}
+                                                                {proDetails.stock_M > 0 && (
+                                                                    <label htmlFor="s-btn">
+                                                                        <input type="radio" id="s-btn" />M
+                                                                    </label>
+                                                                )}
+                                                                {proDetails.stock_L > 0 && (
+                                                                    <label htmlFor="m-btn">
+                                                                        <input type="radio" id="m-btn" />L
+                                                                    </label>
+                                                                )}
+                                                                {proDetails.stock_XL > 0 && (
+                                                                    <label htmlFor="l-btn">
+                                                                        <input type="radio" id="l-btn" />
+                                                                        XL
+                                                                    </label>
+                                                                )}
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </p>
+                                            </>
+                                        ) : null}
                                         <li>
 
 
@@ -237,14 +244,15 @@ const VendorProduct = () => {
                                     <p>
 
 
-                                        <button  style={{ backgroundColor: 'red', color:'white' }} >
-                                            <a   style={{ color:'white' }}    href={`/deleteProduct/${proDetails.id}`}>
+
+                                        <button className="mx-2" style={{ backgroundColor: 'red', color: 'white' }} >
+                                            <a style={{ color: 'white' }} href={`/deleteProduct/${proDetails.id}`}>
                                                 delete Product
                                             </a>
                                         </button>
 
-                                        <button  style={{ backgroundColor: 'green' }} >
-                                            <a    style={{ color:'white' }}      href={`/updateProduct/${proDetails.id}`}>
+                                        <button style={{ backgroundColor: 'green' }} >
+                                            <a style={{ color: 'white' }} href={`/updateProduct/${proDetails.id}`}>
                                                 Edit Product
                                             </a>
                                         </button>

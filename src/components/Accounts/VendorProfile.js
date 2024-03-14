@@ -1,17 +1,18 @@
+
 import React from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import UpdateProduct from'../../pages/UpdateProduct'
-import DeleteProduct from'../../pages/DeleteProduct'
+import UpdateProduct from '../../pages/UpdateProduct'
+import DeleteProduct from '../../pages/DeleteProduct'
 
 function VendorProfile() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const baseImageUrl = "http://127.0.0.1:8000";
   const handleLogout = () => {
-    const token = Cookies.get('token'); 
+    const token = Cookies.get('token');
     Cookies.remove('token');
     const headers = {
       Authorization: `Token ${token}`
@@ -25,66 +26,67 @@ function VendorProfile() {
         console.error("Logout error:", error);
       });
   };
-  
-/////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////
 
   const [userId, setUserId] = useState(null);
   const [user, setUser] = useState(null);
   const [updatedUser, setUpdatedUser] = useState({
-    first_name:'',
-    last_name:'',
-    address:'',
-    phone:'',
-    birthdate:''
-});
+    first_name: '',
+    last_name: '',
+    address: '',
+    phone: '',
+    birthdate: ''
+  });
   useEffect(() => {
     const token = Cookies.get('token');
     const headers = {
       Authorization: `Token ${token}`
     };
-  
+
     axios.get('http://localhost:8000/api/profile/', { headers })
       .then((res) => {
         setUser(res.data.message);
         setUserId(res.data.message.id);
-        setUpdatedUser(res.data.message); 
-        
+        setUpdatedUser(res.data.message);
+
       })
       .catch((error) => {
         console.error("Fetch user error:", error);
-        
+
       });
   }, []);
-  
+
   useEffect(() => {
-    
+
     axios
       .get(`http://127.0.0.1:8000/API/allproducts/`)
       .then((res) => {
-       
+
         const filteredProducts = res.data.results.products.filter(product => product.vendor === userId);
         setProducts(filteredProducts);
       })
       .catch((err) => console.log(err));
-  }, );
+  },);
 
 
 
 
   return (
     <>
-      <h1>Welcome {user ? user.first_name : ''}</h1>
-      {user && (
-        <div>
-          <p>Email: {user.email}</p>
-          <p>firstname: {user.first_name}</p>
-          <p>lastname: {user.last_name}</p>
-          <p>user type:{user.usertype}</p>
-          <button onClick={handleLogout}>Logout</button>
 
-        </div>
-      )}
-
+      <div class="container">
+        <h1 className=' font-weight-bold font-family-lobster text-uppercase '>Welcome {user ? user.first_name : ''}   </h1>
+        {user && (
+          <div >
+            <h5 className=' font-weight-bold' style={{ color: "#dc3545" }}>Vendor Info</h5>
+            <p className='mt-3'> <span className='font-weight-bold'> Email:</span> {user.email}</p>
+            <p> <span className='font-weight-bold'> First Name:</span>  {user.first_name}</p>
+            <p> <span className='font-weight-bold'> Last Name:</span>  {user.last_name}</p>
+            <p> <span className='font-weight-bold'> User Type:</span>  {user.usertype}</p>
+          </div>
+        )}
+      </div>
 
 
 
@@ -111,7 +113,7 @@ function VendorProfile() {
                 <ul className="product__hover">
                   <li>
                     <a href={prod.image} className="image-popup">
-                      <a href={`/productDetails/${prod.id}`}>
+                      <a href={`/vendorpro/${prod.id}`}>
                         {" "}
                         <span className="arrow_expand"></span>
                       </a>
@@ -136,10 +138,8 @@ function VendorProfile() {
                 ) : (
                   <div className="product__price">{prod.price}</div>
                 )}
-<a href={`/vendorpro/${prod.id}`}>
-                      {" "}
-                      <span className="arrow_expand"></span>
-                    </a>
+
+
 
 
               </div>

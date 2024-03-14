@@ -240,3 +240,26 @@ button:hover {
   .review__item {
     break-inside: avoid; /* Ensure each review stays within its column */
   }
+
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    margin-bottom: 10px;
+}

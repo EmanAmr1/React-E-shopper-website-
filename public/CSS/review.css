@@ -235,14 +235,14 @@ button:hover {
 
 .reviews__list {
     column-count: 2;
-    /* Split the list into two columns */
+
     column-gap: 20px;
-    /* Add some gap between columns */
+
 }
 
 .review__item {
     break-inside: avoid;
-    /* Ensure each review stays within its column */
+
 }
 
 
@@ -271,4 +271,60 @@ p {
 
 .topheight {
     margin-top: -80px;
+}
+
+
+.confirmation-modal-container {}
+
+.confirmation-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-buttons {
+    margin-top: 20px;
+}
+
+
+
+
+.deleteButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.cancelBtn {
+    background-color: gray;
+}
+
+button:hover {
+    background-color: gainsboro;
+}
+
+button a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.warn {
+
+
+
+    width: 100px;
+    height: 100px;
+}
+
+.homeBtn {
+    background-color: #28a745;
 }

@@ -243,7 +243,11 @@ const VendorProduct = () => {
 
                                     <p>
 
-
+                                    <button style={{ backgroundColor: 'green' }} >
+                                            <a style={{ color: 'white' }} href={`/updateProduct/${proDetails.id}`}>
+                                                Edit Product
+                                            </a>
+                                        </button>
 
                                         <button className="mx-2" style={{ backgroundColor: 'red', color: 'white' }} >
                                             <a style={{ color: 'white' }} href={`/deleteProduct/${proDetails.id}`}>
@@ -251,11 +255,7 @@ const VendorProduct = () => {
                                             </a>
                                         </button>
 
-                                        <button style={{ backgroundColor: 'green' }} >
-                                            <a style={{ color: 'white' }} href={`/updateProduct/${proDetails.id}`}>
-                                                Edit Product
-                                            </a>
-                                        </button>
+                                        
 
                                     </p>
                                 </div>

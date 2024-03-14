@@ -1,11 +1,10 @@
 
 import React from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import UpdateProduct from '../../pages/UpdateProduct'
-import DeleteProduct from '../../pages/DeleteProduct'
+
 
 function VendorProfile() {
   const navigate = useNavigate();

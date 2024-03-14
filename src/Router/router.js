@@ -81,7 +81,7 @@ const Router = () => {
           <Route path="/verify-email" element={<EmailVerification />} />
           <Route path="/addProduct" element={<AddProduct />} />
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
-          <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
+          
           <Route path="/Vendorplan" element={<Vendorplan />} />
 
           <Route path="vendorPro/:id" element={<VendorPro />} />
@@ -92,7 +92,7 @@ const Router = () => {
         <Route path="/VerifyOTP" element={<VerifyOTP />} />
         <Route path="/ChangePassword" element={<ChangePassword />} />
         <Route path="/message" element={<Message />} />
-
+        <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
         <Route element={<DelivaryLayout />}>
           <Route
             path="/deliveryman"

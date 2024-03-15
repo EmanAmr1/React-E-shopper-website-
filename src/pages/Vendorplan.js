@@ -82,7 +82,10 @@ const Vendorplan = () => {
     }, [userId]);
 
     return (
-        <div className='container'>
+        <>
+        
+       
+        <div className='container my-5 py-5'>
             <div className='row'>
                 {plans.map(plan => (
                     <div key={plan.id} className='col-lg-3 col-md-6 my-2'>
@@ -112,6 +115,10 @@ const Vendorplan = () => {
                 ))}
             </div>
         </div>
+       
+
+        </>
+        
     );
 };
 

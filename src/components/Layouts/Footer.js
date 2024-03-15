@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
 
@@ -6,69 +7,76 @@ const Footer = () => {
 
 
         <>
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-7">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt="" /></a>
+<footer className="footer">
+    <div className="container">
+        <div className="row">
+            <div className="col-lg-4 col-md-6 col-sm-7">
+                <div className="footer__about">
+                    <div className="footer__logo">
+                        <Link to="/"><img src="img/logo.png" alt="" /></Link>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                     cilisis.</p>
-                    <div class="footer__payment">
-                        <a href="H"><img src="img/payment/payment-1.png" alt="" /></a>
-                        <a href="H"><img src="img/payment/payment-2.png" alt="" /></a>
-                        <a href="H"><img src="img/payment/payment-3.png" alt="" /></a>
-                        <a href="H"><img src="img/payment/payment-4.png" alt="" /></a>
-                        <a href="H"><img src="img/payment/payment-5.png" alt="" /></a>
+                    <div className="footer__payment">
+                  
+
+                        {/* <Link to="H"><img src="img/payment/payment-1.png" alt="" /></Link>
+                        <Link to="H"><img src="img/payment/payment-2.png" alt="" /></Link>
+                        <Link to="H"><img src="img/payment/payment-3.png" alt="" /></Link>
+                        <Link to="H"><img src="img/payment/payment-4.png" alt="" /></Link>
+                        <Link to="H"><img src="img/payment/payment-5.png" alt="" /></Link> */}
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-5">
-                <div class="footer__widget">
+            <div className="col-lg-2 col-md-3 col-sm-5">
+                <div className="footer__widget">
                     <h6>Quick links</h6>
                     <ul>
-                        <li><a href="H">About</a></li>
-                        <li><a href="H">Blogs</a></li>
-                        <li><a href="H">Contact</a></li>
-                        <li><a href="H">FAQ</a></li>
+                        <li><Link to="H">About</Link></li>
+                        <li><Link to="H">Blogs</Link></li>
+                        <li><Link to="/contact">Contact</Link></li>
+                        {/* <li><Link to="H">FAQ</Link></li> */}
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-4">
-                <div class="footer__widget">
+            <div className="col-lg-2 col-md-3 col-sm-4">
+                <div className="footer__widget">
                     <h6>Account</h6>
                     <ul>
-                        <li><a href="H">My Account</a></li>
-                        <li><a href="H">Orders Tracking</a></li>
-                        <li><a href="H">Checkout</a></li>
-                        <li><a href="H">Wishlist</a></li>
+                        <li><Link to="/customerprofile">My Account</Link></li>
+                        {/* <Linkitohref="H">Orders Tracking</a></li> */}
+                        <li><Link to="/checkoutPage">Checkout</Link></li>
+                        <li><Link to="/wishlist">Wishlist</Link></li>
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-8 col-sm-8">
-                <div class="footer__newslatter">
+            <div className="col-lg-4 col-md-8 col-sm-8">
+                <div className="footer__newslatter">
                     <h6>NEWSLETTER</h6>
-                    <form action="#">
+                    {/* <form action="#">
                         <input type="text" placeholder="Email" />
-                        <button type="submit" class="site-btn">Subscribe</button>
-                    </form>
-                    <div class="footer__social">
-                        <a href="H"><i class="fa fa-facebook"></i></a>
-                        <a href="H"><i class="fa fa-twitter"></i></a>
-                        <a href="H"><i class="fa fa-youtube-play"></i></a>
-                        <a href="H"><i class="fa fa-instagram"></i></a>
-                        <a href="H"><i class="fa fa-pinterest"></i></a>
+                        <button type
+                        ="submit" className="site-btn">Subscribe</button>
+                    </form> */}
+                     
+
+                    <div className="footer__social mb-4">
+                        <Link to="H"><i className="fab fa-facebook"></i></Link>
+                        <Link to="H"><i className="fab fa-twitter"></i></Link>
+                        <Link to="H"><i className="fab fa-youtube-play"></i></Link>
+                        <Link to="H"><i className="fab fa-instagram"></i></Link>
+                        <Link to="H"><i className="fab fa-pinterest"></i></Link>
                     </div>
+                    <Link to="H"><img src="img/payment/payment-2.png" alt="" /></Link>
+                      
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
+        <div className="row">
+            <div className="col-lg-12">
                 
-                <div class="footer__copyright__text">
-                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href=" " target="_blank">ITI TEAM</a></p>
+                <div className="footer__copyright__text">
+                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This Ashion ecommerce is Created by <i className="fa fa-heart" aria-hidden="true"></i>  <Link to="h " target="_blank">5 Lovely Girls</Link></p>
                 </div>
                 
             </div>

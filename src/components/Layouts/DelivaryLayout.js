@@ -9,7 +9,7 @@ const DelivaryLayout = () => {
 
       <Outlet />
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

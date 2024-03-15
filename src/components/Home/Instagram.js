@@ -5,6 +5,7 @@ import React from 'react'
 import { useState } from 'react';
 
 import { instagramapi } from './api'
+import { Link } from 'react-router-dom';
 const Instagram = () => {
     console.log(instagramapi)
     const [instagram,setInstagram]= useState(instagramapi)
@@ -20,8 +21,8 @@ const Instagram = () => {
                     <div className="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div className="instagram__item set-bg" style={{ backgroundImage: `url(${inst.image})` }}>
                         <div className="instagram__text">
-                            <i className="fa fa-instagram"></i>
-                            <a href="h">@ ashion_shop</a>
+                            <i className="fab fa-instagram"></i>
+                            <Link href="h">@ ashion_shop</Link>
                         </div>
                     </div>
                 </div>

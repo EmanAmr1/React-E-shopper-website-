@@ -32,7 +32,7 @@ const Categories = () => {
                   <div className="categories__text">
                     <h1>{category[0].name}</h1>
                     <p>{category[0].description}</p>
-                    <Link to="/ProductList">Shop now</Link>
+                    <Link to="/WomanPage">Shop now</Link>
                   </div>
                 </div>
               </div>
@@ -49,7 +49,9 @@ const Categories = () => {
                       >
                         <div className="categories__text">
                           <h4>{cat.name}</h4>
-                          <p>{cat.itemCount} items</p>
+                          <p></p>
+                          <br/>
+                          {/* <p>{cat.itemCount} items</p> */}
                           <Link to="/ProductList">Shop now</Link>
                         </div>
                       </div>

@@ -13,7 +13,7 @@ const VendorLayout = () => {
             
             <Outlet />
 
-            <Footer />
+            {/* <Footer /> */}
 
 
         </>

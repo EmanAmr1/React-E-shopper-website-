@@ -225,7 +225,24 @@ const MenPage = () => {
   
 
   return (
-    <section className="shop spad">
+    <>
+       {/* Breadcrumb Begin */}
+       <div className="breadcrumb-option">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="breadcrumb__links">
+                <Link to="/">
+                  <i className="fa fa-home"></i> Home
+                </Link>
+                <span>Men Category</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Breadcrumb End */}
+      <section className="shop spad">
       <div className="container">
         <div className="productSearch mb-3">
         <Form className="d-flex" onSubmit={handleSearchSubmit}> {/* Add onSubmit event handler */}
@@ -322,6 +339,9 @@ const MenPage = () => {
         </div>
       </div>
     </section>
+    
+    </>
+  
   );
 };
 

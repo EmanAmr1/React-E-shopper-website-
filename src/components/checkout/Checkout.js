@@ -167,13 +167,14 @@ const Checkout = () => {
           <div className="row">
             <div className="col-lg-12">
               <h6 className="coupon__link">
-                <span className="icon_tag_alt"></span>{" "}
+                {/* <span className="icon_tag_alt"></span>{" "}
                 <Link to="h">Have a coupon?</Link> Click here to enter your
-                code.
+                code. */}
+                Dear customer enjoy your shopping experience!
               </h6>
             </div>
           </div>
-          console.log({`${API_URL}/API/create-checkout-session/${order_id}/`})
+          {/* console.log({`${API_URL}/API/create-checkout-session/${order_id}/`}) */}
           <form
             onSubmit={handleSubmit}
             className="checkout__form"
@@ -309,7 +310,7 @@ const Checkout = () => {
                       <small className="text-danger">{error.email}</small>
                     </div>
                   </div>
-                  <div className="col-lg-12">
+                  {/* <div className="col-lg-12">
                     <div className="checkout__form__checkbox">
                       <label for="acc">
                         Create an acount?
@@ -345,7 +346,7 @@ const Checkout = () => {
                         placeholder="Note about your checoutInput, e.g, special noe for delivery"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="col-lg-4">
@@ -380,7 +381,7 @@ const Checkout = () => {
                     </ul>
                   </div>
 
-                  <div className="checkout__order__widget">
+                  {/* <div className="checkout__order__widget">
                     <label for="o-acc">
                       Create an acount?
                       <input type="checkbox" id="o-acc" />
@@ -400,7 +401,7 @@ const Checkout = () => {
                       <input type="checkbox" id="paypal" />
                       <span className="checkmark"></span>
                     </label>
-                  </div>
+                  </div> */}
                   {isOrderPlaced ? (
                     <form
                       action={`${API_URL}/API/create-checkout-session/${order_id}/`}
@@ -411,9 +412,7 @@ const Checkout = () => {
                       </button>
                     </form>
                   ) : (
-                    // <button type="button" className="site-btn" onClick={() => navigate('/thank-you')}>
-                    //     Pay
-                    // </button>
+                    
                     <button type="submit" className="site-btn">
                       Place Order
                     </button>

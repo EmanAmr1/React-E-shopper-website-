@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, setItemsid } from "../../store/slices/total";
 import { addItem, removeItem, setItems } from "../../store/slices/wishlist";
-
+import ProductRating from '../Shop/ProductRating'
 const Products = () => {
   const dispatch = useDispatch();
   const itemsid = useSelector((state) => state.total.itemsid);
@@ -214,13 +214,8 @@ const Products = () => {
                       <h6>
                         <a href="h">{prod.name}</a>
                       </h6>
-                      <div className="rating">
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                      </div>
+                      <ProductRating rating={prod.ratings} />
+
                       {prod.sale ? (
                         <div
                           className="product__price  "

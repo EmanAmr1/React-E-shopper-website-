@@ -136,6 +136,23 @@ const Wishlist = () => {
   };
 
   return (
+    <>              
+    {/* Breadcrumb Begin */}
+    <div className="breadcrumb-option">
+      <div className="container">
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="breadcrumb__links">
+            <Link to="/">
+              <i className="fa fa-home"></i> Home
+            </Link>
+            <span> Your wishList</span>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      {/* Breadcrumb End */}
     <div className="populer container p-4 mt-5 ">
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {wishlistitems.map((item) => {
@@ -184,6 +201,7 @@ const Wishlist = () => {
         })}
       </div>
     </div>
+    </>
   );
 };
 

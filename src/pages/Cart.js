@@ -124,6 +124,23 @@ const Cart = () => {
 
   return (
     <div>
+                      
+    {/* Breadcrumb Begin */}
+    <div className="breadcrumb-option">
+      <div className="container">
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="breadcrumb__links">
+            <Link to="/">
+              <i className="fa fa-home"></i> Home
+            </Link>
+            <span> Shopping cart</span>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+      {/* Breadcrumb End */}
       <section className="h-100">
         <div className="container h-100 py-5">
           <div className="row d-flex justify-content-center align-items-center h-100">

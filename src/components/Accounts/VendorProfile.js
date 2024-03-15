@@ -75,7 +75,9 @@ function VendorProfile() {
   return (
     <>
 
-      <div class="container">
+      <div className='bodyvendor'>
+
+      <div class="vendorView container ">
         <h3 className=' font-weight-bold font-family-lobster  text-uppercase text-center'>Welcome {user ? user.first_name : ''}   </h3>
         {user && (
           <div >
@@ -153,6 +155,7 @@ function VendorProfile() {
 
 
 
+      </div>
 
     </>
   );

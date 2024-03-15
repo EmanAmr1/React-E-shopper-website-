@@ -15,6 +15,10 @@ const Home = () => {
       <Products />
       <Banner />
       {/* <Trend /> */}
+      <br/>
+      <br/>
+      <br/>
+      <br/>
       <Discount />
       <Services />
       <Instagram />

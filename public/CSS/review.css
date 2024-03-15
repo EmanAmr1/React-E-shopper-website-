@@ -246,12 +246,12 @@ button:hover {
 }
 
 
-body {
+bodyvendor {
     font-family: 'Roboto', Arial, sans-serif;
     background-color: #f4f4f4;
 }
 
-.container {
+.vendorView {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;

@@ -4,6 +4,7 @@ import {  useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useEffect, useState } from "react";
+import SubscriptionVendor from '../plan/SubscriptionVendor';
 
 
 function VendorProfile() {
@@ -75,7 +76,7 @@ function VendorProfile() {
     <>
 
       <div class="container">
-        <h1 className=' font-weight-bold font-family-lobster text-uppercase '>Welcome {user ? user.first_name : ''}   </h1>
+        <h3 className=' font-weight-bold font-family-lobster  text-uppercase text-center'>Welcome {user ? user.first_name : ''}   </h3>
         {user && (
           <div >
             <h5 className=' font-weight-bold' style={{ color: "#dc3545" }}>Vendor Info</h5>
@@ -83,13 +84,15 @@ function VendorProfile() {
             <p> <span className='font-weight-bold'> First Name:</span>  {user.first_name}</p>
             <p> <span className='font-weight-bold'> Last Name:</span>  {user.last_name}</p>
             <p> <span className='font-weight-bold'> User Type:</span>  {user.usertype}</p>
+            <p> <span className='font-weight-bold'> Shop name:</span>  {user.shopname}</p>
+            <SubscriptionVendor vendorId={userId} />
           </div>
         )}
       </div>
 
 
 
-      <div className="row mt-5">
+      <div className="row mt-5 mx-2">
         {products.map((prod) => (
           <div
             className="col-lg-3 col-md-4 col-sm-6 mix women"

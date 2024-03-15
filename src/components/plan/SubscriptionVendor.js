@@ -14,7 +14,7 @@ const SubscriptionVendor = ({ vendorId }) => {
             .catch((error) => {
                 console.error('Error fetching subscription info:', error);
             });
-    }, [vendorId]);
+    }, [vendorId]); 
 
     useEffect(() => {
         const calculateRemainingTime = () => {
@@ -48,7 +48,7 @@ const SubscriptionVendor = ({ vendorId }) => {
             }
         };
 
-        calculateRemainingTime();
+        calculateRemainingTime(); 
 
         const interval = setInterval(() => {
             calculateRemainingTime();
@@ -59,19 +59,22 @@ const SubscriptionVendor = ({ vendorId }) => {
 
     return (
         <div>
-            {subscriptionInfo && subscriptionInfo.date && subscriptionInfo.plan ? (
-                <p>
-                    <span className='font-weight-bold'>Subscribe ends in </span>
-                    <span className='font-weight-bold' style={{ color: expired ? 'red' : 'inherit' }}>{remainingTime}</span>
-                </p>
-            ) : (
-                <p>
-                    <span className='font-weight-bold' style={{ color: '#0a859b' }}>
-                        No plan yet, but planning to subscribe</span>
-                </p>
-            )}
-        </div>
+        {subscriptionInfo && subscriptionInfo.date && subscriptionInfo.plan ? (
+            <p>
+                <span className='font-weight-bold'>Subscribe ends in </span>  
+                <span className='font-weight-bold' style={{ color: expired ? 'red' : 'inherit' }}>{remainingTime}</span>
+            </p>
+        ) : (
+            <p>
+                <span className='font-weight-bold' style={{color:'#0a859b'}}>
+No plan yet, but planning to subscribe</span>
+            </p>
+        )}
+    </div>
     );
 };
 
 export default SubscriptionVendor;
+
+
+

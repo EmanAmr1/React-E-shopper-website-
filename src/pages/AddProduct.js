@@ -155,11 +155,57 @@ const AddProduct = () => {
     };
 
 
+    ////////////////////
+    console.log("user Id",userId)
+    const [expired, setExpired] = useState(true);
+    useEffect(() => {
+        // Fetch subscription info for the current vendor
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`)
+            .then((res) => {
+                const subscriptionInfo = res.data;
+                // Check if subscription is expired
+                if (subscriptionInfo && subscriptionInfo.date && subscriptionInfo.plan) {
+                    const subscriptionTime = new Date(subscriptionInfo.date).getTime();
+                    const currentTime = new Date().getTime();
+                    const planDurations = {
+                        1: 30 * 24 * 60 * 60 * 1000,  // 1 month in milliseconds
+                        2: 3 * 30 * 24 * 60 * 60 * 1000,  // 3 months in milliseconds
+                        3: 6 * 30 * 24 * 60 * 60 * 1000,  // 6 months in milliseconds
+                        4: 12 * 30 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
+                    };
+                    const elapsedTime = currentTime - subscriptionTime;
+                    if (subscriptionInfo.plan in planDurations) {
+                        console.log(subscriptionInfo.plan in planDurations)
+                        const remaining = planDurations[subscriptionInfo.plan] - elapsedTime;
+                        if (remaining > 0) {
+                            setExpired(false); 
+                        } else {
+                            
+                            setExpired(true); 
+                        }
+                    } else {
+                        setExpired(true); 
+                    }
+                
+                    
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching subscription info:', error);
+            });
+    }, [userId]);
+
+ 
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const formData = new FormData();
-
+        if (expired) {
+            alert('Your subscription has expired. Please renew your subscription to add products.');
+            return;
+        }
         if (!addPro.name) {
             setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;
@@ -215,7 +261,7 @@ const AddProduct = () => {
                     price: '',
                     brand: '',
                     stock: '',
-                    ratings: '',
+                   
                     new: true,
                     sale: true,
                     newprice: '',
@@ -239,10 +285,6 @@ const AddProduct = () => {
                 console.error('Error adding product:', error);
             });
     };
-
-
-
-
 
 
 
@@ -302,13 +344,7 @@ const AddProduct = () => {
                                         <input type="checkbox" id="sizeable" name="sizeable" checked={addPro.sizeable} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="ratings" className="form-label">
-                                            <FontAwesomeIcon icon={faStar} className="me-2" />
-                                            Ratings:
-                                        </label>
-                                        <input type="number" id="ratings" name="ratings" value={addPro.ratings} onChange={handleChange} className="form-control" />
-                                    </div>
+                                
 
                                     <div className="mb-3">
                                         <label htmlFor="newprice" className="form-label">

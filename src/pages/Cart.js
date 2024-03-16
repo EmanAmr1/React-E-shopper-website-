@@ -162,7 +162,7 @@ const Cart = () => {
                             {product.item_name}
                           </p>
                           <p>
-                            <span className="text-muted">price: </span>
+                            <span className="text-muted">price: </span>${" "}
                             {product.item_price}
                           </p>
                           <p>

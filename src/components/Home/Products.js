@@ -19,7 +19,7 @@ const Products = () => {
   };
   const [selectedCategory, setSelectedCategory] = useState("*");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(25);
+  const [productsPerPage] = useState(20);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -160,13 +160,13 @@ const Products = () => {
                   className={selectedCategory === "accessories" ? "active" : ""}
                   onClick={() => handleCategoryFilter(4)}
                 >
-                  Accessories
+                  Cosmetics 
                 </li>
                 <li
                   className={selectedCategory === "cosmetic" ? "active" : ""}
                   onClick={() => handleCategoryFilter(5)}
                 >
-                  Cosmetics
+                  Accessories
                 </li>
               </ul>
             </div>

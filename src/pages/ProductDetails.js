@@ -419,7 +419,17 @@ const ProductDetails = () => {
                 </div>
 
                 <span className="product__details__price">
-                  $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "}
+                  {/* $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "} */}
+                  {proDetails.sale ? (
+                          <div
+                            className="product__price  "
+                            style={{ color: "#ca1515" }}
+                          >
+                            {proDetails.newprice} <span>{proDetails.price}</span>
+                          </div>
+                        ) : (
+                          <div className="product__price">{proDetails.price}</div>
+                        )}
                 </span>
 
                 <p>

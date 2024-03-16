@@ -210,6 +210,14 @@ const AddProduct = () => {
             setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;
         }
+        if (addPro.price<=0) {
+            setErrors(prevErrors => [...prevErrors, 'the price must be greater than zero.']);
+            return;
+        }
+        if (addPro.newprice<0) {
+            setErrors(prevErrors => [...prevErrors, 'the new price must be greater than zero.']);
+            return;
+        }
 
 
         if (!addPro.description ) {

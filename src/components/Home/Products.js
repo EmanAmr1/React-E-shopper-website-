@@ -19,7 +19,7 @@ const Products = () => {
   };
   const [selectedCategory, setSelectedCategory] = useState("*");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(8);
+  const [productsPerPage] = useState(30);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -139,31 +139,31 @@ const Products = () => {
                   All
                 </li>
                 <li
-                  className={selectedCategory === "women" ? "active" : ""}
+                  className={selectedCategory === 1 ? "active" : ""}
                   onClick={() => handleCategoryFilter(1)}
                 >
                   Women’s
                 </li>
                 <li
-                  className={selectedCategory === "men" ? "active" : ""}
+                  className={selectedCategory === 2 ? "active" : ""}
                   onClick={() => handleCategoryFilter(2)}
                 >
                   Men’s
                 </li>
                 <li
-                  className={selectedCategory === "kid" ? "active" : ""}
+                  className={selectedCategory === 3 ? "active" : ""}
                   onClick={() => handleCategoryFilter(3)}
                 >
                   Kid’s
                 </li>
                 <li
-                  className={selectedCategory === "accessories" ? "active" : ""}
+                  className={selectedCategory === 4 ? "active" : ""}
                   onClick={() => handleCategoryFilter(4)}
                 >
                   Cosmetics 
                 </li>
                 <li
-                  className={selectedCategory === "cosmetic" ? "active" : ""}
+                  className={selectedCategory === 5 ? "active" : ""}
                   onClick={() => handleCategoryFilter(5)}
                 >
                   Accessories

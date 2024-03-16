@@ -267,6 +267,10 @@ const ProductList = () => {
                               <Link
                                 data-toggle="collapse"
                                 data-target={`#collapse${cat.id}`}
+                                onClick={() => {
+                                  setSelectedCategory(cat.id); // Set selected category
+                                 
+                                }}
                               >
                                 {cat.name}
                               </Link>

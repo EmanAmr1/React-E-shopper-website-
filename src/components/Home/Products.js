@@ -272,31 +272,33 @@ const Products = () => {
               })}
           </div>
           {/* Pagination */}
-          <ul className="pagination">
-            {Array.from({
-              length: Math.ceil(product.length / productsPerPage),
-            }).map((_, index) => (
-              <li
-                key={index}
-                className={`page-item ${
-                  currentPage === index + 1 ? "active" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => paginate(index + 1)}
-                  style={{
-                    backgroundColor: "white",
-                    color: "black",
-                    border: "1px solid black",
-                    borderRadius: "50%",
-                  }}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <ul style={{display:'flex', justifyContent:'center'}}>
+  {Array.from({
+    length: Math.ceil(product.length / productsPerPage),
+  }).map((_, index) => (
+    <li
+      key={index}
+      style={{listStyle:'none'}}
+    >
+      <button
+        className={`page-link ${currentPage === index + 1 ? "active" : ""}`}
+        onClick={() => paginate(index + 1)}
+        style={{
+          backgroundColor: currentPage === index + 1 ? "black" : "white",
+          color: currentPage === index + 1 ? "white" : "black",
+          border: "1px solid black",
+          borderRadius: "50%",
+          marginRight:'5px',
+          width:'35px',
+          height:'35px',
+        }}
+      >
+        {index + 1}
+      </button>
+    </li>
+  ))}
+</ul>
+
         </div>
       </section>
     </>

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 import SubscriptionVendor from '../plan/SubscriptionVendor';
 
-
+import { Link } from "react-router-dom";
 function VendorProfile() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -88,6 +88,13 @@ function VendorProfile() {
             <p> <span className='font-weight-bold'> User Type:</span>  {user.usertype}</p>
             <p> <span className='font-weight-bold'> Shop name:</span>  {user.shopname}</p>
             <SubscriptionVendor vendorId={userId} />
+            <Link
+                to="/VerifyOTP"
+                className="header__right__auth__link"
+                style={{ color: "#007bff" }}
+              >
+                Change Password
+              </Link>
           </div>
         )}
       </div>

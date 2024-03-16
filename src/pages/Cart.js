@@ -210,33 +210,33 @@ const Cart = () => {
               })}
             </div>
           </div>
-          <div className="mb-3" style={{ fontSize: "2rem", display: "hidden" }}>
+          {/* <div className="mb-3" style={{ fontSize: "2rem", display: "hidden" }}>
             Total: ${total}
-          </div>
+          </div> */}
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
               <div class="cart__btn">
-                <a href="#">Continue Shopping</a>
+                <Link to="/">Continue Shopping</Link>
               </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
               <div class="cart__btn update__btn">
-                <a href="#">
+                <Link to="#">
                   <span class="icon_loading"></span> Update cart
-                </a>
+                </Link>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-lg-6">
               <div class="discount__content">
-                <h6>Discount codes</h6>
+                {/* <h6>Discount codes</h6>
                 <form action="#">
                   <input type="text" placeholder="Enter your coupon code" />
                   <button type="submit" class="site-btn">
                     Apply
                   </button>
-                </form>
+                </form> */}
               </div>
             </div>
             <div class="col-lg-4 offset-lg-2">

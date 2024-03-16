@@ -19,14 +19,20 @@ const Products = () => {
   };
   const [selectedCategory, setSelectedCategory] = useState("*");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(30);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const [productsPerPage] = useState(8);
+  // Filter products based on selected category
+  const filteredProducts = selectedCategory === "*"
+    ? product
+    : product.filter(prod => prod.category === selectedCategory);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = product.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
   const handleCategoryFilter = (category) => {
     console.log("Selected Category:", category);
     setSelectedCategory(category);
@@ -139,31 +145,31 @@ const Products = () => {
                   All
                 </li>
                 <li
-                  className={selectedCategory === 1 ? "active" : ""}
+                  className={selectedCategory === "women" ? "active" : ""}
                   onClick={() => handleCategoryFilter(1)}
                 >
                   Women’s
                 </li>
                 <li
-                  className={selectedCategory === 2 ? "active" : ""}
+                  className={selectedCategory === "men" ? "active" : ""}
                   onClick={() => handleCategoryFilter(2)}
                 >
                   Men’s
                 </li>
                 <li
-                  className={selectedCategory === 3 ? "active" : ""}
+                  className={selectedCategory === "kid" ? "active" : ""}
                   onClick={() => handleCategoryFilter(3)}
                 >
                   Kid’s
                 </li>
                 <li
-                  className={selectedCategory === 4 ? "active" : ""}
+                  className={selectedCategory === "accessories" ? "active" : ""}
                   onClick={() => handleCategoryFilter(4)}
                 >
                   Cosmetics 
                 </li>
                 <li
-                  className={selectedCategory === 5 ? "active" : ""}
+                  className={selectedCategory === "cosmetic" ? "active" : ""}
                   onClick={() => handleCategoryFilter(5)}
                 >
                   Accessories
@@ -274,7 +280,7 @@ const Products = () => {
           {/* Pagination */}
           <ul style={{display:'flex', justifyContent:'center'}}>
   {Array.from({
-    length: Math.ceil(product.length / productsPerPage),
+    length: totalPages,
   }).map((_, index) => (
     <li
       key={index}

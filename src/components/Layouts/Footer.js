@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import logo from '../../imags/logo.png'
 const Footer = () => {
 
     return (
@@ -13,10 +13,10 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6 col-sm-7">
                 <div className="footer__about">
                     <div className="footer__logo">
-                        <Link to="/"><img src="img/logo.png" alt="" /></Link>
+                        <Link to="/"><img src={logo} alt="" /></Link>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    cilisis.</p>
+                    <p>Keep up with the latest trends and updates by following us on social media.
+Our team                is here to assist you with any questions or concerns. Contact us for support.</p>
                     <div className="footer__payment">
                   
 
@@ -67,7 +67,7 @@ const Footer = () => {
                         <Link to="H"><i className="fab fa-instagram"></i></Link>
                         <Link to="H"><i className="fab fa-pinterest"></i></Link>
                     </div>
-                    <Link to="H"><img src="img/payment/payment-2.png" alt="" /></Link>
+                    <Link to="#"><img src="img/payment/payment-2.png" alt="" /></Link>
                       
                 </div>
             </div>

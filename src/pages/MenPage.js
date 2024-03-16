@@ -78,10 +78,10 @@ const MenPage = () => {
 
   const handleAdd = async (item) => {
     // e.preventDefault();
-    if (!itemsid.includes(item)) {
+    if (!itemsid.includes(item.id)) {
       try {
         const response = await axiosInstance.get(
-          `/API/getProduct/${item.item}`,
+          `/API/getProduct/${item.id}`,
           {
             headers,
           }
@@ -108,7 +108,7 @@ const MenPage = () => {
           const response = await axiosInstance.post(
             `/api/cart/add/`,
             {
-              item: item.item,
+              item: item.id,
               quantity: 1,
               size: selectedSize,
             },
@@ -116,7 +116,7 @@ const MenPage = () => {
           );
           console.log(response.data);
           dispatch(increaseCounter());
-          const updatedItemsId = itemsid.concat(item.item);
+          const updatedItemsId = itemsid.concat(item.id);
           dispatch(setItemsid(updatedItemsId));
         } catch (error) {
           console.error("Error:", error);

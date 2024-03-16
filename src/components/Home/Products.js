@@ -18,10 +18,18 @@ const Products = () => {
     Authorization: `Token ${token}`,
   };
   const [selectedCategory, setSelectedCategory] = useState("*");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(25); 
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = product.slice(indexOfFirstProduct, indexOfLastProduct);
   const handleCategoryFilter = (category) => {
     console.log('Selected Category:', category);
     setSelectedCategory(category);
+    setCurrentPage(1);
   };
+
 
   useEffect(() => {
     axiosInstance
@@ -114,7 +122,7 @@ const Products = () => {
     <>
       <section className="product spad">
         <div className="container">
-          <div className="row">
+          <div className="row property__gallery">
             <div className="col-lg-4 col-md-4">
               <div className="section-title">
                 <h4>New product</h4>
@@ -141,8 +149,7 @@ const Products = () => {
             </div>
           </div>
           <div className="row property__gallery">
-          {product.filter((prod) =>selectedCategory === "*" ? true : prod.category === selectedCategory
-            ).map((prod) => {
+          {currentProducts.filter((prod) => selectedCategory === "*" ? true : prod.category === selectedCategory).map((prod) => {
                   console.log('Selected Category:', selectedCategory);
                 console.log('Filter Result:', selectedCategory === '*' || prod.category === selectedCategory);
                 console.log('Rendered Product:', prod);
@@ -231,8 +238,25 @@ const Products = () => {
                 </div>
               );
             })}
+           
           </div>
+            {/* Pagination */}
+            <ul className="pagination">
+            {Array.from({ length: Math.ceil(product.length / productsPerPage) }).map((_, index) => (
+              <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => paginate(index + 1)}  style={{
+    backgroundColor: "white",
+    color: "black",
+    border: "1px solid black",
+    borderRadius: "50%"
+}}>
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
+        
       </section>
     </>
   );

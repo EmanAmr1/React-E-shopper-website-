@@ -78,9 +78,9 @@ const HeaderDelivary = () => {
         <nav className="header_menu">
           <ul>
             <li
-              className={location.pathname === "/deliveryman" ? "active" : ""}
+              className={location.pathname === "/DeliveryMan" ? "active" : ""}
             >
-              <Link to="/deliveryman">Orders</Link>
+              <Link to="/DeliveryMan">Orders</Link>
             </li>
             <li className={location.pathname === "/pending" ? "active" : ""}>
               <Link to="/pending">Pending</Link>
@@ -127,10 +127,10 @@ const HeaderDelivary = () => {
                 <ul>
                   <li
                     className={
-                      location.pathname === "/deliveryman" ? "active" : ""
+                      location.pathname === "/DeliveryMan" ? "active" : ""
                     }
                   >
-                    <Link to="/deliveryman">Orders</Link>
+                    <Link to="/DeliveryMan">Orders</Link>
                   </li>
                   <li
                     className={location.pathname === "/pending" ? "active" : ""}

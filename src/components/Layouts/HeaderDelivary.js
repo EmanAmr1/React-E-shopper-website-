@@ -77,9 +77,7 @@ const HeaderDelivary = () => {
         <div id="mobile-menu-wrap"></div>
         <nav className="header_menu">
           <ul>
-            <li
-              className={location.pathname === "/deliveryman" ? "active" : ""}
-            >
+            <li>
               <Link to="/deliveryman">Orders</Link>
             </li>
           </ul>
@@ -116,11 +114,7 @@ const HeaderDelivary = () => {
             <div className="col-xl-6 col-lg-7">
               <nav className="header__menu">
                 <ul>
-                  <li
-                    className={
-                      location.pathname === "/deliveryman" ? "active" : ""
-                    }
-                  >
+                  <li>
                     <Link to="/deliveryman">Orders</Link>
                   </li>
                 </ul>

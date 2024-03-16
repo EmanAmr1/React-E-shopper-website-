@@ -24,7 +24,7 @@ const ListOfProduct = ({
             >
               {prod.new ? (
                 <div className="label new">New</div>
-              ) : prod.sale ? (
+              ) : prod.sale && prod.stock !== 0 ? (
                 <div className="label sale">Sale</div>
               ) : prod.stock === 0 ? (
                 <div className="label stockout">out of stock</div>

@@ -8,8 +8,7 @@ import { increaseCounter, setItemsid } from "../store/slices/total";
 import { addItem, removeItem, setItems } from "../store/slices/wishlist";
 import ListOfProduct from "../components/Shop/ListOfProduct";
 import { Form, Button } from "react-bootstrap";
-import './ProductList.css'
-
+import "./ProductList.css";
 
 const WomanPage = () => {
   const [subcategory, setsubCategory] = useState([]);
@@ -20,7 +19,7 @@ const WomanPage = () => {
   const userID = userCookie ? JSON.parse(userCookie).id : null;
   const [wishlistid, setWishlistid] = useState([]);
   const [selectedSize, setSelectedSize] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(1); 
+  const [selectedCategory, setSelectedCategory] = useState(1);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const token = Cookies.get("token");
   const headers = {
@@ -78,12 +77,9 @@ const WomanPage = () => {
     // e.preventDefault();
     if (!itemsid.includes(item)) {
       try {
-        const response = await axiosInstance.get(
-          `/API/getProduct/${item.item}`,
-          {
-            headers,
-          }
-        );
+        const response = await axiosInstance.get(`/API/getProduct/${item.id}`, {
+          headers,
+        });
         console.log(response.data.product);
         const proDetails = response.data.product;
         let selectedSize = "";
@@ -106,7 +102,7 @@ const WomanPage = () => {
           const response = await axiosInstance.post(
             `/api/cart/add/`,
             {
-              item: item.item,
+              item: item.id,
               quantity: 1,
               size: selectedSize,
             },
@@ -114,7 +110,7 @@ const WomanPage = () => {
           );
           console.log(response.data);
           dispatch(increaseCounter());
-          const updatedItemsId = itemsid.concat(item.item);
+          const updatedItemsId = itemsid.concat(item.id);
           dispatch(setItemsid(updatedItemsId));
         } catch (error) {
           console.error("Error:", error);
@@ -152,21 +148,24 @@ const WomanPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [maxPriceFromAPI, setMaxPriceFromAPI] = useState(null);
   useEffect(() => {
-    axiosInstance.get('http://127.0.0.1:8000/API/allproducts/')
-      .then(res => {
-        
-        const maxPrice = Math.max(...res.data.results.products.map(product => parseFloat(product.price)));
-        setMaxPriceFromAPI(maxPrice+20);
-        setMaxPrice(maxPrice+20);
-
+    axiosInstance
+      .get("http://127.0.0.1:8000/API/allproducts/")
+      .then((res) => {
+        const maxPrice = Math.max(
+          ...res.data.results.products.map((product) =>
+            parseFloat(product.price)
+          )
+        );
+        setMaxPriceFromAPI(maxPrice + 20);
+        setMaxPrice(maxPrice + 20);
       })
-      .catch(error => {
-        console.error('Error fetching maximum price:', error);
+      .catch((error) => {
+        console.error("Error fetching maximum price:", error);
       });
   }, []);
   useEffect(() => {
     fetchProducts(); // Fetch products initially
-  }, [ selectedSubcategory, minPrice, maxPrice, currentPage]); // Refetch products when any filter changes
+  }, [selectedSubcategory, minPrice, maxPrice, currentPage]); // Refetch products when any filter changes
 
   const fetchProducts = () => {
     let url = `/API/allproducts/?page=${currentPage}`;
@@ -208,23 +207,22 @@ const WomanPage = () => {
     setCurrentPage(page);
   };
 
-  const [keyword, setKeyword] = useState(""); 
+  const [keyword, setKeyword] = useState("");
 
   const handleSearchChange = (event) => {
-    setKeyword(event.target.value); 
+    setKeyword(event.target.value);
   };
-  
+
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    setCurrentPage(1); 
-    fetchProducts(); 
+    setCurrentPage(1);
+    fetchProducts();
   };
-  
 
   return (
     <>
-          {/* Breadcrumb Begin */}
-          <div className="breadcrumb-option">
+      {/* Breadcrumb Begin */}
+      <div className="breadcrumb-option">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -239,103 +237,109 @@ const WomanPage = () => {
         </div>
       </div>
       {/* Breadcrumb End */}
-    <section className="shop spad">
-      <div className="container">
-        <div className="productSearch mb-3">
-        <Form className="d-flex" onSubmit={handleSearchSubmit}> {/* Add onSubmit event handler */}
-  <Form.Control
-    type="search"
-    placeholder="Search"
-    className="me-2"
-    aria-label="Search"
-    value={keyword} // Bind value to keyword state
-    onChange={handleSearchChange} // Add onChange event handler
-  />
-<Button variant="outline-success" type="submit" className="search-button">Search</Button>
-</Form>
-        </div>
-        <div className="row">
-          <div className="col-lg-3 col-md-3">
-            <div className="shop__sidebar">
-              <div className="sidebar__categories">
-                <div className="section-title">
-                  <h4>Categories</h4>
-                </div>
-                <div className="categories__accordion">
-                  <div className="accordion" id="accordionExample">
-                  {category.filter(cat => cat.id === 1).map((cat) => {
-                      return (
-                        <>
-                          <div className="card" key={cat.id}>
-                            <div className="card-heading">
-                              <Link
-                                data-toggle="collapse"
-                                data-target={`#collapse${cat.id}`}
-                              >
-                                {cat.name}
-                              </Link>
-                            </div>
-                            <div
-                              id={`collapse${cat.id}`}
-                              className="collapse"
-                              data-parent="#accordionExample"
-                            >
-                              <div className="card-body">
-                                <ul>
-                                  {cat.subcategories.map((subcat) => (
-                                    <li key={subcat.id}>
-                                      <Link
-                                        to="#"
-                                        onClick={() => {
-                                          setSelectedCategory(cat.id); // Set selected category
-                                          setSelectedSubcategory(subcat.id); // Set selected subcategory
-                                        }}
-                                      >
-                                        {subcat.name}
-                                      </Link>
-                                    </li>
-                                  ))}
-                                </ul>
+      <section className="shop spad">
+        <div className="container">
+          <div className="productSearch mb-3">
+            <Form className="d-flex" onSubmit={handleSearchSubmit}>
+              {" "}
+              {/* Add onSubmit event handler */}
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+                value={keyword} // Bind value to keyword state
+                onChange={handleSearchChange} // Add onChange event handler
+              />
+              <Button
+                variant="outline-success"
+                type="submit"
+                className="search-button"
+              >
+                Search
+              </Button>
+            </Form>
+          </div>
+          <div className="row">
+            <div className="col-lg-3 col-md-3">
+              <div className="shop__sidebar">
+                <div className="sidebar__categories">
+                  <div className="section-title">
+                    <h4>Categories</h4>
+                  </div>
+                  <div className="categories__accordion">
+                    <div className="accordion" id="accordionExample">
+                      {category
+                        .filter((cat) => cat.id === 1)
+                        .map((cat) => {
+                          return (
+                            <>
+                              <div className="card" key={cat.id}>
+                                <div className="card-heading">
+                                  <Link
+                                    data-toggle="collapse"
+                                    data-target={`#collapse${cat.id}`}
+                                  >
+                                    {cat.name}
+                                  </Link>
+                                </div>
+                                <div
+                                  id={`collapse${cat.id}`}
+                                  className="collapse"
+                                  data-parent="#accordionExample"
+                                >
+                                  <div className="card-body">
+                                    <ul>
+                                      {cat.subcategories.map((subcat) => (
+                                        <li key={subcat.id}>
+                                          <Link
+                                            to="#"
+                                            onClick={() => {
+                                              setSelectedCategory(cat.id); // Set selected category
+                                              setSelectedSubcategory(subcat.id); // Set selected subcategory
+                                            }}
+                                          >
+                                            {subcat.name}
+                                          </Link>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })}
-                      
+                            </>
+                          );
+                        })}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <ShopCategory
-                minPrice={minPrice}
-                maxPrice={maxPrice}
-                maxPriceFromAPI={maxPriceFromAPI}
-                handlePriceChange={handlePriceChange}
-              />
-              <div className="sidebar__sizes">
-                <div className="section-title">
-                  
+                <ShopCategory
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
+                  maxPriceFromAPI={maxPriceFromAPI}
+                  handlePriceChange={handlePriceChange}
+                />
+                <div className="sidebar__sizes">
+                  <div className="section-title"></div>
                 </div>
-             
               </div>
             </div>
-          </div>
 
-          <div className="col-lg-9 col-md-9">
-            <ListOfProduct
-              products={products}
-              wishlistid={wishlistid}
-              itemsid={itemsid}
-              handleAddWish={handleAddWish}
-              handleAdd={handleAdd}
-              handlePageChange={handlePageChange}
-              currentPage={currentPage}
-              totalPages={totalPages}
-            />
+            <div className="col-lg-9 col-md-9">
+              <ListOfProduct
+                products={products}
+                wishlistid={wishlistid}
+                itemsid={itemsid}
+                handleAddWish={handleAddWish}
+                handleAdd={handleAdd}
+                handlePageChange={handlePageChange}
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
     </>
   );
 };

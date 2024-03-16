@@ -16,9 +16,9 @@ const Discount = () => {
         
        
         
-
+            }, []);
         console.log(discountData)
-       
+        useEffect(() => {
         const calculateCountdown = () => {
             if (!discountData || !discountData.length) {
                 // If discountData is null or empty, set countdown to default values
@@ -46,7 +46,10 @@ const Discount = () => {
         const interval = setInterval(calculateCountdown, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [discountData]);
+    if (!discountData) {
+        return null; // Or you can render a loading indicator
+    }
 
     return (
         <section className="discount">

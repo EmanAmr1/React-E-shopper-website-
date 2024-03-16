@@ -19,7 +19,7 @@ const Products = () => {
   };
   const [selectedCategory, setSelectedCategory] = useState("*");
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(20);
+  const [productsPerPage] = useState(8);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -35,8 +35,8 @@ const Products = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("/API/allproducts/")
-      .then((res) => setProduct(res.data.results.products))
+      .get("/API/allpro/")
+      .then((res) => setProduct(res.data.products))
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {

@@ -60,10 +60,10 @@ function VendorProfile() {
   useEffect(() => {
 
     axios
-      .get(`http://127.0.0.1:8000/API/allproducts/`)
+      .get(`http://127.0.0.1:8000/API/allpro/`)
       .then((res) => {
 
-        const filteredProducts = res.data.results.products.filter(product => product.vendor === userId);
+        const filteredProducts = res.data.products.filter(product => product.vendor === userId);
         setProducts(filteredProducts);
       })
       .catch((err) => console.log(err));

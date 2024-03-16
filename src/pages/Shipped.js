@@ -65,7 +65,7 @@ const Shipped = () => {
               <p className="card-text">zip code: {order.zip_code}</p>
               <p className="card-text">
                 {" "}
-                <Link className="card-link" to={`orderdetails/${order.id}`}>
+                <Link className="card-link" to={`/orderdetails/${order.id}`}>
                   more details
                 </Link>
               </p>

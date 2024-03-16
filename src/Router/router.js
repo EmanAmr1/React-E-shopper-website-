@@ -18,6 +18,9 @@ const Cart = React.lazy(() => import("../pages/Cart"));
 const Wishlist = React.lazy(() => import("../pages/Wishlist"));
 const Deliveryman = React.lazy(() => import("../pages/Delivaryman"));
 const Orderdetails = React.lazy(() => import("../pages/Orderdetails"));
+const Delivered = React.lazy(() => import("../pages/Delivered"));
+const Shipped = React.lazy(() => import("../pages/Shipped"));
+const Pending = React.lazy(() => import("../pages/Pending"));
 const CheckoutPage = React.lazy(() => import("../pages/CheckoutPage"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
 const Register = React.lazy(() => import("../components/Accounts/Register"));
@@ -81,7 +84,7 @@ const Router = () => {
           <Route path="/verify-email" element={<EmailVerification />} />
           <Route path="/addProduct" element={<AddProduct />} />
           <Route path="/updateProduct/:id" element={<UpdateProduct />} />
-          
+
           <Route path="/Vendorplan" element={<Vendorplan />} />
 
           <Route path="vendorPro/:id" element={<VendorPro />} />
@@ -98,10 +101,10 @@ const Router = () => {
             path="/deliveryman"
             element={<DeliveryManProfileProtectedRoute />}
           />
-          <Route
-            path="/deliveryman/orderdetails/:id"
-            element={<Orderdetails />}
-          />
+          <Route path="/orderdetails/:id" element={<Orderdetails />} />
+          <Route path="/delivered" element={<Delivered />} />
+          <Route path="/shipped" element={<Shipped />} />
+          <Route path="/pending" element={<Pending />} />
         </Route>
       </Routes>
     </Suspense>

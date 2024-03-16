@@ -77,8 +77,19 @@ const HeaderDelivary = () => {
         <div id="mobile-menu-wrap"></div>
         <nav className="header_menu">
           <ul>
-            <li>
+            <li
+              className={location.pathname === "/deliveryman" ? "active" : ""}
+            >
               <Link to="/deliveryman">Orders</Link>
+            </li>
+            <li className={location.pathname === "/pending" ? "active" : ""}>
+              <Link to="/pending">Pending</Link>
+            </li>
+            <li className={location.pathname === "/shipped" ? "active" : ""}>
+              <Link to="/shipped">Shipped</Link>
+            </li>
+            <li className={location.pathname === "/delivered" ? "active" : ""}>
+              <Link to="/delivered">Delivered</Link>
             </li>
           </ul>
         </nav>
@@ -114,8 +125,29 @@ const HeaderDelivary = () => {
             <div className="col-xl-6 col-lg-7">
               <nav className="header__menu">
                 <ul>
-                  <li>
+                  <li
+                    className={
+                      location.pathname === "/deliveryman" ? "active" : ""
+                    }
+                  >
                     <Link to="/deliveryman">Orders</Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/pending" ? "active" : ""}
+                  >
+                    <Link to="/pending">Pending</Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/shipped" ? "active" : ""}
+                  >
+                    <Link to="/shipped">Shipped</Link>
+                  </li>
+                  <li
+                    className={
+                      location.pathname === "/delivered" ? "active" : ""
+                    }
+                  >
+                    <Link to="/delivered">Delivered</Link>
                   </li>
                 </ul>
               </nav>

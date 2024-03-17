@@ -36,7 +36,8 @@ const SubscriptionVendor = ({ vendorId }) => {
                         const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
                         const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                         const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                        setRemainingTime(`${days} days, ${hours} hours, and ${minutes} minutes`);
+                        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                        setRemainingTime(`${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`);
                         setExpired(false); // Subscription not expired
                     } else {
                         setRemainingTime("Subscription expired");

@@ -81,16 +81,30 @@ const Header = () => {
         </div>
         <ul className="offcanvas__widget">
           <li>
-            <span class="fa-regular fa-user"></span>
+            {user && user.usertype === "customer" && (
+              <Link to="/customerprofile">
+                <span className="fa-regular fa-user"></span>
+              </Link>
+            )}
+            {user && user.usertype === "vendor" && (
+              <Link to="/vendorprofile">
+                <span className="fa-regular fa-user"></span>
+              </Link>
+            )}
+            {user && user.usertype === "DeliveryMan" && (
+              <Link to="/deliverymanprofile">
+                <span className="fa-regular fa-user"></span>
+              </Link>
+            )}
           </li>
           <li>
-            <Link to="H">
+            <Link to="wishlist">
               <span className="icon_heart_alt"></span>
               <div className="tip">{count}</div>
             </Link>
           </li>
           <li>
-            <Link to="H">
+            <Link to="Cart">
               <span className="icon_bag_alt"></span>
               <div className="tip">{total}</div>
             </Link>

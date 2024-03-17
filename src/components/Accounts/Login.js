@@ -102,6 +102,12 @@ function Login() {
           Register
         </Link>
       </div>
+      <div className="register_btn">
+        <p className="paragraph">Forget Your Password ?</p>
+        <Link to="/ForgetPassword" className="link">
+          Forget Password
+        </Link>
+      </div>
     </div>
   );
 }

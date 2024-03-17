@@ -25,6 +25,8 @@ const CheckoutPage = React.lazy(() => import("../pages/CheckoutPage"));
 const NotFound = React.lazy(() => import("../pages/NotFound"));
 const Register = React.lazy(() => import("../components/Accounts/Register"));
 const Login = React.lazy(() => import("../components/Accounts/Login"));
+const ForgetPassword = React.lazy(() => import("../components/Accounts/ForgetPassword"));
+const ChangeForgetPass = React.lazy(() => import("../components/Accounts/ChangeForgetPass"));
 const CustomerProfile = React.lazy(() =>
   import("../components/Accounts/CustomerProfile")
 );
@@ -94,6 +96,8 @@ const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/VerifyOTP" element={<VerifyOTP />} />
         <Route path="/ChangePassword" element={<ChangePassword />} />
+        <Route path="/ForgetPassword" element={<ForgetPassword/>} />
+        <Route path="/ChangeForgetPass" element={<ChangeForgetPass/>} />
         <Route path="/message" element={<Message />} />
         <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
         <Route element={<DelivaryLayout />}>

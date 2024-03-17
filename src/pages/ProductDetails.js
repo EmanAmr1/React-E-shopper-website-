@@ -183,38 +183,57 @@ const ProductDetails = () => {
       .catch((err) => console.log(err));
   }, [proDetails.id]);
 
-  const handleAdd = async (e) => {
-    e.preventDefault();
-    console.log(cartitems);
-    // if (!itemsid.includes(proDetails.id)) {
-    try {
-      const response = await axiosInstance.post(
-        `/api/cart/add/`,
-        {
-          item: productId,
-          quantity: quantity,
-          size: selectedSize,
-        },
-        { headers }
-      );
-      console.log(cartitems);
-      const updatedItemsId = itemsid.concat(proDetails.id);
-      dispatch(setItemsid(updatedItemsId));
-      dispatch(increaseCounterByAmount(response.data.quantity));
-      setCount((prevCount) => prevCount + response.data.quantity);
-    } catch (error) {
-      console.error("Error:", error.response.data);
+  const handleAdd = async (e, id) => {
+    if (e !== id) {
+      e.preventDefault();
+      try {
+        const response = await axiosInstance.post(
+          `/api/cart/add/`,
+          {
+            item: id,
+            quantity: quantity,
+            size: selectedSize,
+          },
+          { headers }
+        );
+        console.log(cartitems);
+        const updatedItemsId = itemsid.concat(proDetails.id);
+        dispatch(setItemsid(updatedItemsId));
+        dispatch(increaseCounterByAmount(response.data.quantity));
+        setCount((prevCount) => prevCount + response.data.quantity);
+      } catch (error) {
+        console.error("Error:", error.response.data);
+      }
+    } else {
+      if (!itemsid.includes(proDetails.id)) {
+        try {
+          const response = await axiosInstance.post(
+            `/api/cart/add/`,
+            {
+              item: id,
+              quantity: quantity,
+              size: selectedSize,
+            },
+            { headers }
+          );
+          console.log(cartitems);
+          const updatedItemsId = itemsid.concat(proDetails.id);
+          dispatch(setItemsid(updatedItemsId));
+          dispatch(increaseCounterByAmount(response.data.quantity));
+          setCount((prevCount) => prevCount + response.data.quantity);
+        } catch (error) {
+          console.error("Error:", error.response.data);
+        }
+      }
     }
-    // }
   };
 
-  const handleAddWish = async (e) => {
-    e.preventDefault();
+  const handleAddWish = async (id) => {
     try {
       const response = await axiosInstance.post(
         `/api/wishlist/add/`,
         {
-          item: productId,
+          item: id,
         },
         { headers }
       );
@@ -421,15 +440,15 @@ const ProductDetails = () => {
                 <span className="product__details__price">
                   {/* $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "} */}
                   {proDetails.sale ? (
-                          <div
-                            className="product__price  "
-                            style={{ color: "#ca1515" }}
-                          >
-                            {proDetails.newprice} <span>{proDetails.price}</span>
-                          </div>
-                        ) : (
-                          <div className="product__price">{proDetails.price}</div>
-                        )}
+                    <div
+                      className="product__price  "
+                      style={{ color: "#ca1515" }}
+                    >
+                      {proDetails.newprice} <span>{proDetails.price}</span>
+                    </div>
+                  ) : (
+                    <div className="product__price">{proDetails.price}</div>
+                  )}
                 </span>
 
                 <p>
@@ -544,7 +563,11 @@ const ProductDetails = () => {
                         </div>
                       </div>
                     </div>
-                    <a href=" " className="cart-btn" onClick={handleAdd}>
+                    <a
+                      href=" "
+                      className="cart-btn"
+                      onClick={(e) => handleAdd(e, productId)}
+                    >
                       <span className="icon_bag_alt"></span>{" "}
                       {itemsid.includes(proDetails.id)
                         ? `Add More ${count}`
@@ -559,7 +582,7 @@ const ProductDetails = () => {
                               wishlistid.includes(productId) && "#ca1515",
                             color: wishlistid.includes(productId) && "#ffffff",
                           }}
-                          onClick={handleAddWish}
+                          onClick={() => handleAddWish(productId)}
                           className="icon_heart_alt"
                         >
                           {/* <span className="icon_heart_alt"></span> */}
@@ -688,9 +711,18 @@ const ProductDetails = () => {
                           <li>
                             <a
                               href={() => false}
-                              onClick={() => handleAdd(prod.id)}
+                              onClick={() => handleAdd(prod.id, prod.id)}
+                              style={{
+                                backgroundColor:
+                                  itemsid.includes(prod.id) && "#ca1515",
+                              }}
                             >
-                              <span className="icon_bag_alt"></span>
+                              <span
+                                style={{
+                                  color: itemsid.includes(prod.id) && "#ffffff",
+                                }}
+                                className="icon_bag_alt"
+                              ></span>
                             </a>
                           </li>
                         </ul>

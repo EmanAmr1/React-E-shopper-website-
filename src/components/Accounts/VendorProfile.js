@@ -56,6 +56,13 @@ function VendorProfile() {
 
       });
   }, []);
+  
+
+  useEffect(() => {
+    if (user && user.usertype === 'customer') {
+      navigate("/not-found");
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
 

@@ -23,7 +23,9 @@ const Vendorplan = () => {
         setPlans(data);
     };
       ////////////////////
+      const navigate = useNavigate();
       const [userId, setUser] = useState(null);
+      const [user, setuser] = useState(null);
       useEffect(() => {
         const token = Cookies.get('token');
         const headers = {
@@ -32,6 +34,7 @@ const Vendorplan = () => {
       
         axiosInstance.get('http://localhost:8000/api/profile/', { headers })
           .then((res) => {
+            setuser(res.data.message)
             setUser(res.data.message.id);
             console.log("ssss",res.data.message.id);
       
@@ -41,6 +44,14 @@ const Vendorplan = () => {
     
           });
       }, []);
+
+      useEffect(() => {
+        if (user && user.usertype === 'customer') {
+          navigate("/not-found");
+        }
+      }, [user, navigate]);
+    
+    
 
     console.log("user Id",userId)
     const [subscribe, setsubscribe] = useState(false);

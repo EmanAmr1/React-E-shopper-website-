@@ -56,7 +56,7 @@ useEffect(() => {
         price: '',
         brand: '',
         stock: '',
-        ratings: '',
+       
         new: true,
         sale: true,
         newprice: '',
@@ -185,10 +185,49 @@ useEffect(() => {
         const formData = new FormData();
 
 
-        if (!updatePro.name || !updatePro.description || !updatePro.price || !updatePro.brand || !updatePro.stock || !updatePro.category) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill in all required fields.']);
+
+
+        if (!updatePro.name) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;
         }
+        if (updatePro.price<=0) {
+            setErrors(prevErrors => [...prevErrors, 'the price must be greater than zero.']);
+            return;
+        }
+        if (updatePro.newprice<0) {
+            setErrors(prevErrors => [...prevErrors, 'the new price must be greater than zero.']);
+            return;
+        }
+
+
+        if (!updatePro.description ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill description.']);
+            return;
+        }
+
+        if ( !updatePro.price ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill price']);
+            return;
+        }
+
+        if ( !updatePro.brand ) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill brand.']);
+            return;
+        }
+
+
+
+
+
+
+
+
+
+       /* if (!updatePro.name || !updatePro.description || !updatePro.price || !updatePro.brand || !updatePro.stock || !updatePro.category) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill in all required fields.']);
+            return;
+        }*/
 
 
         if (updatePro.newprice && updatePro.price && parseFloat(updatePro.newprice) >= parseFloat(updatePro.price)) {
@@ -283,13 +322,7 @@ useEffect(() => {
                                         <input type="checkbox" id="sizeable" name="sizeable" checked={updatePro?.sizeable || ''} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="ratings" className="form-label">
-                                            <FontAwesomeIcon icon={faStar} className="me-2" />
-                                            Ratings:
-                                        </label>
-                                        <input type="number" id="ratings" name="ratings" value={updatePro?.ratings || ''} onChange={handleChange} className="form-control" />
-                                    </div>
+                                  
 
                                     <div className="mb-3">
                                         <label htmlFor="newprice" className="form-label">

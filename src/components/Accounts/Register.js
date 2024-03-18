@@ -60,8 +60,9 @@ function Register() {
 
   return (
     <>
-    <div className="all-register">
-    <div className="containerr">
+    
+    <div className="all-register d-flex justify-content-center align-items-center vh-100">
+    <div className="containerr py-3">
     <div className='row  ' style={{width:'100%'}}>
         
       <img src={welc} alt="Welcome" className='col-md-5 ' />
@@ -307,7 +308,7 @@ function Register() {
         <button
           className="btn btn-dark"
           type="submit"
-          style={{ padding: "10px", width: "150px", marginBottom:"10px" }}
+          style={{ padding: "10px", width: "150px", marginTop:"7px" }}
         >
           Submit
         </button>
@@ -318,13 +319,14 @@ function Register() {
      
     </div>
     </div>
-    <div className='login_btn' >
+    <div className='login_btn mt-2' >
       <div>
         <p className='paragraph'>Already Have An Account? </p>
         </div>
         <Link to="/login" className="link">Login</Link>
       </div>
     </div>
+    
       </>
 
   );

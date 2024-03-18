@@ -25,7 +25,7 @@ const AddProduct = () => {
         description: '',
         price: '',
         brand: '',
-        stock: '',
+        stock: "0",
         ratings: '',
         new: true,
         sale: true,
@@ -259,12 +259,19 @@ const AddProduct = () => {
             return;
         }
 
-        if ( !addPro.stock ) {
+        if ( !addPro.sizeable &&  !addPro.stock  ) {
             setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
             return;
         }
 
-      
+      if ( addPro.sizeable &&  (!addPro.stock_S   || !addPro.stock_L || !addPro.stock_M || !addPro.stock_XL)) {
+            setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
+            return;
+        }
+
+
+
+
         if (addPro.category === '') {
             setErrors(prevErrors => [...prevErrors, 'Please select a category.']);
             return;
@@ -367,7 +374,7 @@ const AddProduct = () => {
                                         <label htmlFor="stock" className="form-label">
                                             <FontAwesomeIcon icon={faBalanceScale} /> Stock:
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" required />
+                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control"  disabled={addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
@@ -432,26 +439,26 @@ const AddProduct = () => {
                                         <label htmlFor="stock_S" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (S):
                                         </label>
-                                        <input type="number" id="stock_S" name="stock_S" value={addPro.stock_S} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_S" name="stock_S" value={addPro.stock_S} onChange={handleChange} className="form-control"  required={addPro.sizeable === true}  disabled={!addPro.sizeable === true}  />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_M" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (M):
                                         </label>
-                                        <input type="number" id="stock_M" name="stock_M" value={addPro.stock_M} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_M" name="stock_M" value={addPro.stock_M} onChange={handleChange} className="form-control"   required={addPro.sizeable === true}   disabled={!addPro.sizeable === true}   />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="stock_L" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (L):
                                         </label>
-                                        <input type="number" id="stock_L" name="stock_L" value={addPro.stock_L} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_L" name="stock_L" value={addPro.stock_L} onChange={handleChange} className="form-control"  required={addPro.sizeable === true}   disabled={!addPro.sizeable === true}  />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_XL" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (XL):
                                         </label>
-                                        <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" required={addPro.sizeable === true}    disabled={!addPro.sizeable === true}   />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">

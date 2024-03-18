@@ -20,22 +20,22 @@ const Checkout = () => {
   const [error, setError] = useState([]);
   const [isOrderPlaced, setIsOrderPlaced] = useState(false);
 
-  const clearCart = () => {
-    setItems([]);
-    setTotal(0);
-    setCheckoutInput({
-      first_name: "",
-      last_name: "",
-      country: "",
-      city: "",
-      zip_code: "",
-      state: "",
-      street: "",
-      phone_number: "",
-      email: "",
-      order_Items: [],
-    });
-  };
+  // const clearCart = () => {
+  //   setItems([]);
+  //   setTotal(0);
+  //   setCheckoutInput({
+  //     first_name: "",
+  //     last_name: "",
+  //     country: "",
+  //     city: "",
+  //     zip_code: "",
+  //     state: "",
+  //     street: "",
+  //     phone_number: "",
+  //     email: "",
+  //     order_Items: [],
+  //   });
+  // };
 
   useEffect(() => {
     axiosInstance
@@ -45,6 +45,21 @@ const Checkout = () => {
         setItems(res.data.cart_items);
         setTotal(res.data.total_items_price);
         console.log(userID);
+      })
+      .catch((err) => console.log(err));
+
+    axiosInstance
+      .get("/API/orders/Tmp", { headers })
+      .then((res) => {
+        console.log(res.data.orders[0].id);
+        axiosInstance
+          .delete(`/API/orders/${res.data.orders[0].id}/deleteTmp/`, {
+            headers,
+          })
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -110,7 +125,7 @@ const Checkout = () => {
       order_Items: orderItems,
     };
 
-    axiosInstance.post("/API/orders/new/", data, { headers }).then((res) => {
+    axiosInstance.post("/API/orders/newTmp/", data, { headers }).then((res) => {
       setOrder_id(res.data.id);
       console.log("Response Status:", res.status);
       if (res.data.status === 200) {
@@ -118,7 +133,7 @@ const Checkout = () => {
         setIsOrderPlaced(true);
         console.log("Navigating to /thank-you");
         setError([]);
-        clearCart();
+        // clearCart();
       } else if (res.data.status === 422) {
         swal.apply("All fields are mondetory", "", "error");
         setError(res.data.errors);
@@ -412,7 +427,6 @@ const Checkout = () => {
                       </button>
                     </form>
                   ) : (
-                    
                     <button type="submit" className="site-btn">
                       Place Order
                     </button>

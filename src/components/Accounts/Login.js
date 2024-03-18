@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,39 @@ function Login() {
   });
   const [errorMessage, setErrorMessage] = useState(""); // State variable to hold error message
   const navigate = useNavigate();
+
+  useEffect(() => {
+   
+    const token = Cookies.get("token");
+    if (token) {
+      axios.get("http://localhost:8000/api/profile", { headers: { Authorization: `Token ${token}` } })
+        .then((res) => {
+          const user= res.data;
+          const userType= user.message.usertype;
+         
+          console.log("user", user);
+          console.log("usertype", user.message.usertype);
+          if (userType === "customer") {
+            navigate("/CustomerProfile");
+          } else if (userType === "vendor") {
+            navigate("/VendorProfile");
+          } else if (userType === "deliveryman") {
+            navigate("/DeliveryMan");
+          } else {
+            console.error("Unknown user type:", userType);
+            
+            navigate("/login");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user profile:", error);
+         
+          navigate("/login");
+        });
+    }
+  }, [navigate]);
+  
+
 
   const handleFieldChange = (event) => {
     const field_name = event.target.name;

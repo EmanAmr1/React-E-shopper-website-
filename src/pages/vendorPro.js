@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 
+
 const VendorProduct = () => {
     const dispatch = useDispatch();
     const userCookie = Cookies.get("token");
@@ -30,14 +31,21 @@ const VendorProduct = () => {
 
 
 
-
+    const navigate = useNavigate();
     const params = useParams();
     console.log(params);
 
     const baseImageUrl = "http://127.0.0.1:8000";
 
 
-    useEffect(() => {
+
+   
+
+
+
+
+
+   /*useEffect(() => {
         axiosInstance
             .get(`/API/getProduct/${params.id}/`, { headers })
             .then((res) => {
@@ -47,14 +55,38 @@ const VendorProduct = () => {
 
             })
             .catch((err) => console.log(err));
-    }, [params.id, userID]);
+    }, [params.id, userID]);*/
 
 
 
-    useEffect(() => {
+
+
+
+
+    /*useEffect(() => {
         // Set the selected image to the main image URL when component mounts
         setSelectedImage(proDetails.image);
-    }, [proDetails]);
+    }, [proDetails]);*/
+
+    
+    useEffect(() => {
+        axiosInstance
+            .get(`/API/getProduct/${params.id}/`, { headers })
+            .then((res) => {
+                setProDetails(res.data.product);
+                setSelectedImage(res.data.product.image);
+                setLoading(false);
+            })
+            .catch((err) => {
+                if (err.response && err.response.status === 404) {
+                    navigate('/not-found'); // Redirect to not-found page if product is not found
+                } else {
+                    console.log(err);
+                }
+            });
+    }, [params.id, navigate]);
+
+
 
 
 

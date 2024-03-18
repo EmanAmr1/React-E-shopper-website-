@@ -133,7 +133,13 @@ const ProductDetails = () => {
           setRating(userRating.rating);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response && err.response.status === 404) {
+            navigate('/not-found'); // Redirect to not-found page if product is not found
+        } else {
+            console.log(err);
+        }
+    });
   }, [params.id, userId]);
 
   useEffect(() => {

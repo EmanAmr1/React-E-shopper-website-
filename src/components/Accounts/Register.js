@@ -292,7 +292,7 @@ function Register() {
                 value={userForm.shopname}
                 onChange={handleFieldChange}
                 name="shopname"
-                disabled={userForm.usertype === "customer" }
+                disabled={userForm.usertype !== "vendor" }
                 required
               />
               {userForm.usertype === "vendor" &&

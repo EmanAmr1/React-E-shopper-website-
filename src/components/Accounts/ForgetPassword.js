@@ -34,7 +34,8 @@ function ForgetPassword() {
   };
 
   return (
-    <div className="forget-password-container">
+    <div className="d-flex justify-content-center align-items-center vh-100">
+    <div className="forget-password-container ">
       <h2>Forget Password</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -57,6 +58,7 @@ function ForgetPassword() {
         Remember your password?{" "}
         <Link to="/login">Login</Link>
       </p>
+    </div>
     </div>
   );
 }

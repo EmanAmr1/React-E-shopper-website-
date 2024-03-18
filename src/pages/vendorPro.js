@@ -90,11 +90,12 @@ const VendorProduct = () => {
                 <div className="container mt-5">
                     <div className="row">
                         <div className="col-lg-5">
-                            <div className="product__big__img__container myimg">
+                            <div className="product__big__img__container myimg" style={{  height: '570px' }}>
                                 <img
                                     className="mypic"
                                     src={`${baseImageUrl}${selectedImage}`}
                                     alt="Product Image"
+                                    style={{  height: '570px' }}
                                 />
                             </div>
 

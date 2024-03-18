@@ -24,12 +24,13 @@ function VerifyOTP() {
   };
 
   return (
-    <div className="container">
+    <div className='d-flex justify-content-center align-items-center vh-100'>
+    <div className="container  ">
       <div className="row justify-content-center mt-5">
         <div className="col-md-6">
           <div className="card">
             <div className="card-body">
-              <h1 className="card-title text-center mb-4">Reset Password</h1>
+              <h3 className="card-title text-center mb-4">Reset Password</h3>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="email">Email:</label>
@@ -50,6 +51,7 @@ function VerifyOTP() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

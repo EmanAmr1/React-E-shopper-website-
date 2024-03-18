@@ -158,129 +158,114 @@ function CustomerProfile() {
       });
   };
   return (
-    <div style={{ background: "rgb(238 238 238 / 48%)" }}>
-      <div className="row pt-5 pb-5 ddd" style={{ width: "100%" }}>
-        <div className="col-md-3 col-sm-12 pt-3 ">
-          <ul>
-            <li>
-              <h4 style={{ fontWeight: "600" }}>
-                Welcome {user ? user.first_name : ""}
-              </h4>
-            </li>
-            <li>
-              <h5>{user ? user.email : ""}</h5>
-            </li>
-            <li className="mt-5">
-              <Link
-                to="/VerifyOTP"
-                className="header__right__auth__link"
-                style={{ color: "#007bff" }}
-              >
-                Change Password
-              </Link>
-            </li>
-            <li>
-              <div>
-                <Link
-                  className="header__right__auth__link"
-                  style={{ color: "red" }}
-                  onClick={handleDelete}
-                >
-                  Delete Account
+    <div className="container py-5">
+      <div className="row">
+        <div className="col-md-3">
+          <div className="card">
+            <div className="card-body">
+            <h4 className="card-title" style={{ fontFamily: 'Etaliq' }}>
+  Welcome {user ? user.first_name : ""}
+</h4>
+              <h6 className="card-subtitle mb-2 text-muted" style={{ fontSize: '14px' }}>
+  {user ? user.email : ""}
+</h6>
+              <ul className="list-unstyled">
+                <li>
+               <button  className="btn btn-link"   style={{ textDecoration: 'none' }}>
+               <Link to="/VerifyOTP"  style={{ textDecoration: 'none' }}>
+                    Change Password
                 </Link>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        {user && (
-          <div className="col-md-8 mt-3 ">
-            <form onSubmit={handleUpdate} className="ml-2">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="first_name">First Name:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="first_name"
-                      name="first_name"
-                      value={updatedUser.first_name}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="last_name">Last Name:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="last_name"
-                      name="last_name"
-                      value={updatedUser.last_name}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="address">Address:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="address"
-                      name="address"
-                      value={updatedUser.address}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="phone_number">Phone Number:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="phone_number"
-                      name="phone"
-                      value={updatedUser.phone}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="birthdate">Birthdate:</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      id="birthdate"
-                      name="birthdate"
-                      value={updatedUser.birthdate}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={!isModified}
-                onChange={handleUpdate}
-              >
-                Update
-              </button>
-            </form>
+               </button>
+                </li>
+                <li>
+                
+                  <button
+                    className="btn btn-link text-danger"
+                    onClick={handleDelete}
+                    style={{ textDecoration: 'none' }}
+                    
+                  >
+                    Delete Account
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
-        )}
+        </div>
+        <div className="col-md-9">
+          <div className="card">
+            <div className="card-body">
+              <form onSubmit={handleUpdate}>
+                <div className="form-group">
+                  <label htmlFor="first_name">First Name:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="first_name"
+                    name="first_name"
+                    value={updatedUser.first_name}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="last_name">Last Name:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="last_name"
+                    name="last_name"
+                    value={updatedUser.last_name}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="address">Address:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="address"
+                    name="address"
+                    value={updatedUser.address}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="phone">Phone Number:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="phone"
+                    name="phone"
+                    value={updatedUser.phone}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="birthdate">Birthdate:</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="birthdate"
+                    name="birthdate"
+                    value={updatedUser.birthdate}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={!isModified}
+                >
+                  Update
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
+
 }
 
 export default CustomerProfile;

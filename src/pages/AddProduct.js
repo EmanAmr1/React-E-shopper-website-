@@ -154,12 +154,29 @@ const AddProduct = () => {
 
     };
 
-    const handleCategoryChange = (e) => {
+    /*const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
         const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
         setSubCategories(selectedCategory.subcategories);
         setAddPro({ ...addPro, category: selectedCategoryId, subcategory: '' });
+    };*/
+
+
+    const handleCategoryChange = (e) => {
+        const selectedCategoryId = e.target.value;
+    
+        // Check if the selected category is not "Select Category"
+        if (selectedCategoryId !== "") {
+            const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
+            setSubCategories(selectedCategory.subcategories);
+        } else {
+            // If the selected category is "Select Category", set subcategories to an empty array
+            setSubCategories([]);
+        }
+    
+        setAddPro({ ...addPro, category: selectedCategoryId, subcategory: '' });
     };
+
 
 
     ////////////////////
@@ -248,7 +265,12 @@ const AddProduct = () => {
         }
 
       
+        if (addPro.category === '') {
+            setErrors(prevErrors => [...prevErrors, 'Please select a category.']);
+            return;
+        }
 
+      
 
 
         if (addPro.newprice && addPro.price && parseFloat(addPro.newprice) >= parseFloat(addPro.price)) {
@@ -374,8 +396,9 @@ const AddProduct = () => {
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
                                         </label>
                                         <select id="category" name="category" value={addPro.category} onChange={handleCategoryChange} className="form-control" >
-                                           
+                                        <option value="">Select Category</option>
                                             {categories.map(category => (
+                                               
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
                                         </select>

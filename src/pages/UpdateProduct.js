@@ -155,12 +155,30 @@ useEffect(() => {
 
     };
 
-    const handleCategoryChange = (e) => {
+    /*const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
         const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
         setSubCategories(selectedCategory.subcategories);
         setUpdatePro({ ...updatePro, category: selectedCategoryId, subcategory: '' });
+    };*/
+
+
+    const handleCategoryChange = (e) => {
+        const selectedCategoryId = e.target.value;
+    
+        // Check if the selected category is not "Select Category"
+        if (selectedCategoryId !== "") {
+            const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
+            setSubCategories(selectedCategory.subcategories);
+        } else {
+            // If the selected category is "Select Category", set subcategories to an empty array
+            setSubCategories([]);
+        }
+    
+        setUpdatePro({ ...updatePro, category: selectedCategoryId, subcategory: '' });
     };
+
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -177,6 +195,17 @@ useEffect(() => {
             setErrors(prevErrors => [...prevErrors, 'New price should be less than the original price.']);
             return;
         }
+
+
+
+  
+        if (updatePro.category === '') {
+            setErrors(prevErrors => [...prevErrors, 'Please select a category.']);
+            return;
+        }
+
+
+
 
         Object.keys(updatePro).forEach(key => {
             formData.append(key, updatePro[key]);
@@ -273,7 +302,7 @@ useEffect(() => {
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
                                         </label>
                                         <select id="category" name="category" value={updatePro?.category || ''} onChange={handleCategoryChange} className="form-control" >
-                                          
+                                        <option value="">Select Category</option>
                                             {categories.map(category => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}

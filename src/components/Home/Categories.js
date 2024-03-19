@@ -52,7 +52,11 @@ const Categories = () => {
                           <p></p>
                           <br/>
                           {/* <p>{cat.itemCount} items</p> */}
-                          <Link to="/ProductList">Shop now</Link>
+                          {cat.id === 2? (
+                            <Link to="/MenPage">Shop now</Link>
+                          ) : (
+                            <Link to="/ProductList">Shop now</Link>
+                          )}
                         </div>
                       </div>
                     </div>

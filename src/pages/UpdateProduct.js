@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { axiosInstance } from "../apis/config";
 import { faImage, faMoneyBillAlt, faTag, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const UpdateProduct = () => {
 
     const params = useParams();
@@ -15,7 +15,7 @@ const UpdateProduct = () => {
     };
 
 
-
+const navigate = useNavigate();
 /////////////////////////////////////////////////////////
 
 const [userId, setUserId] = useState(null);
@@ -92,8 +92,10 @@ useEffect(() => {
                 setUpdatePro(res.data.product);
                 setErrors([]);
             })
-            .catch(error => {
-                console.error('Error fetching product:', error);
+            .catch((err) => {
+                if (err.response && err.response.status === 404) {
+                    navigate('/not-found'); // Redirect to not-found page if product is not found
+                }
             });
     }, [params.id, setUpdatePro]);
 

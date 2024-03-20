@@ -274,6 +274,10 @@ const MenPage = () => {
                               <Link
                                 data-toggle="collapse"
                                 data-target={`#collapse${cat.id}`}
+                                onClick={() => {
+                                  setSelectedCategory(cat.id); // Set selected category
+                                  setSelectedSubcategory(""); // Set selected subcategory
+                                }}
                               >
                                 {cat.name}
                               </Link>

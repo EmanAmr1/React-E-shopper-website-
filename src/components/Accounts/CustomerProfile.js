@@ -102,7 +102,7 @@ function CustomerProfile() {
         console.log("Update successful");
         setLoading(false);
         if (
-          window.confirm("Your profile has been updated. Please log in again.")
+          window.confirm("Your profile has been updated")
         ) {
           navigate("/login");
         }

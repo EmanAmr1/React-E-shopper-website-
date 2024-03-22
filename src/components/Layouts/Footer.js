@@ -13,7 +13,7 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6 col-sm-7">
                 <div className="footer__about">
                     <div className="footer__logo">
-                        <Link to="/"><img src={logo} alt="" /></Link>
+                        <Link to=""><img src={logo} alt="" /></Link>
                     </div>
                     <p>Keep up with the latest trends and updates by following us on social media.
 Our team                is here to assist you with any questions or concerns. Contact us for support.</p>
@@ -32,8 +32,8 @@ Our team                is here to assist you with any questions or concerns. Co
                 <div className="footer__widget">
                     <h6>Quick links</h6>
                     <ul>
-                        <li><Link to="H">About</Link></li>
-                        <li><Link to="H">Blogs</Link></li>
+                        {/* <li><Link to="H">About</Link></li>
+                        <li><Link to="H">Blogs</Link></li> */}
                         <li><Link to="/contact">Contact</Link></li>
                         {/* <li><Link to="H">FAQ</Link></li> */}
                     </ul>
@@ -61,11 +61,11 @@ Our team                is here to assist you with any questions or concerns. Co
                      
 
                     <div className="footer__social mb-4">
-                        <Link to="H"><i className="fab fa-facebook"></i></Link>
-                        <Link to="H"><i className="fab fa-twitter"></i></Link>
-                        <Link to="H"><i className="fab fa-youtube-play"></i></Link>
-                        <Link to="H"><i className="fab fa-instagram"></i></Link>
-                        <Link to="H"><i className="fab fa-pinterest"></i></Link>
+                        <Link to="https://www.facebook.com/profile.php/?id=100037604017924"><i className="fab fa-facebook"></i></Link>
+                        <Link to="https://twitter.com/i/flow/single_sign_on"><i className="fab fa-twitter"></i></Link>
+                        <Link to="https://www.youtube.com/watch?v=wGRF3GQ4Wdk"><i className="fab fa-youtube-play"></i></Link>
+                        <Link to="https://www.instagram.com/toka_arif?igsh=OXoycnUyNmJlcTVt"><i className="fab fa-instagram"></i></Link>
+                        <Link to="https://www.pinterest.com/search/pins/?q=fahion&rs=typed"><i className="fab fa-pinterest"></i></Link>
                     </div>
                     <Link to="#"><img src="img/payment/payment-2.png" alt="" /></Link>
                       

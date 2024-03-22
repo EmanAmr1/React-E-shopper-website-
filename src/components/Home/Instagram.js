@@ -22,7 +22,7 @@ const Instagram = () => {
                     <div className="instagram__item set-bg" style={{ backgroundImage: `url(${inst.image})` }}>
                         <div className="instagram__text">
                             <i className="fab fa-instagram"></i>
-                            <Link href="h">@ ashion_shop</Link>
+                            <Link to="https://www.instagram.com/toka_arif?igsh=OXoycnUyNmJlcTVt">@ ashion_shop</Link>
                         </div>
                     </div>
                 </div>

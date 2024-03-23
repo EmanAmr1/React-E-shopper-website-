@@ -180,44 +180,60 @@ const AddProduct = () => {
 
 
     ////////////////////
+    // deny to add new product 
     console.log("user Id", userId)
-    const [expired, setExpired] = useState(true);
+    const [expired, setExpired] = useState(false);
+    const [subscriptionInfo, setSubscriptionInfo] = useState(null);
     useEffect(() => {
-        // Fetch subscription info for the current vendor
-        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`)
+         // Reset expired state when component mounts
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
             .then((res) => {
-                const subscriptionInfo = res.data;
-                // Check if subscription is expired
-                if (subscriptionInfo && subscriptionInfo.date && subscriptionInfo.plan) {
-                    const subscriptionTime = new Date(subscriptionInfo.date).getTime();
-                    const currentTime = new Date().getTime();
-                    const planDurations = {
-                        1: 30 * 24 * 60 * 60 * 1000,  // 1 month in milliseconds
-                        2: 3 * 30 * 24 * 60 * 60 * 1000,  // 3 months in milliseconds
-                        3: 6 * 30 * 24 * 60 * 60 * 1000,  // 6 months in milliseconds
-                        4: 12 * 30 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
-                    };
-                    const elapsedTime = currentTime - subscriptionTime;
-                    if (subscriptionInfo.plan in planDurations) {
-                        console.log(subscriptionInfo.plan in planDurations)
-                        const remaining = planDurations[subscriptionInfo.plan] - elapsedTime;
-                        if (remaining > 0) {
-                            setExpired(false);
-                        } else {
-
-                            setExpired(true);
-                        }
-                    } else {
-                        setExpired(true);
-                    }
-
-
-                }
+                setSubscriptionInfo(res.data);
             })
             .catch((error) => {
                 console.error('Error fetching subscription info:', error);
             });
-    }, [userId]);
+    }, [userId]); // Add userId as a dependency to trigger useEffect when it changes
+    
+    useEffect(() => {
+        if (subscriptionInfo && subscriptionInfo.stock) {
+            const remainingProducts = getRemainingProducts(subscriptionInfo);
+            console.log("use eee",remainingProducts);
+            const isExpired = remainingProducts == 0;
+            setExpired(isExpired);
+            console.log("isExpired",isExpired)
+            
+            console.log(expired) // Update the expired state
+           
+        }
+    }, [subscriptionInfo]);
+    useEffect(() => {
+        // Check if subscription has expired
+        if (expired) {
+            alert('Your subscription has expired. Please renew your subscription to add products.');
+            navigate('/vendorprofile'); // Redirect to homepage or another appropriate page
+        }
+    }, [expired]); 
+    
+    const getRemainingProducts = (subscriptionInfo) => {
+        let productLimit = 0;
+        switch (subscriptionInfo.plan) {
+            case 1:
+                productLimit = 500;
+                break;
+            case 2:
+                productLimit = 1200;
+                break;
+            case 3:
+                productLimit = 2500;
+                break;
+            default:
+                productLimit = 0;
+        }
+        console.log("in eee",subscriptionInfo.stock);
+        return productLimit - subscriptionInfo.stock;
+
+    };
 
 
 
@@ -226,10 +242,7 @@ const AddProduct = () => {
         event.preventDefault();
 
         const formData = new FormData();
-        if (expired) {
-            alert('Your subscription has expired. Please renew your subscription to add products.');
-            return;
-        }
+       
         if (!addPro.name) {
             setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;

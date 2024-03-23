@@ -106,9 +106,44 @@ const AddProduct = () => {
                 ...addPro,
                 [name]: value
             });
+
+
+
+            switch (name) {
+                case 'name':
+                    if (errors.includes('Please fill name.')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill name.');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'description':
+                    if (errors.includes('Please fill description.')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill description.');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'price':
+                    if (errors.includes('Please fill price')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill price');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'brand':
+                    if (errors.includes('Please fill brand')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill brand');
+                        setErrors(newErrors);
+                    }
+                    break;
+                // Add more cases for other input fields as needed
+                default:
+                    break;
+            }
+
+
+
+
+
         }
-
-
 
 
 
@@ -117,7 +152,14 @@ const AddProduct = () => {
     };
 
 
-
+    const handleBlur = (fieldName, errorMessage) => {
+        return () => {
+            if (!addPro[fieldName]) {
+                const newErrors = [...errors, errorMessage];
+                setErrors(newErrors);
+            }
+        };
+    };
 
     const handleImageChange = (e) => {
         if (e.target.name === "image") {
@@ -376,7 +418,8 @@ const AddProduct = () => {
                                         <label htmlFor="name" className="form-label">
                                             <FontAwesomeIcon icon={faTag} /> Product Name: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" required />
+                                        <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control"
+                                            onBlur={handleBlur('name', 'Please fill name.')} required />
                                         {errors.includes('Please fill name.') && <div className="text-danger">Please fill name.</div>}
                                     </div>
 
@@ -385,21 +428,21 @@ const AddProduct = () => {
                                         <label htmlFor="description" className="form-label">
                                             <FontAwesomeIcon icon={faWarehouse} /> Product Description: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <textarea id="description" name="description" value={addPro.description} onChange={handleChange} className="form-control" required  ></textarea>
+                                        <textarea id="description" name="description" value={addPro.description} onChange={handleChange} className="form-control" onBlur={handleBlur('description', 'Please fill description.')} required  ></textarea>
                                         {errors.includes('Please fill description.') && <div className="text-danger">Please fill description.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="price" className="form-label">
                                             <FontAwesomeIcon icon={faDollarSign} /> Price: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" required />
+                                        <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" onBlur={handleBlur('price', 'Please fill price')} required />
                                         {errors.includes('Please fill price') && <div className="text-danger">Please fill price.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="brand" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Brand: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" required />
+                                        <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" onBlur={handleBlur('brand', 'Please fill brand')} required />
                                         {errors.includes('Please fill brand') && <div className="text-danger">Please fill brand.</div>}
                                     </div>
                                     <div className="mb-3">
@@ -536,11 +579,15 @@ const AddProduct = () => {
                                     <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#ca1515', borderColor: '#ca1515' }} >Submit</button>
                                     {errors.length > 0 && (
                                         <div className="alert alert-danger" role="alert">
-                                            {errors.map((error, index) => (
-                                                <div key={index}>{error}</div>
-                                            ))}
+                                            Please fill all required fields.
                                         </div>
                                     )}
+                                    {parseFloat(addPro.newprice) >= parseFloat(addPro.price) && (
+                                        <div className="alert alert-danger" role="alert">
+                                            New price should be less than the original price.
+                                        </div>
+                                    )}
+
                                     {successMessage && (
                                         <div className="alert alert-success" role="alert">
                                             {successMessage}

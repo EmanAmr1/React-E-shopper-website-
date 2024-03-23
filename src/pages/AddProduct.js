@@ -134,7 +134,13 @@ const AddProduct = () => {
                         setErrors(newErrors);
                     }
                     break;
-                // Add more cases for other input fields as needed
+                case 'cateegory':
+                    if (errors.includes('Please fill category')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill category');
+                        setErrors(newErrors);
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -515,6 +521,9 @@ const AddProduct = () => {
                             <div className="card-body">
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
 
+                                    {addPro.sizeable && (!addPro.stock_S || !addPro.stock_M || !addPro.stock_L || !addPro.stock_XL) && (
+                                        <div className="text-danger">Please fill all stock sizes.</div>
+                                    )}
                                     <div className="mb-3">
                                         <label htmlFor="stock_S" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (S):
@@ -540,6 +549,8 @@ const AddProduct = () => {
                                         </label>
                                         <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
+
+
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Main Image: <span style={{ color: 'red' }}>*</span>

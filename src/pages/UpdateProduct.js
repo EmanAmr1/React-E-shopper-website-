@@ -15,36 +15,36 @@ const UpdateProduct = () => {
     };
 
 
-const navigate = useNavigate();
-/////////////////////////////////////////////////////////
+    const navigate = useNavigate();
+    /////////////////////////////////////////////////////////
 
-const [userId, setUserId] = useState(null);
-const [user, setUser] = useState(null);
-const [updatedUser, setUpdatedUser] = useState({
-  first_name:'',
-  last_name:'',
-  address:'',
-  phone:'',
-  birthdate:''
-});
-useEffect(() => {
-  const token = Cookies.get('token');
-  const headers = {
-    Authorization: `Token ${token}`
-  };
-
-  axiosInstance.get('http://localhost:8000/api/profile/', { headers })
-    .then((res) => {
-      setUser(res.data.message);
-      setUserId(res.data.message.id);
-      setUpdatedUser(res.data.message); 
-      
-    })
-    .catch((error) => {
-      console.error("Fetch user error:", error);
-      
+    const [userId, setUserId] = useState(null);
+    const [user, setUser] = useState(null);
+    const [updatedUser, setUpdatedUser] = useState({
+        first_name: '',
+        last_name: '',
+        address: '',
+        phone: '',
+        birthdate: ''
     });
-}, []);
+    useEffect(() => {
+        const token = Cookies.get('token');
+        const headers = {
+            Authorization: `Token ${token}`
+        };
+
+        axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+            .then((res) => {
+                setUser(res.data.message);
+                setUserId(res.data.message.id);
+                setUpdatedUser(res.data.message);
+
+            })
+            .catch((error) => {
+                console.error("Fetch user error:", error);
+
+            });
+    }, []);
 
 
     const [subcategories, setSubCategories] = useState([]);
@@ -56,7 +56,7 @@ useEffect(() => {
         price: '',
         brand: '',
         stock: '',
-       
+
         new: true,
         sale: true,
         newprice: '',
@@ -87,11 +87,11 @@ useEffect(() => {
 
     const [checkstock, setCheckstock] = useState(0);
     useEffect(() => {
-        axiosInstance.get(`/API/getProduct/${params.id}/`,{ headers } )
+        axiosInstance.get(`/API/getProduct/${params.id}/`, { headers })
             .then(res => {
                 setUpdatePro(res.data.product);
                 setCheckstock(res.data.product.checkstock);
-                console.log("ddd",checkstock);
+                console.log("ddd", checkstock);
                 setErrors([]);
             })
             .catch((err) => {
@@ -102,7 +102,7 @@ useEffect(() => {
     }, [params.id, setUpdatePro]);
 
 
-  
+
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -117,11 +117,59 @@ useEffect(() => {
                 ...updatePro,
                 [name]: value
             });
+
+
+
+            switch (name) {
+                case 'name':
+                    if (errors.includes('Please fill name.')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill name.');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'description':
+                    if (errors.includes('Please fill description.')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill description.');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'price':
+                    if (errors.includes('Please fill price')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill price');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'brand':
+                    if (errors.includes('Please fill brand')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill brand');
+                        setErrors(newErrors);
+                    }
+                    break;
+                case 'cateegory':
+                    if (errors.includes('Please fill category')) {
+                        const newErrors = errors.filter(error => error !== 'Please fill category');
+                        setErrors(newErrors);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+
+
         }
     };
 
 
-
+    const handleBlur = (fieldName, errorMessage) => {
+        return () => {
+            if (!updatePro[fieldName]) {
+                const newErrors = [...errors, errorMessage];
+                setErrors(newErrors);
+            }
+        };
+    };
 
     const handleImageChange = (e) => {
         if (e.target.name === "image") {
@@ -169,7 +217,7 @@ useEffect(() => {
 
     const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
-    
+
         // Check if the selected category is not "Select Category"
         if (selectedCategoryId !== "") {
             const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
@@ -178,14 +226,14 @@ useEffect(() => {
             // If the selected category is "Select Category", set subcategories to an empty array
             setSubCategories([]);
         }
-    
+
         setUpdatePro({ ...updatePro, category: selectedCategoryId, subcategory: '' });
     };
 
     const [expired, setExpired] = useState(false);
     const [subscriptionInfo, setSubscriptionInfo] = useState(null);
     useEffect(() => {
-         // Reset expired state when component mounts
+        // Reset expired state when component mounts
         axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
             .then((res) => {
                 setSubscriptionInfo(res.data);
@@ -194,17 +242,17 @@ useEffect(() => {
                 console.error('Error fetching subscription info:', error);
             });
     }, [userId]); // Add userId as a dependency to trigger useEffect when it changes
-    
+
     useEffect(() => {
         if (subscriptionInfo && subscriptionInfo.stock) {
             const remainingProducts = getRemainingProducts(subscriptionInfo);
-            console.log("use eee",remainingProducts);
+            console.log("use eee", remainingProducts);
             const isExpired = remainingProducts == 0;
             setExpired(isExpired);
-            console.log("isExpired",isExpired)
-            
+            console.log("isExpired", isExpired)
+
             console.log(expired) // Update the expired state
-           
+
         }
     }, [subscriptionInfo]);
     useEffect(() => {
@@ -213,8 +261,8 @@ useEffect(() => {
             alert('Your subscription has expired. Please renew your subscription to add products.');
             navigate('/vendorprofile'); // Redirect to homepage or another appropriate page
         }
-    }, [expired]); 
-    
+    }, [expired]);
+
     const getRemainingProducts = (subscriptionInfo) => {
         let productLimit = 0;
         switch (subscriptionInfo.plan) {
@@ -230,7 +278,7 @@ useEffect(() => {
             default:
                 productLimit = 0;
         }
-        console.log("in eee",subscriptionInfo.stock);
+        console.log("in eee", subscriptionInfo.stock);
         return productLimit - subscriptionInfo.stock;
 
     };
@@ -242,134 +290,117 @@ useEffect(() => {
 
 
 
+        const newErrors = [];
+
         if (!updatePro.name) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
-            return;
+            newErrors.push('Please fill name.');
         }
-        if (updatePro.price<=0) {
-            setErrors(prevErrors => [...prevErrors, 'the price must be greater than zero.']);
-            return;
+        if (updatePro.price <= 0) {
+            newErrors.push('the price must be greater than zero.');
         }
-        if (updatePro.newprice<0) {
-            setErrors(prevErrors => [...prevErrors, 'the new price must be greater than zero.']);
-            return;
+        if (updatePro.newprice < 0) {
+            newErrors.push('the new price must be greater than zero.');
         }
-
-
-        if (!updatePro.description ) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill description.']);
-            return;
+        if (!updatePro.description) {
+            newErrors.push('Please fill description.');
         }
-
-        if ( !updatePro.price ) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill price']);
-            return;
+        if (!updatePro.price) {
+            newErrors.push('Please fill price');
         }
-
-        if ( !updatePro.brand ) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill brand.']);
-            return;
+        if (!updatePro.brand) {
+            newErrors.push('Please fill brand');
         }
-
-
-
-
-
-
-
-
-
-       /* if (!updatePro.name || !updatePro.description || !updatePro.price || !updatePro.brand || !updatePro.stock || !updatePro.category) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill in all required fields.']);
-            return;
-        }*/
-
-
-        if (updatePro.newprice && updatePro.price && parseFloat(updatePro.newprice) >= parseFloat(updatePro.price)) {
-            setErrors(prevErrors => [...prevErrors, 'New price should be less than the original price.']);
-            return;
+        if (!updatePro.sizeable && !updatePro.stock) {
+            newErrors.push('Please fill stock.');
         }
-
-
-
-  
+        if (updatePro.sizeable && (!updatePro.stock_S || !updatePro.stock_L || !updatePro.stock_M || !updatePro.stock_XL)) {
+            newErrors.push('Please fill stock.');
+        }
         if (updatePro.category === '') {
-            setErrors(prevErrors => [...prevErrors, 'Please select a category.']);
+            newErrors.push('Please select category');
+        }
+        if (updatePro.newprice && updatePro.price && parseFloat(updatePro.newprice) >= parseFloat(updatePro.price)) {
+            newErrors.push('New price should be less than the original price.');
+        }
+        setErrors(newErrors);
+
+        if (newErrors.length > 0) {
             return;
         }
 
-
-
-
-        Object.keys(updatePro).forEach(key => {
-            formData.append(key, updatePro[key]);
-        });
-
-    ///////////////////////////////////
-    axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
-    .then(res => {
-        let newStockData;
-        const currentStock = res.data[0].stock;
-
-        if (updatePro.sizeable) {
-            const totalStock = parseInt(updatePro.stock_S || 0) + parseInt(updatePro.stock_M || 0) + parseInt(updatePro.stock_L || 0) + parseInt(updatePro.stock_XL || 0);
-            if (totalStock > checkstock) {
-                console.log("totalStock: " + totalStock);
-                console.log("checkstock: " + checkstock);
-                const sum = totalStock - checkstock;
-                console.log("sum: " + sum);
-                const newStock = parseInt(currentStock) + sum;
-                newStockData = {
-                    vendor: userId,
-                    stock: newStock
-                };
-            } else {
-                console.log("totalStock: " + totalStock);
-                console.log("checkstock: " + checkstock);
-                const sub = checkstock - totalStock;
-                console.log("sub: " + sub);
-                const newStock = parseInt(currentStock) - sub;
-                newStockData = {
-                    vendor: userId,
-                    stock: newStock
-                };
-            }
-        } else {
-            // If the product is not sizable, check if the updated stock is greater than the original stock
-            if (parseInt(updatePro.stock || 0) > checkstock) {
-                console.log("totalStock: " + updatePro.stock);
-                console.log("checkstock: " + checkstock);
-                const sum = updatePro.stock - checkstock;
-                console.log("sum: " + sum);
-                const newStock = parseInt(currentStock) + sum;
-                newStockData = {
-                    vendor: userId,
-                    stock: newStock
-                };
-            } else {
-                console.log("totalStock: " + updatePro.stock);
-                console.log("checkstock: " + checkstock);
-                const sub = checkstock - updatePro.stock;
-                console.log("sub: " + sub);
-                const newStock = parseInt(currentStock) - sub;
-                newStockData = {
-                    vendor: userId,
-                    stock: newStock
-                };
-            }
+        if (newErrors.length === 0) {
+            Object.keys(updatePro).forEach(key => {
+                formData.append(key, updatePro[key]);
+            });
         }
 
-        axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
+
+
+        ///////////////////////////////////
+        axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
             .then(res => {
-                console.log('Stock updated successfully:', res.data);
+                let newStockData;
+                const currentStock = res.data[0].stock;
+
+                if (updatePro.sizeable) {
+                    const totalStock = parseInt(updatePro.stock_S || 0) + parseInt(updatePro.stock_M || 0) + parseInt(updatePro.stock_L || 0) + parseInt(updatePro.stock_XL || 0);
+                    if (totalStock > checkstock) {
+                        console.log("totalStock: " + totalStock);
+                        console.log("checkstock: " + checkstock);
+                        const sum = totalStock - checkstock;
+                        console.log("sum: " + sum);
+                        const newStock = parseInt(currentStock) + sum;
+                        newStockData = {
+                            vendor: userId,
+                            stock: newStock
+                        };
+                    } else {
+                        console.log("totalStock: " + totalStock);
+                        console.log("checkstock: " + checkstock);
+                        const sub = checkstock - totalStock;
+                        console.log("sub: " + sub);
+                        const newStock = parseInt(currentStock) - sub;
+                        newStockData = {
+                            vendor: userId,
+                            stock: newStock
+                        };
+                    }
+                } else {
+                    // If the product is not sizable, check if the updated stock is greater than the original stock
+                    if (parseInt(updatePro.stock || 0) > checkstock) {
+                        console.log("totalStock: " + updatePro.stock);
+                        console.log("checkstock: " + checkstock);
+                        const sum = updatePro.stock - checkstock;
+                        console.log("sum: " + sum);
+                        const newStock = parseInt(currentStock) + sum;
+                        newStockData = {
+                            vendor: userId,
+                            stock: newStock
+                        };
+                    } else {
+                        console.log("totalStock: " + updatePro.stock);
+                        console.log("checkstock: " + checkstock);
+                        const sub = checkstock - updatePro.stock;
+                        console.log("sub: " + sub);
+                        const newStock = parseInt(currentStock) - sub;
+                        newStockData = {
+                            vendor: userId,
+                            stock: newStock
+                        };
+                    }
+                }
+
+                axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
+                    .then(res => {
+                        console.log('Stock updated successfully:', res.data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating stock:', error);
+                    });
             })
             .catch(error => {
-                console.error('Error updating stock:', error);
+                console.error('Error fetching current stock:', error);
             });
-    })
-    .catch(error => {
-        console.error('Error fetching current stock:', error);
-    });
 
 
         axiosInstance.put(`/API/updateProduct/${params.id}/`, formData, { headers })
@@ -380,7 +411,7 @@ useEffect(() => {
                 }));
                 setSuccessMessage('Product successfully updated');
                 setErrors([]);
-               
+
             })
             .catch(error => {
                 console.error('Error updating product:', error);
@@ -407,27 +438,32 @@ useEffect(() => {
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <div className="mb-3">
                                         <label htmlFor="name" className="form-label">
-                                            <FontAwesomeIcon icon={faTag} /> Product Name:
+                                            <FontAwesomeIcon icon={faTag} /> Product Name: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="text" id="name" name="name" value={updatePro?.name || ''} onChange={handleChange} className="form-control" required />
+                                        <input type="text" id="name" name="name" value={updatePro?.name || ''} onChange={handleChange} className="form-control" onBlur={handleBlur('name', 'Please fill name.')} required />
+                                        {errors.includes('Please fill name.') && <div className="text-danger">Please fill name.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="description" className="form-label">
-                                            <FontAwesomeIcon icon={faWarehouse} /> Product Description:
+                                            <FontAwesomeIcon icon={faWarehouse} /> Product Description: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <textarea id="description" name="description" value={updatePro?.description || ''} onChange={handleChange} className="form-control" required  ></textarea>
+                                        <textarea id="description" name="description" value={updatePro?.description || ''} onChange={handleChange} className="form-control" onBlur={handleBlur('description', 'Please fill description.')} required  ></textarea>
+                                        {errors.includes('Please fill description.') && <div className="text-danger">Please fill description.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="price" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> Price:
+                                            <FontAwesomeIcon icon={faDollarSign} /> Price: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="text" id="price" name="price" value={updatePro?.price || ''} onChange={handleChange} className="form-control" required />
+
+                                        <input type="text" id="price" name="price" value={updatePro?.price || ''} onChange={handleChange} className="form-control" onBlur={handleBlur('price', 'Please fill price')} required />
+                                        {errors.includes('Please fill price') && <div className="text-danger">Please fill price.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="brand" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Brand:
+                                            <FontAwesomeIcon icon={faPlus} /> Brand:  <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="text" id="brand" name="brand" value={updatePro?.brand || ''} onChange={handleChange} className="form-control" required />
+                                        <input type="text" id="brand" name="brand" value={updatePro?.brand || ''} onChange={handleChange} className="form-control" onBlur={handleBlur('brand', 'Please fill brand')} required />
+                                        {errors.includes('Please fill brand') && <div className="text-danger">Please fill brand.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock" className="form-label">
@@ -447,7 +483,7 @@ useEffect(() => {
                                         <input type="checkbox" id="sizeable" name="sizeable" checked={updatePro?.sizeable || ''} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
-                                  
+
 
                                     <div className="mb-3">
                                         <label htmlFor="newprice" className="form-label">
@@ -457,10 +493,10 @@ useEffect(() => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="category" className="form-label">
-                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:  <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <select id="category" name="category" value={updatePro?.category || ''} onChange={handleCategoryChange} className="form-control" >
-                                        <option value="">Select Category</option>
+                                            <option value="">Select Category</option>
                                             {categories.map(category => (
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
@@ -469,14 +505,16 @@ useEffect(() => {
 
                                     <div className="mb-3">
                                         <label htmlFor="subcategory" className="form-label">
-                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:  <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <select id="subcategory" name="subcategory" value={updatePro?.subcategory || ''} onChange={handleChange} className="form-control" >
-                                          
+
                                             {subcategories.map(subcategory => (
                                                 <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>
                                             ))}
                                         </select>
+
+                                        {errors.includes('Please select category') && <div className="text-danger">Please select category.</div>}
                                     </div>
 
 
@@ -488,6 +526,7 @@ useEffect(() => {
                         <div className="card h-100 shadow-lg">
                             <div className="card-body">
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
+
 
                                     <div className="mb-3">
                                         <label htmlFor="stock_S" className="form-label">
@@ -516,33 +555,33 @@ useEffect(() => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:
+                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:  <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="file" id="image" name="image" onChange={handleImageChange}        required className="form-control" multiple defaultValue="" />
+                                        <input type="file" id="image" name="image" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageOne" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image One:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image One: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageTwo" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Two:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Two: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageTwo" name="subImageTwo" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageThree" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Three:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Three: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageFour" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:  <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
@@ -553,9 +592,12 @@ useEffect(() => {
                                     <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#ca1515', borderColor: '#ca1515' }} >Submit</button>
                                     {errors.length > 0 && (
                                         <div className="alert alert-danger" role="alert">
-                                            {errors.map((error, index) => (
-                                                <div key={index}>{error}</div>
-                                            ))}
+                                            Please fill all required fields.
+                                        </div>
+                                    )}
+                                    {parseFloat(updatePro.newprice) >= parseFloat(updatePro.price) && (
+                                        <div className="alert alert-danger" role="alert">
+                                            New price should be less than the original price.
                                         </div>
                                     )}
                                     {successMessage && (

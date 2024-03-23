@@ -85,11 +85,13 @@ useEffect(() => {
             });
     }, []);
 
-
+    const [checkstock, setCheckstock] = useState(0);
     useEffect(() => {
         axiosInstance.get(`/API/getProduct/${params.id}/`,{ headers } )
             .then(res => {
                 setUpdatePro(res.data.product);
+                setCheckstock(res.data.product.checkstock);
+                console.log("ddd",checkstock);
                 setErrors([]);
             })
             .catch((err) => {
@@ -252,12 +254,113 @@ useEffect(() => {
             formData.append(key, updatePro[key]);
         });
 
+    ///////////////////////////////////
+
+    // axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
+    // .then(res => {
+    //     let newStockData;
+    //     if (addPro.sizeable) {
+    //         // If sizable, add current stock to individual stock values
+    //         const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
+    //         const newStock = parseInt(currentStock) 
+    //                         +parseInt(addPro.stock_S)
+    //                         + parseInt(addPro.stock_M)
+    //                         + parseInt(addPro.stock_L)
+    //                         + parseInt(addPro.stock_XL);
+    //         newStockData = {
+    //             vendor: userId,
+    //             stock: newStock
+    //         };
+    //     } else {
+    //         // Otherwise, use the single stock value
+    //         const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
+    //         const newStock = parseInt(currentStock) + parseInt(addPro.stock); // Calculate new stock by adding current and new stock
+    //         newStockData = { vendor: userId, stock: newStock };
+    //     }
+    //     // Update stock using the stockupdate API
+    //     axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
+    //         .then(res => {
+    //             console.log('Stock updated successfully:', res.data);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error updating stock:', error);
+    //         });
+    // })
+    // .catch(error => {
+    //     console.error('Error fetching current stock:', error);
+    // });
+    axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
+    .then(res => {
+        let newStockData;
+        const currentStock = res.data[0].stock;
+
+        if (updatePro.sizeable) {
+            const totalStock = parseInt(updatePro.stock_S || 0) + parseInt(updatePro.stock_M || 0) + parseInt(updatePro.stock_L || 0) + parseInt(updatePro.stock_XL || 0);
+            if (totalStock > checkstock) {
+                console.log("totalStock: " + totalStock);
+                console.log("checkstock: " + checkstock);
+                const sum = totalStock - checkstock;
+                console.log("sum: " + sum);
+                const newStock = parseInt(currentStock) + sum;
+                newStockData = {
+                    vendor: userId,
+                    stock: newStock
+                };
+            } else {
+                console.log("totalStock: " + totalStock);
+                console.log("checkstock: " + checkstock);
+                const sub = checkstock - totalStock;
+                console.log("sub: " + sub);
+                const newStock = parseInt(currentStock) - sub;
+                newStockData = {
+                    vendor: userId,
+                    stock: newStock
+                };
+            }
+        } else {
+            // If the product is not sizable, check if the updated stock is greater than the original stock
+            if (parseInt(updatePro.stock || 0) > checkstock) {
+                console.log("totalStock: " + updatePro.stock);
+                console.log("checkstock: " + checkstock);
+                const sum = updatePro.stock - checkstock;
+                console.log("sum: " + sum);
+                const newStock = parseInt(currentStock) + sum;
+                newStockData = {
+                    vendor: userId,
+                    stock: newStock
+                };
+            } else {
+                console.log("totalStock: " + updatePro.stock);
+                console.log("checkstock: " + checkstock);
+                const sub = checkstock - updatePro.stock;
+                console.log("sub: " + sub);
+                const newStock = parseInt(currentStock) - sub;
+                newStockData = {
+                    vendor: userId,
+                    stock: newStock
+                };
+            }
+        }
+
+        axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
+            .then(res => {
+                console.log('Stock updated successfully:', res.data);
+            })
+            .catch(error => {
+                console.error('Error updating stock:', error);
+            });
+    })
+    .catch(error => {
+        console.error('Error fetching current stock:', error);
+    });
+
 
         axiosInstance.put(`/API/updateProduct/${params.id}/`, formData, { headers })
             .then(res => {
                 setUpdatePro(res.data.product);
                 setSuccessMessage('Product successfully updated');
                 setErrors([]);
+               
             })
             .catch(error => {
                 console.error('Error updating product:', error);

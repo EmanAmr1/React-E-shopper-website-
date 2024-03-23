@@ -374,7 +374,10 @@ useEffect(() => {
 
         axiosInstance.put(`/API/updateProduct/${params.id}/`, formData, { headers })
             .then(res => {
-                setUpdatePro(res.data.product);
+                setUpdatePro(prevState => ({
+                    ...prevState,
+                    ...res.data.product
+                }));
                 setSuccessMessage('Product successfully updated');
                 setErrors([]);
                
@@ -513,33 +516,33 @@ useEffect(() => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Image:
+                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:
                                         </label>
                                         <input type="file" id="image" name="image" onChange={handleImageChange}        required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageOne" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product subImageOne:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image One:
                                         </label>
                                         <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageTwo" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product subImageTwo:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Two:
                                         </label>
                                         <input type="file" id="subImageTwo" name="subImageTwo" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageThree" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product subImageThree:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Three:
                                         </label>
                                         <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageFour" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product subImageFour:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:
                                         </label>
                                         <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>

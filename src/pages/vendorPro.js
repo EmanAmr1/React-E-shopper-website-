@@ -234,7 +234,7 @@ const VendorProduct = () => {
                                                     <input
                                                         type="checkbox"
                                                         id="stockin"
-                                                        checked={proDetails.stock > 1}
+                                                        checked={proDetails.stock > 0}
                                                         readOnly
                                                     />
                                                     <span className="checkmark"></span>
@@ -247,6 +247,7 @@ const VendorProduct = () => {
 
                                         {proDetails.sizeable ? (
                                             <>
+                                            {proDetails.stock_S > 0 || proDetails.stock_M > 0 || proDetails.stock_L > 0 || proDetails.stock_XL > 0 ? (
                                                 <p className="product__details__widget">
                                                     <ul>
                                                         <li>
@@ -277,7 +278,12 @@ const VendorProduct = () => {
                                                         </li>
                                                     </ul>
                                                 </p>
-                                                <span className="font-weight-bold">Remaining items in Stock: </span> <p></p>
+
+) : (
+    <p>No available sizes</p>
+)}
+
+                                                <span className="font-weight-bold">Remaining Items in Stock: </span> <p></p>
                                                 <div style={{ display: 'flex' }}>
 
 
@@ -317,7 +323,7 @@ const VendorProduct = () => {
 
                                             </>
                                         ) : <p>
-                                            <span className="font-weight-bold">Remaining items in Stock: </span>
+                                            <span className="font-weight-bold">Remaining Items in Stock: </span>
                                             <span className={proDetails.stock ? "in-stock" : "out-of-stock"}>
                                                 {proDetails.stock > 0 ? proDetails.stock : "Out of Stock"}
                                             </span>

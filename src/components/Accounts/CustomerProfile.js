@@ -7,7 +7,19 @@ import { useDispatch } from "react-redux";
 import { setTotalCount } from "../../store/slices/total";
 import { resetWishTotalCount } from "../../store/slices/wishlist";
 import { axiosInstance } from "../../apis/config";
-
+// Function to get status text based on status code
+function getStatusText(status) {
+  switch (status) {
+    case 'D':
+      return 'Delivered';
+    case 'S':
+      return 'Shipped';
+    case 'P':
+      return 'Pending';
+    default:
+      return 'Unknown';
+  }
+}
 function CustomerProfile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,6 +34,7 @@ function CustomerProfile() {
     birthdate: "",
   });
   const [isModified, setIsModified] = useState(false);
+  const [userOrders, setUserOrders] = useState([]);
   const token = Cookies.get("token");
   const headers = {
     Authorization: `Token ${token}`,
@@ -41,6 +54,15 @@ function CustomerProfile() {
         dispatch(resetWishTotalCount(res.data.wishlist_items.length));
       })
       .catch((err) => console.log(err));
+      axiosInstance
+      .get("/API/userorders/", { headers })
+      .then((res) => {
+        setUserOrders(res.data.orders);
+      })
+      .catch((error) => {
+        console.error("Fetch user orders error:", error);
+      });
+
   }, []);
 
   useEffect(() => {
@@ -156,34 +178,33 @@ function CustomerProfile() {
       .catch((error) => {
         console.error("Delete error:", error);
       });
+    
+      
   };
+  console.log(userOrders)
   return (
     <div className="container py-5">
       <div className="row">
         <div className="col-md-3">
           <div className="card">
             <div className="card-body">
-            <h4 className="card-title" style={{ fontFamily: 'Etaliq' }}>
-  Welcome {user ? user.first_name : ""}
-</h4>
-              <h6 className="card-subtitle mb-2 text-muted" style={{ fontSize: '14px' }}>
-  {user ? user.email : ""}
-</h6>
+              <h4 className="card-title">Welcome {user ? user.first_name : ""}</h4>
+              <h6 className="card-subtitle mb-2 text-muted">
+                {user ? user.email : ""}
+              </h6>
               <ul className="list-unstyled">
                 <li>
-               <button  className="btn btn-link"   style={{ textDecoration: 'none' }}>
-               <Link to="/VerifyOTP"  style={{ textDecoration: 'none' }}>
-                    Change Password
-                </Link>
-               </button>
+                  <button className="btn btn-link" style={{ textDecoration: 'none' }}>
+                    <Link to="/VerifyOTP" style={{ textDecoration: 'none' }}>
+                      Change Password
+                    </Link>
+                  </button>
                 </li>
                 <li>
-                
                   <button
                     className="btn btn-link text-danger"
                     onClick={handleDelete}
                     style={{ textDecoration: 'none' }}
-                    
                   >
                     Delete Account
                   </button>
@@ -261,10 +282,51 @@ function CustomerProfile() {
               </form>
             </div>
           </div>
+          <div className="card mt-4">
+  <div className="card-body">
+    <h5 className="card-title">Your Orders</h5>
+    <div className="list-group">
+      {userOrders.map((order) => (
+        <div key={order.id} className="list-group-item">
+          <div className="d-flex w-100 justify-content-between">
+            <h6 className="mb-1">Order Code: {order.id}</h6>
+            <small>Status: {getStatusText(order.status)}</small>
+          </div>
+          <ul className="list-group">
+            {order.orderItems.map((item, index) => (
+              <li key={index} className="list-group-item">
+                <div className="d-flex w-100 justify-content-between">
+                  <h6 className="mb-1">{item.name}</h6>
+                  <span className="badge badge-primary badge-pill">
+                    ${item.price}
+                  </span>
+                </div>
+                <small>Quantity: {item.quantity}</small>
+              </li>
+            ))}
+          </ul>
+          <div className="d-flex w-100 justify-content-between mt-2">
+            <div>
+              <strong>Total Price:</strong> ${order.total_price}
+            </div>
+            <div>
+              <button className="btn btn-primary btn-sm">
+                Track Order
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+      </div>
         </div>
       </div>
-    </div>
+    
   );
+
 
 }
 

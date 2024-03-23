@@ -279,7 +279,7 @@ const VendorProduct = () => {
                                                 </p>
                                                 <span className="font-weight-bold">Remaining items in Stock: </span> <p></p>
                                                 <div style={{ display: 'flex' }}>
-                                               
+
 
                                                     <div style={{ marginRight: '20px' }}>
 
@@ -296,7 +296,7 @@ const VendorProduct = () => {
                                                             </span>
                                                         </p>
                                                     </div>
-                                                  
+
                                                     <div>
                                                         <p>
                                                             <span className="font-weight-bold">Size L - </span>
@@ -313,8 +313,15 @@ const VendorProduct = () => {
                                                     </div>
                                                 </div>
 
+
+
                                             </>
-                                        ) : null}
+                                        ) : <p>
+                                            <span className="font-weight-bold">Remaining items in Stock: </span>
+                                            <span className={proDetails.stock ? "in-stock" : "out-of-stock"}>
+                                                {proDetails.stock > 0 ? proDetails.stock : "Out of Stock"}
+                                            </span>
+                                        </p>}
                                         <li>
 
 
@@ -323,11 +330,16 @@ const VendorProduct = () => {
 
                                     <p>
 
+
+
+
                                         <button style={{ backgroundColor: 'green' }} >
                                             <a style={{ color: 'white' }} href={`/updateProduct/${proDetails.id}`}>
                                                 Edit Product
                                             </a>
                                         </button>
+
+
 
                                         <button className="mx-2" style={{ backgroundColor: 'red', color: 'white' }} >
                                             <a style={{ color: 'white' }} href={`/deleteProduct/${proDetails.id}`}>

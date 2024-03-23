@@ -185,7 +185,7 @@ const AddProduct = () => {
     const [expired, setExpired] = useState(false);
     const [subscriptionInfo, setSubscriptionInfo] = useState(null);
     useEffect(() => {
-         // Reset expired state when component mounts
+        // Reset expired state when component mounts
         axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
             .then((res) => {
                 setSubscriptionInfo(res.data);
@@ -194,17 +194,17 @@ const AddProduct = () => {
                 console.error('Error fetching subscription info:', error);
             });
     }, [userId]); // Add userId as a dependency to trigger useEffect when it changes
-    
+
     useEffect(() => {
         if (subscriptionInfo && subscriptionInfo.stock) {
             const remainingProducts = getRemainingProducts(subscriptionInfo);
-            console.log("use eee",remainingProducts);
+            console.log("use eee", remainingProducts);
             const isExpired = remainingProducts == 0;
             setExpired(isExpired);
-            console.log("isExpired",isExpired)
-            
+            console.log("isExpired", isExpired)
+
             console.log(expired) // Update the expired state
-           
+
         }
     }, [subscriptionInfo]);
     useEffect(() => {
@@ -213,8 +213,8 @@ const AddProduct = () => {
             alert('Your subscription has expired. Please renew your subscription to add products.');
             navigate('/vendorprofile'); // Redirect to homepage or another appropriate page
         }
-    }, [expired]); 
-    
+    }, [expired]);
+
     const getRemainingProducts = (subscriptionInfo) => {
         let productLimit = 0;
         switch (subscriptionInfo.plan) {
@@ -230,7 +230,7 @@ const AddProduct = () => {
             default:
                 productLimit = 0;
         }
-        console.log("in eee",subscriptionInfo.stock);
+        console.log("in eee", subscriptionInfo.stock);
         return productLimit - subscriptionInfo.stock;
 
     };
@@ -242,7 +242,7 @@ const AddProduct = () => {
         event.preventDefault();
 
         const formData = new FormData();
-       
+
         if (!addPro.name) {
             setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;
@@ -314,11 +314,11 @@ const AddProduct = () => {
                 if (addPro.sizeable) {
                     // If sizable, add current stock to individual stock values
                     const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
-                    const newStock = parseInt(currentStock) 
-                                    +parseInt(addPro.stock_S)
-                                    + parseInt(addPro.stock_M)
-                                    + parseInt(addPro.stock_L)
-                                    + parseInt(addPro.stock_XL);
+                    const newStock = parseInt(currentStock)
+                        + parseInt(addPro.stock_S)
+                        + parseInt(addPro.stock_M)
+                        + parseInt(addPro.stock_L)
+                        + parseInt(addPro.stock_XL);
                     newStockData = {
                         vendor: userId,
                         stock: newStock
@@ -394,27 +394,31 @@ const AddProduct = () => {
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                                     <div className="mb-3">
                                         <label htmlFor="name" className="form-label">
-                                            <FontAwesomeIcon icon={faTag} /> Product Name:
+                                            <FontAwesomeIcon icon={faTag} /> Product Name: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" required />
+                                        {errors.includes('Please fill name.') && <div className="text-danger">Please fill name.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="description" className="form-label">
-                                            <FontAwesomeIcon icon={faWarehouse} /> Product Description:
+                                            <FontAwesomeIcon icon={faWarehouse} /> Product Description: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <textarea id="description" name="description" value={addPro.description} onChange={handleChange} className="form-control" required  ></textarea>
+                                        {errors.includes('Please fill description.') && <div className="text-danger">Please fill description.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="price" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> Price:
+                                            <FontAwesomeIcon icon={faDollarSign} /> Price: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="text" id="price" name="price" value={addPro.price} onChange={handleChange} className="form-control" required />
+                                        {errors.includes('Please fill price') && <div className="text-danger">Please fill price.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="brand" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Brand:
+                                            <FontAwesomeIcon icon={faPlus} /> Brand: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="text" id="brand" name="brand" value={addPro.brand} onChange={handleChange} className="form-control" required />
+                                        {errors.includes('Please fill brand') && <div className="text-danger">Please fill brand.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock" className="form-label">
@@ -440,13 +444,15 @@ const AddProduct = () => {
                                         <label htmlFor="newprice" className="form-label">
                                             <FontAwesomeIcon icon={faDollarSign} /> New Price:
                                         </label>
+
                                         <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
+
                                     </div>
 
 
                                     <div className="mb-3">
                                         <label htmlFor="category" className="form-label">
-                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:  <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <select id="category" name="category" value={addPro.category} onChange={handleCategoryChange} className="form-control" >
                                             <option value="">Select Category</option>
@@ -455,10 +461,12 @@ const AddProduct = () => {
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
                                         </select>
+
+                                        {errors.includes('Please select category') && <div className="text-danger">Please select category.</div>}
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subcategory" className="form-label">
-                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:
+                                            <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <select id="subcategory" name="subcategory" value={addPro.subcategory} onChange={handleChange} className="form-control" >
 
@@ -466,6 +474,7 @@ const AddProduct = () => {
                                                 <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>
                                             ))}
                                         </select>
+                                        {errors.includes('Please select sub category') && <div className="text-danger">Please select sub category.</div>}
                                     </div>
 
 
@@ -508,33 +517,33 @@ const AddProduct = () => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:
+                                            <FontAwesomeIcon icon={faImage} /> Product Main Image: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="image" name="image" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageOne" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image One:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image One: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageTwo" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Two:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Two: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageTwo" name="subImageTwo" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="subImageThree" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Three:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Three: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageFour" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:
+                                            <FontAwesomeIcon icon={faImage} /> Product Sub Image Four: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
                                     </div>

@@ -247,41 +247,41 @@ const VendorProduct = () => {
 
                                         {proDetails.sizeable ? (
                                             <>
-                                            {proDetails.stock_S > 0 || proDetails.stock_M > 0 || proDetails.stock_L > 0 || proDetails.stock_XL > 0 ? (
-                                                <p className="product__details__widget">
-                                                    <ul>
-                                                        <li>
-                                                            <span>Available size:</span>
-                                                            <div className="size__btn">
-                                                                {proDetails.stock_S > 0 && (
-                                                                    <label htmlFor="xs-btn">
-                                                                        <input type="radio" id="xs-btn" />S
-                                                                    </label>
-                                                                )}
-                                                                {proDetails.stock_M > 0 && (
-                                                                    <label htmlFor="s-btn">
-                                                                        <input type="radio" id="s-btn" />M
-                                                                    </label>
-                                                                )}
-                                                                {proDetails.stock_L > 0 && (
-                                                                    <label htmlFor="m-btn">
-                                                                        <input type="radio" id="m-btn" />L
-                                                                    </label>
-                                                                )}
-                                                                {proDetails.stock_XL > 0 && (
-                                                                    <label htmlFor="l-btn">
-                                                                        <input type="radio" id="l-btn" />
-                                                                        XL
-                                                                    </label>
-                                                                )}
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </p>
+                                                {proDetails.stock_S > 0 || proDetails.stock_M > 0 || proDetails.stock_L > 0 || proDetails.stock_XL > 0 ? (
+                                                    <p className="product__details__widget">
+                                                        <ul>
+                                                            <li>
+                                                                <span>Available size:</span>
+                                                                <div className="size__btn">
+                                                                    {proDetails.stock_S > 0 && (
+                                                                        <label htmlFor="xs-btn">
+                                                                            <input type="radio" id="xs-btn" />S
+                                                                        </label>
+                                                                    )}
+                                                                    {proDetails.stock_M > 0 && (
+                                                                        <label htmlFor="s-btn">
+                                                                            <input type="radio" id="s-btn" />M
+                                                                        </label>
+                                                                    )}
+                                                                    {proDetails.stock_L > 0 && (
+                                                                        <label htmlFor="m-btn">
+                                                                            <input type="radio" id="m-btn" />L
+                                                                        </label>
+                                                                    )}
+                                                                    {proDetails.stock_XL > 0 && (
+                                                                        <label htmlFor="l-btn">
+                                                                            <input type="radio" id="l-btn" />
+                                                                            XL
+                                                                        </label>
+                                                                    )}
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </p>
 
-) : (
-    <p>No available sizes</p>
-)}
+                                                ) : (
+                                                    <p>No available sizes</p>
+                                                )}
 
                                                 <span className="font-weight-bold">Remaining Items in Stock: </span> <p></p>
                                                 <div style={{ display: 'flex' }}>

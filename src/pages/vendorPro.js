@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
-
+import rev from "../imags/rev.png";
 
 const VendorProduct = () => {
     const dispatch = useDispatch();
@@ -39,23 +39,23 @@ const VendorProduct = () => {
 
 
 
-   
 
 
 
 
 
-   /*useEffect(() => {
-        axiosInstance
-            .get(`/API/getProduct/${params.id}/`, { headers })
-            .then((res) => {
-                setProDetails(res.data.product);
-                setProductId(res.data.product.id);
 
-
-            })
-            .catch((err) => console.log(err));
-    }, [params.id, userID]);*/
+    /*useEffect(() => {
+         axiosInstance
+             .get(`/API/getProduct/${params.id}/`, { headers })
+             .then((res) => {
+                 setProDetails(res.data.product);
+                 setProductId(res.data.product.id);
+ 
+ 
+             })
+             .catch((err) => console.log(err));
+     }, [params.id, userID]);*/
 
 
 
@@ -68,7 +68,7 @@ const VendorProduct = () => {
         setSelectedImage(proDetails.image);
     }, [proDetails]);*/
 
-    
+
     useEffect(() => {
         axiosInstance
             .get(`/API/getProduct/${params.id}/`, { headers })
@@ -122,12 +122,12 @@ const VendorProduct = () => {
                 <div className="container mt-5">
                     <div className="row">
                         <div className="col-lg-5">
-                            <div className="product__big__img__container myimg" style={{  height: '570px' }}>
+                            <div className="product__big__img__container myimg" style={{ height: '570px' }}>
                                 <img
                                     className="mypic"
                                     src={`${baseImageUrl}${selectedImage}`}
                                     alt="Product Image"
-                                    style={{  height: '570px' }}
+                                    style={{ height: '570px' }}
                                 />
                             </div>
 
@@ -194,15 +194,15 @@ const VendorProduct = () => {
                                 <span className="product__details__price">
                                     {/* $ {proDetails.newprice} <span>$ {proDetails.price}</span>{" "} */}
                                     {proDetails.sale ? (
-                          <div
-                            className="product__price  "
-                            style={{ color: "#ca1515" }}
-                          >
-                            {proDetails.newprice} <span>{proDetails.price}</span>
-                          </div>
-                        ) : (
-                          <div className="product__price">{proDetails.price}</div>
-                        )}
+                                        <div
+                                            className="product__price  "
+                                            style={{ color: "#ca1515" }}
+                                        >
+                                            {proDetails.newprice} <span>{proDetails.price}</span>
+                                        </div>
+                                    ) : (
+                                        <div className="product__price">{proDetails.price}</div>
+                                    )}
                                 </span>
 
 
@@ -287,7 +287,7 @@ const VendorProduct = () => {
 
                                     <p>
 
-                                    <button style={{ backgroundColor: 'green' }} >
+                                        <button style={{ backgroundColor: 'green' }} >
                                             <a style={{ color: 'white' }} href={`/updateProduct/${proDetails.id}`}>
                                                 Edit Product
                                             </a>
@@ -299,7 +299,7 @@ const VendorProduct = () => {
                                             </a>
                                         </button>
 
-                                        
+
 
                                     </p>
                                 </div>
@@ -310,7 +310,40 @@ const VendorProduct = () => {
 
 
 
+
+
+
                 </div>
+
+
+                <div className="col-lg-12 mx-auto">
+                    <h3 className="reviews__title">Reviews</h3>
+                    {reviews.length > 0 ? (
+                        <ul className="reviews__list">
+                            {reviews.map((review, index) => (
+                                <li key={index} className="review__item">
+                                    <div className="review__header">
+                                        <img
+                                            className="review__avatar"
+                                            src={rev}
+                                            alt="User Avatar"
+                                        />
+                                        <div className="review__meta">
+                                            <span className="review__author">{review.user}</span>
+                                            <span className="review__date">{review.date}</span>
+                                        </div>
+                                    </div>
+                                    <div className="review__content">
+                                        <p className="review__comment">{review.comment}</p>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No reviews yet</p>
+                    )}
+                </div>
+
             </section>
         </>
     );

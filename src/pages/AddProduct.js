@@ -243,69 +243,49 @@ const AddProduct = () => {
 
         const formData = new FormData();
 
+        const newErrors = [];
+
         if (!addPro.name) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
-            return;
+            newErrors.push('Please fill name.');
         }
         if (addPro.price <= 0) {
-            setErrors(prevErrors => [...prevErrors, 'the price must be greater than zero.']);
-            return;
+            newErrors.push('the price must be greater than zero.');
         }
         if (addPro.newprice < 0) {
-            setErrors(prevErrors => [...prevErrors, 'the new price must be greater than zero.']);
-            return;
+            newErrors.push('the new price must be greater than zero.');
         }
-
-
         if (!addPro.description) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill description.']);
-            return;
+            newErrors.push('Please fill description.');
         }
-
         if (!addPro.price) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill price']);
-            return;
+            newErrors.push('Please fill price');
         }
-
         if (!addPro.brand) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill brand.']);
-            return;
+            newErrors.push('Please fill brand');
         }
-
         if (!addPro.sizeable && !addPro.stock) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
-            return;
+            newErrors.push('Please fill stock.');
         }
-
         if (addPro.sizeable && (!addPro.stock_S || !addPro.stock_L || !addPro.stock_M || !addPro.stock_XL)) {
-            setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
-            return;
+            newErrors.push('Please fill stock.');
         }
-
-
-
-
         if (addPro.category === '') {
-            setErrors(prevErrors => [...prevErrors, 'Please select a category.']);
-            return;
+            newErrors.push('Please select category');
         }
-
-
-
-
         if (addPro.newprice && addPro.price && parseFloat(addPro.newprice) >= parseFloat(addPro.price)) {
-            setErrors(prevErrors => [...prevErrors, 'New price should be less than the original price.']);
+            newErrors.push('New price should be less than the original price.');
+        }
+        setErrors(newErrors);
+
+        if (newErrors.length > 0) {
             return;
         }
 
-
-
-
-
-        Object.keys(addPro).forEach(key => {
-            formData.append(key, addPro[key]);
-        });
-
+        if (newErrors.length === 0) {
+            Object.keys(addPro).forEach(key => {
+                formData.append(key, addPro[key]);
+            });
+        }
 
         formData.append('vendor', userId)
         axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
@@ -399,6 +379,8 @@ const AddProduct = () => {
                                         <input type="text" id="name" name="name" value={addPro.name} onChange={handleChange} className="form-control" required />
                                         {errors.includes('Please fill name.') && <div className="text-danger">Please fill name.</div>}
                                     </div>
+
+
                                     <div className="mb-3">
                                         <label htmlFor="description" className="form-label">
                                             <FontAwesomeIcon icon={faWarehouse} /> Product Description: <span style={{ color: 'red' }}>*</span>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../apis/configpaln';
@@ -55,42 +54,48 @@ const Vendorplan = () => {
 
     console.log("user Id",userId)
     const [subscribe, setsubscribe] = useState(false);
+    const [subscriptionInfo, setSubscriptionInfo] = useState(null);
     useEffect(() => {
         // Fetch subscription info for the current vendor
         axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`)
-            .then((res) => {
-                const subscriptionInfo = res.data;
-                // Check if subscription is expired
-                if (subscriptionInfo && subscriptionInfo.date && subscriptionInfo.plan) {
-                    const subscriptionTime = new Date(subscriptionInfo.date).getTime();
-                    const currentTime = new Date().getTime();
-                    const planDurations = {
-                        1: 30 * 24 * 60 * 60 * 1000,  // 1 month in milliseconds
-                        2: 3 * 30 * 24 * 60 * 60 * 1000,  // 3 months in milliseconds
-                        3: 6 * 30 * 24 * 60 * 60 * 1000,  // 6 months in milliseconds
-                        4: 12 * 30 * 24 * 60 * 60 * 1000, // 1 year in milliseconds
-                    };
-                    const elapsedTime = currentTime - subscriptionTime;
-                    if (subscriptionInfo.plan in planDurations) {
-                        console.log(subscriptionInfo.plan in planDurations)
-                        const remaining = planDurations[subscriptionInfo.plan] - elapsedTime;
-                        if (remaining > 0) {
-                            setsubscribe(true); 
-                        } else {
-                            
-                            setsubscribe(false); 
-                        }
-                    } else {
-                        setsubscribe(false); 
-                    }
-                
-                    
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching subscription info:', error);
-            });
-    }, [userId]);
+        .then((res) => {
+            setSubscriptionInfo(res.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching subscription info:', error);
+        });
+}, [userId]);
+useEffect(() => {
+    if (subscriptionInfo && subscriptionInfo.stock) {
+        const remainingProducts = getRemainingProducts(subscriptionInfo);
+        console.log("use eee",remainingProducts);
+        const isExpired = remainingProducts <= 0;
+        setsubscribe(!isExpired);
+        console.log("isExpired",subscribe)
+        
+        console.log(subscribe) // Update the expired state
+       
+    }
+}, [subscriptionInfo]);
+const getRemainingProducts = (subscriptionInfo) => {
+    let productLimit = 0;
+    switch (subscriptionInfo.plan) {
+        case 1:
+            productLimit = 500;
+            break;
+        case 2:
+            productLimit = 1200;
+            break;
+        case 3:
+            productLimit = 2500;
+            break;
+        default:
+            productLimit = 0;
+    }
+    console.log("in eee",subscriptionInfo.stock);
+    return productLimit - subscriptionInfo.stock;
+
+};
 
     return (
         <>

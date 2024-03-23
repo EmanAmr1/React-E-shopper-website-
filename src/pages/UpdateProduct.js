@@ -337,10 +337,10 @@ const UpdateProduct = () => {
 
 
         ///////////////////////////////////
-        axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
             .then(res => {
                 let newStockData;
-                const currentStock = res.data[0].stock;
+                const currentStock = res.data.stock;
 
                 if (updatePro.sizeable) {
                     const totalStock = parseInt(updatePro.stock_S || 0) + parseInt(updatePro.stock_M || 0) + parseInt(updatePro.stock_L || 0) + parseInt(updatePro.stock_XL || 0);
@@ -354,6 +354,7 @@ const UpdateProduct = () => {
                             vendor: userId,
                             stock: newStock
                         };
+                        
                     } else {
                         console.log("totalStock: " + totalStock);
                         console.log("checkstock: " + checkstock);

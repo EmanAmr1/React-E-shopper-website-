@@ -337,12 +337,12 @@ const AddProduct = () => {
         }
 
         formData.append('vendor', userId)
-        axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
             .then(res => {
                 let newStockData;
                 if (addPro.sizeable) {
                     // If sizable, add current stock to individual stock values
-                    const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
+                    const currentStock = res.data.stock; // Assuming the latest stock is at index 0
                     const newStock = parseInt(currentStock)
                         + parseInt(addPro.stock_S)
                         + parseInt(addPro.stock_M)
@@ -354,7 +354,7 @@ const AddProduct = () => {
                     };
                 } else {
                     // Otherwise, use the single stock value
-                    const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
+                    const currentStock = res.data.stock; // Assuming the latest stock is at index 0
                     const newStock = parseInt(currentStock) + parseInt(addPro.stock); // Calculate new stock by adding current and new stock
                     newStockData = { vendor: userId, stock: newStock };
                 }

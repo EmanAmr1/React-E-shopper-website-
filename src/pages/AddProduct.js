@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "js-cookie";
 import { axiosInstance } from "../apis/config";
 import { faImage, faMoneyBillAlt, faTag, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const AddProduct = () => {
@@ -46,35 +46,35 @@ const AddProduct = () => {
     const [successMessage, setSuccessMessage] = useState('');
 
 
-  /////////////////////////////////////////////////////////
-  const navigate = useNavigate();
-  const [userId, setUser] = useState(null);
-  const [user, setuser] = useState(null);
-  useEffect(() => {
-    const token = Cookies.get('token');
-    const headers = {
-      Authorization: `Token ${token}`
-    };
-  
-    axiosInstance.get('http://localhost:8000/api/profile/', { headers })
-      .then((res) => {
-        setuser(res.data.message)
-        setUser(res.data.message.id);
-        console.log("ssss",res.data.message.id);
-  
-      })
-      .catch((error) => {
-        console.error("Fetch user error:", error);
+    /////////////////////////////////////////////////////////
+    const navigate = useNavigate();
+    const [userId, setUser] = useState(null);
+    const [user, setuser] = useState(null);
+    useEffect(() => {
+        const token = Cookies.get('token');
+        const headers = {
+            Authorization: `Token ${token}`
+        };
 
-      });
-  }, []);
+        axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+            .then((res) => {
+                setuser(res.data.message)
+                setUser(res.data.message.id);
+                console.log("ssss", res.data.message.id);
+
+            })
+            .catch((error) => {
+                console.error("Fetch user error:", error);
+
+            });
+    }, []);
 
 
-  useEffect(() => {
-    if (user && user.usertype === 'customer') {
-      navigate("/not-found");
-    }
-  }, [user, navigate]);
+    useEffect(() => {
+        if (user && user.usertype === 'customer') {
+            navigate("/not-found");
+        }
+    }, [user, navigate]);
 
 
 
@@ -164,7 +164,7 @@ const AddProduct = () => {
 
     const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
-    
+
         // Check if the selected category is not "Select Category"
         if (selectedCategoryId !== "") {
             const selectedCategory = categories.find(category => category.id === parseInt(selectedCategoryId));
@@ -173,14 +173,14 @@ const AddProduct = () => {
             // If the selected category is "Select Category", set subcategories to an empty array
             setSubCategories([]);
         }
-    
+
         setAddPro({ ...addPro, category: selectedCategoryId, subcategory: '' });
     };
 
 
 
     ////////////////////
-    console.log("user Id",userId)
+    console.log("user Id", userId)
     const [expired, setExpired] = useState(true);
     useEffect(() => {
         // Fetch subscription info for the current vendor
@@ -202,16 +202,16 @@ const AddProduct = () => {
                         console.log(subscriptionInfo.plan in planDurations)
                         const remaining = planDurations[subscriptionInfo.plan] - elapsedTime;
                         if (remaining > 0) {
-                            setExpired(false); 
+                            setExpired(false);
                         } else {
-                            
-                            setExpired(true); 
+
+                            setExpired(true);
                         }
                     } else {
-                        setExpired(true); 
+                        setExpired(true);
                     }
-                
-                    
+
+
                 }
             })
             .catch((error) => {
@@ -219,7 +219,7 @@ const AddProduct = () => {
             });
     }, [userId]);
 
- 
+
 
 
     const handleSubmit = (event) => {
@@ -234,37 +234,37 @@ const AddProduct = () => {
             setErrors(prevErrors => [...prevErrors, 'Please fill name.']);
             return;
         }
-        if (addPro.price<=0) {
+        if (addPro.price <= 0) {
             setErrors(prevErrors => [...prevErrors, 'the price must be greater than zero.']);
             return;
         }
-        if (addPro.newprice<0) {
+        if (addPro.newprice < 0) {
             setErrors(prevErrors => [...prevErrors, 'the new price must be greater than zero.']);
             return;
         }
 
 
-        if (!addPro.description ) {
+        if (!addPro.description) {
             setErrors(prevErrors => [...prevErrors, 'Please fill description.']);
             return;
         }
 
-        if ( !addPro.price ) {
+        if (!addPro.price) {
             setErrors(prevErrors => [...prevErrors, 'Please fill price']);
             return;
         }
 
-        if ( !addPro.brand ) {
+        if (!addPro.brand) {
             setErrors(prevErrors => [...prevErrors, 'Please fill brand.']);
             return;
         }
 
-        if ( !addPro.sizeable &&  !addPro.stock  ) {
+        if (!addPro.sizeable && !addPro.stock) {
             setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
             return;
         }
 
-      if ( addPro.sizeable &&  (!addPro.stock_S   || !addPro.stock_L || !addPro.stock_M || !addPro.stock_XL)) {
+        if (addPro.sizeable && (!addPro.stock_S || !addPro.stock_L || !addPro.stock_M || !addPro.stock_XL)) {
             setErrors(prevErrors => [...prevErrors, 'Please fill stock.']);
             return;
         }
@@ -277,7 +277,7 @@ const AddProduct = () => {
             return;
         }
 
-      
+
 
 
         if (addPro.newprice && addPro.price && parseFloat(addPro.newprice) >= parseFloat(addPro.price)) {
@@ -295,6 +295,39 @@ const AddProduct = () => {
 
 
         formData.append('vendor', userId)
+        axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
+            .then(res => {
+                let newStockData;
+                if (addPro.sizeable) {
+                    // If sizable, add current stock to individual stock values
+                    const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
+                    const newStock = parseInt(currentStock) 
+                                    +parseInt(addPro.stock_S)
+                                    + parseInt(addPro.stock_M)
+                                    + parseInt(addPro.stock_L)
+                                    + parseInt(addPro.stock_XL);
+                    newStockData = {
+                        vendor: userId,
+                        stock: newStock
+                    };
+                } else {
+                    // Otherwise, use the single stock value
+                    const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
+                    const newStock = parseInt(currentStock) + parseInt(addPro.stock); // Calculate new stock by adding current and new stock
+                    newStockData = { vendor: userId, stock: newStock };
+                }
+                // Update stock using the stockupdate API
+                axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
+                    .then(res => {
+                        console.log('Stock updated successfully:', res.data);
+                    })
+                    .catch(error => {
+                        console.error('Error updating stock:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Error fetching current stock:', error);
+            });
         axiosInstance.post('/API/addProduct/', formData, { headers })
             .then(res => {
                 setSuccessMessage('Product successfully added');
@@ -305,7 +338,7 @@ const AddProduct = () => {
                     price: '',
                     brand: '',
                     stock: '',
-                   
+
                     new: true,
                     sale: true,
                     newprice: '',
@@ -374,7 +407,7 @@ const AddProduct = () => {
                                         <label htmlFor="stock" className="form-label">
                                             <FontAwesomeIcon icon={faBalanceScale} /> Stock:
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control"  disabled={addPro.sizeable === true} />
+                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" disabled={addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
@@ -388,7 +421,7 @@ const AddProduct = () => {
                                         <input type="checkbox" id="sizeable" name="sizeable" checked={addPro.sizeable} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
-                                
+
 
                                     <div className="mb-3">
                                         <label htmlFor="newprice" className="form-label">
@@ -403,9 +436,9 @@ const AddProduct = () => {
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:
                                         </label>
                                         <select id="category" name="category" value={addPro.category} onChange={handleCategoryChange} className="form-control" >
-                                        <option value="">Select Category</option>
+                                            <option value="">Select Category</option>
                                             {categories.map(category => (
-                                               
+
                                                 <option key={category.id} value={category.id}>{category.name}</option>
                                             ))}
                                         </select>
@@ -415,7 +448,7 @@ const AddProduct = () => {
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Subcategory:
                                         </label>
                                         <select id="subcategory" name="subcategory" value={addPro.subcategory} onChange={handleChange} className="form-control" >
-                                          
+
                                             {subcategories.map(subcategory => (
                                                 <option key={subcategory.id} value={subcategory.id}>{subcategory.name}</option>
                                             ))}
@@ -439,26 +472,26 @@ const AddProduct = () => {
                                         <label htmlFor="stock_S" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (S):
                                         </label>
-                                        <input type="number" id="stock_S" name="stock_S" value={addPro.stock_S} onChange={handleChange} className="form-control"  required={addPro.sizeable === true}  disabled={!addPro.sizeable === true}  />
+                                        <input type="number" id="stock_S" name="stock_S" value={addPro.stock_S} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_M" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (M):
                                         </label>
-                                        <input type="number" id="stock_M" name="stock_M" value={addPro.stock_M} onChange={handleChange} className="form-control"   required={addPro.sizeable === true}   disabled={!addPro.sizeable === true}   />
+                                        <input type="number" id="stock_M" name="stock_M" value={addPro.stock_M} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="stock_L" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (L):
                                         </label>
-                                        <input type="number" id="stock_L" name="stock_L" value={addPro.stock_L} onChange={handleChange} className="form-control"  required={addPro.sizeable === true}   disabled={!addPro.sizeable === true}  />
+                                        <input type="number" id="stock_L" name="stock_L" value={addPro.stock_L} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_XL" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Stock (XL):
                                         </label>
-                                        <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" required={addPro.sizeable === true}    disabled={!addPro.sizeable === true}   />
+                                        <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">

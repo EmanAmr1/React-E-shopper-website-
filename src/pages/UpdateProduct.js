@@ -182,7 +182,58 @@ useEffect(() => {
         setUpdatePro({ ...updatePro, category: selectedCategoryId, subcategory: '' });
     };
 
+    const [expired, setExpired] = useState(false);
+    const [subscriptionInfo, setSubscriptionInfo] = useState(null);
+    useEffect(() => {
+         // Reset expired state when component mounts
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
+            .then((res) => {
+                setSubscriptionInfo(res.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching subscription info:', error);
+            });
+    }, [userId]); // Add userId as a dependency to trigger useEffect when it changes
+    
+    useEffect(() => {
+        if (subscriptionInfo && subscriptionInfo.stock) {
+            const remainingProducts = getRemainingProducts(subscriptionInfo);
+            console.log("use eee",remainingProducts);
+            const isExpired = remainingProducts == 0;
+            setExpired(isExpired);
+            console.log("isExpired",isExpired)
+            
+            console.log(expired) // Update the expired state
+           
+        }
+    }, [subscriptionInfo]);
+    useEffect(() => {
+        // Check if subscription has expired
+        if (expired) {
+            alert('Your subscription has expired. Please renew your subscription to add products.');
+            navigate('/vendorprofile'); // Redirect to homepage or another appropriate page
+        }
+    }, [expired]); 
+    
+    const getRemainingProducts = (subscriptionInfo) => {
+        let productLimit = 0;
+        switch (subscriptionInfo.plan) {
+            case 1:
+                productLimit = 500;
+                break;
+            case 2:
+                productLimit = 1200;
+                break;
+            case 3:
+                productLimit = 2500;
+                break;
+            default:
+                productLimit = 0;
+        }
+        console.log("in eee",subscriptionInfo.stock);
+        return productLimit - subscriptionInfo.stock;
 
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -255,40 +306,6 @@ useEffect(() => {
         });
 
     ///////////////////////////////////
-
-    // axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
-    // .then(res => {
-    //     let newStockData;
-    //     if (addPro.sizeable) {
-    //         // If sizable, add current stock to individual stock values
-    //         const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
-    //         const newStock = parseInt(currentStock) 
-    //                         +parseInt(addPro.stock_S)
-    //                         + parseInt(addPro.stock_M)
-    //                         + parseInt(addPro.stock_L)
-    //                         + parseInt(addPro.stock_XL);
-    //         newStockData = {
-    //             vendor: userId,
-    //             stock: newStock
-    //         };
-    //     } else {
-    //         // Otherwise, use the single stock value
-    //         const currentStock = res.data[0].stock; // Assuming the latest stock is at index 0
-    //         const newStock = parseInt(currentStock) + parseInt(addPro.stock); // Calculate new stock by adding current and new stock
-    //         newStockData = { vendor: userId, stock: newStock };
-    //     }
-    //     // Update stock using the stockupdate API
-    //     axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
-    //         .then(res => {
-    //             console.log('Stock updated successfully:', res.data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error updating stock:', error);
-    //         });
-    // })
-    // .catch(error => {
-    //     console.error('Error fetching current stock:', error);
-    // });
     axiosInstance.get('http://127.0.0.1:8000/api/payment-history/', { headers })
     .then(res => {
         let newStockData;

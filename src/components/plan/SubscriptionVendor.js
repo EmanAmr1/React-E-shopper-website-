@@ -38,16 +38,21 @@ const SubscriptionVendor = ({ vendorId }) => {
 
     return (
         <div>
-            {subtractionResult !== null ? (
-                <p>
-                    <span className='font-weight-bold'>Remaining products from subscription: </span>
-                    <span className='font-weight-bold' style={{ color: expired ? 'red' : 'inherit' }}>{subtractionResult}</span>
-                </p>
-            ) : (
-                <p>
-                    <span className='font-weight-bold' style={{color:'#0a859b'}}>No plan yet, but planning to subscribe</span>
-                </p>
-            )}
+           {subtractionResult !== null ? (
+    <p>
+        <span className='font-weight-bold'>Remaining products from subscription: </span>
+        {subtractionResult !== 0 ? (
+            <span className='font-weight-bold' style={{ color: expired ? 'red' : 'inherit' }}>{subtractionResult}</span>
+        ) : (
+            <span style={{ color: 'red' }}> Subscription Expired</span>
+        )}
+    </p>
+) : (
+    <p>
+        <span className='font-weight-bold' style={{color:'#0a859b'}}>No plan yet, but planning to subscribe</span>
+    </p>
+)}
+
         </div>
     );
 };

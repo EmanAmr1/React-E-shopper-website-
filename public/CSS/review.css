@@ -328,3 +328,14 @@ button a {
 .homeBtn {
     background-color: #28a745;
 }
+
+
+.in-stock {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .out-of-stock {
+    color: red;
+    font-weight: bold;
+  }

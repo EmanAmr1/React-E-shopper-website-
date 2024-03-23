@@ -277,6 +277,42 @@ const VendorProduct = () => {
                                                         </li>
                                                     </ul>
                                                 </p>
+                                                <span className="font-weight-bold">Remaining items in Stock: </span> <p></p>
+                                                <div style={{ display: 'flex' }}>
+                                               
+
+                                                    <div style={{ marginRight: '20px' }}>
+
+                                                        <p>
+                                                            <span className="font-weight-bold"> Size S - </span>
+                                                            <span className={proDetails.stock_S > 0 ? "in-stock" : "out-of-stock"}>
+                                                                {proDetails.stock_S > 0 ? proDetails.stock_S : "Out of stock"}
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            <span className="font-weight-bold">Size M - </span>
+                                                            <span className={proDetails.stock_M > 0 ? "in-stock" : "out-of-stock"}>
+                                                                {proDetails.stock_M > 0 ? proDetails.stock_M : "Out of stock"}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                  
+                                                    <div>
+                                                        <p>
+                                                            <span className="font-weight-bold">Size L - </span>
+                                                            <span className={proDetails.stock_L > 0 ? "in-stock" : "out-of-stock"}>
+                                                                {proDetails.stock_L > 0 ? proDetails.stock_L : "Out of stock"}
+                                                            </span>
+                                                        </p>
+                                                        <p>
+                                                            <span className="font-weight-bold">Size XL - </span>
+                                                            <span className={proDetails.stock_XL > 0 ? "in-stock" : "out-of-stock"}>
+                                                                {proDetails.stock_XL > 0 ? proDetails.stock_XL : "Out of stock"}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
                                             </>
                                         ) : null}
                                         <li>

@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "js-cookie";
 import { axiosInstance } from "../apis/config";
 import { faImage, faMoneyBillAlt, faTag, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 
 const AddProduct = () => {
@@ -414,8 +415,12 @@ const AddProduct = () => {
             <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
                 <h3 className="mb-0 " style={{ color: '#FFFFFF' }}>Add New Product</h3>
             </div>
+
+
             <div className="container mt-5">
+                <p>Before adding your products, would you like to <Link to='/ReviewProductShape'>review a sample product</Link>?</p>
                 <div className="row justify-content-center">
+
                     <div className="col-md-6">
                         <div className="card h-100 shadow-lg">
                             <div className="card-body">

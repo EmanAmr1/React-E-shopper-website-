@@ -198,10 +198,10 @@ const VendorProduct = () => {
                                             className="product__price  "
                                             style={{ color: "#ca1515" }}
                                         >
-                                            {proDetails.newprice} <span>{proDetails.price}</span>
+                                            ${proDetails.newprice} <span>${proDetails.price}</span>
                                         </div>
                                     ) : (
-                                        <div className="product__price">{proDetails.price}</div>
+                                       <div className="product__price">{proDetails.price}</div>
                                     )}
                                 </span>
 

@@ -10,6 +10,7 @@ import { Suspense } from "react";
 
 const Home = React.lazy(() => import("../pages/Home"));
 const ProductDetails = React.lazy(() => import("../pages/ProductDetails"));
+const ReviewProductShape = React.lazy(() => import("../pages/ReviewProductShape"));
 const VendorPro = React.lazy(() => import("../pages/vendorPro"));
 const ProductList = React.lazy(() => import("../pages/ProductList"));
 const WomanPage = React.lazy(() => import("../pages/WomanPage"));
@@ -90,6 +91,9 @@ const Router = () => {
           <Route path="/Vendorplan" element={<Vendorplan />} />
 
           <Route path="vendorPro/:id" element={<VendorPro />} />
+          <Route path="/ReviewProductShape" element={<ReviewProductShape />} />
+         
+
         </Route>
         <Route path="*" element={<NotFound />} />
         <Route path="/register" element={<Register />} />

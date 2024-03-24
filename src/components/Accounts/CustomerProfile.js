@@ -180,7 +180,7 @@ function CustomerProfile() {
         console.error("Delete error:", error);
       });
   };
-
+  console.log(userOrders)
   return (
     <div
       className="container-fluid pl-0"
@@ -203,7 +203,6 @@ function CustomerProfile() {
                     className="btn btn-link sidebar-btn"
                     style={{
                       textDecoration: "none",
-                      
                       textAlign: "start",
                     }}
                   >
@@ -233,210 +232,213 @@ function CustomerProfile() {
                     onClick={handleDelete}
                     style={{
                       textDecoration: "none",
-                    
                       textAlign: "start",
                     }}
                   >
                     <i
                       className="fas fa-trash-alt mr-2"
                       style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
-                    ></i>
-                    <span
-                      className="align-text-start"
-                    
-                      style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
-                    >
-                      Delete Account
-                    </span>
-                  </button>
-                </li>
-                <li className="mt-2">
-                  <button
-                    className="btn btn-link sidebar-btn"
-                    onClick={() => setShowProfile(true)}
-                    style={{
-                      textDecoration: "none",
-                     
-                      textAlign: "start",
-                    }}
+                    ></i><span
+                    className="align-text-start"
+                    style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
                   >
-                    <i
-                      className="fas fa-user mr-2"
-                      style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
-                    ></i>
-                    <span
-                      className="align-text-start"
-                      style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
-                    >
-                      Profile
-                    </span>
-                  </button>
-                </li>
-                <li className="mt-2">
-                  <button
-                    className="btn btn-link sidebar-btn"
-                    onClick={() => setShowProfile(false)}
-                    style={{
-                      textDecoration: "none",
-                      
-                      textAlign: "start",
-                    }}
+                    Delete Account
+                  </span>
+                </button>
+              </li>
+              <li className="mt-2">
+                <button
+                  className="btn btn-link sidebar-btn"
+                  onClick={() => setShowProfile(true)}
+                  style={{
+                    textDecoration: "none",
+                    textAlign: "start",
+                  }}
+                >
+                  <i
+                    className="fas fa-user mr-2"
+                    style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
+                  ></i>
+                  <span
+                    className="align-text-start"
+                    style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
                   >
-                    <i
-                      className="fas fa-list-alt mr-2"
-                      style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
-                    ></i>
-                    <span
-                      className="align-text-start"
-                      style={{fontSize: "17px", color: "rgb(126, 133, 155)" }}
-                    >
-                      Orders
-                    </span>
-                  </button>
-                </li>
-              </ul>
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-            </div>
+                    Profile
+                  </span>
+                </button>
+              </li>
+              <li className="mt-2">
+                <button
+                  className="btn btn-link sidebar-btn"
+                  onClick={() => setShowProfile(false)}
+                  style={{
+                    textDecoration: "none",
+                    textAlign: "start",
+                  }}
+                >
+                  <i
+                    className="fas fa-list-alt mr-2"
+                    style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
+                  ></i>
+                  <span
+                    className="align-text-start"
+                    style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
+                  >
+                    Orders
+                  </span>
+                </button>
+              </li>
+            </ul>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
           </div>
         </div>
-        <div className="col-md-9  py-4">
-          {showProfile ? (
-            <div className="card">
-              <div className="card-body px-5">
-                <form onSubmit={handleUpdate}>
-                  <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
-                    Profile Info
-                  </span>
-                  <div className="form-group mt-3">
-                    <label htmlFor="first_name ">First Name:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="first_name"
-                      name="first_name"
-                      value={updatedUser.first_name}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="last_name">Last Name:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="last_name"
-                      name="last_name"
-                      value={updatedUser.last_name}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="address">Address:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="address"
-                      name="address"
-                      value={updatedUser.address}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="phone">Phone Number:</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="phone"
-                      name="phone"
-                      value={updatedUser.phone}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="birthdate">Birthdate:</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      id="birthdate"
-                      name="birthdate"
-                      value={updatedUser.birthdate}
-                      onChange={handleFieldChange}
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={!isModified}
-                  >
-                    Update
-                  </button>
-                </form>
-              </div>
-            </div>
-          ) : (
-            <div className="card mt-4">
-              <div className="card-body px-5">
-              <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
-                    Your Orders
-                  </span>
-                <div className="list-group mt-3">
-                  {userOrders.map((order) => (
-                    <div key={order.id} className="list-group-item">
-                      <div className="d-flex w-100 justify-content-between">
-                        <h6 className="mb-1">Order Code: {order.id}</h6>
-                        <small>Status: {getStatusText(order.status)}</small>
-                      </div>
-                      <ul className="list-group">
-                        {order.orderItems.map((item, index) => (
-                          <li key={index} className="list-group-item">
-                            <div className="d-flex w-100 justify-content-between">
-                              <h6 className="mb-1">{item.name}</h6>
-                              <span className="badge badge-primary badge-pill">
-                                ${item.price}
-                              </span>
-                            </div>
-                            <small>Quantity: {item.quantity}</small>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="d-flex w-100 justify-content-between mt-2">
-                        <div>
-                          <strong>Total Price:</strong> ${order.total_price}
-                        </div>
-                        <div>
-                          <button className="btn btn-primary btn-sm">
-                            Track Order
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+      </div>
+      <div className="col-md-9 py-4">
+        {showProfile ? (
+          <div className="card">
+            <div className="card-body px-5">
+              <form onSubmit={handleUpdate}>
+                <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
+                  Profile Info
+                </span>
+                <div className="form-group mt-3">
+                  <label htmlFor="first_name">First Name:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="first_name"
+                    name="first_name"
+                    value={updatedUser.first_name}
+                    onChange={handleFieldChange}
+                  />
                 </div>
-              </div>
+                <div className="form-group">
+                  <label htmlFor="last_name">Last Name:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="last_name"
+                    name="last_name"
+                    value={updatedUser.last_name}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="address">Address:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="address"
+                    name="address"
+                    value={updatedUser.address}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="phone">Phone Number:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="phone"
+                    name="phone"
+                    value={updatedUser.phone}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="birthdate">Birthdate:</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="birthdate"
+                    name="birthdate"
+                    value={updatedUser.birthdate}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={!isModified}
+                >
+                  Update
+                </button>
+              </form>
             </div>
-          )}
+          </div>
+        ) : (
+          <div className=" mt-4 ">
+  <div className="card-body px-5">
+    <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
+      Your Orders
+    </span>
+    {userOrders.map((order) => (
+      <div key={order.id} className="my-4">
+        <div className="card shadow p-3">
+          <div className="card-body ">
+            <h5 className="card-title">Order Code: {order.id}</h5>
+            <p className="card-text">
+              <strong>Status:</strong> {getStatusText(order.status)}
+            </p>
+            <ul className="list-group">
+              {order.orderItems.map((item, index) => (
+                <li key={index} className="list-group-item">
+                  <div className="d-flex justify-content-between">
+                    <span>{item.name}</span>
+                    <span>${item.price}</span>
+                  </div>
+                  <div>Quantity: {item.quantity}</div>
+                  <div>Size: {item.size}</div>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3">
+              <strong>Total Price:</strong> ${order.total_price}
+            </p>
+            <button
+              className="btn btn-danger btn-sm"
+              style={{
+                backgroundColor: "#ca1515",
+                display: " inline-block",
+                fontSize: "13px",
+                color: "#ffffff",
+                fontWeight: "600",
+                textTransform: "uppercase",
+                padding: "8px 15px 9px",
+                borderRadius: "50px",
+              }}
+            >
+              Cancel Order
+            </button>
+          </div>
         </div>
       </div>
-      <hr className="my-0" />
+    ))}
+  </div>
+</div>
+        )}
+      </div>
     </div>
-  );
+    <hr className="my-0" />
+  </div>
+);
 }
 
 export default CustomerProfile;

@@ -52,6 +52,9 @@ const ChangePassword = React.lazy(() =>
   import("../components/Accounts/ChangePassword")
 );
 const VerifyOTP = React.lazy(() => import("../components/Accounts/VerifyOTP"));
+const UserManagement = React.lazy(() => import("../pages/UserManagement"));
+const UpdateUser = React.lazy(() => import("../pages/UpdateUser"));
+const Admin = React.lazy(() => import("../pages/Admin"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
@@ -104,6 +107,10 @@ const Router = () => {
         <Route path="/ChangeForgetPass" element={<ChangeForgetPass/>} />
         <Route path="/message" element={<Message />} />
         <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
+        <Route path="/UpdateUser/:id" element={<UpdateUser />} />
+        <Route path="/UserManagement" element={<UserManagement />} />
+        <Route path="/Admin" element={<Admin />} />
+
         <Route element={<DelivaryLayout />}>
           <Route
             path="/deliveryman"

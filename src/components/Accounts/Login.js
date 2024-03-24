@@ -15,31 +15,36 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-   
     const token = Cookies.get("token");
     if (token) {
       axios.get("http://localhost:8000/api/profile", { headers: { Authorization: `Token ${token}` } })
         .then((res) => {
-          const user= res.data;
-          const userType= user.message.usertype;
-         
-          console.log("user", user);
-          console.log("usertype", user.message.usertype);
-          if (userType === "customer") {
-            navigate("/CustomerProfile");
-          } else if (userType === "vendor") {
-            navigate("/VendorProfile");
-          } else if (userType === "deliveryman") {
-            navigate("/DeliveryMan");
+          const user = res.data.message;
+          const isSuperuser = user.is_superuser;
+          console.log(res.data.message);
+          console.log(res.message)
+          console.log(res.data.message.isSuperuser)
+          
+  
+          if (isSuperuser === true) {
+            navigate("/admin");
           } else {
-            console.error("Unknown user type:", userType);
-            
-            navigate("/login");
+            const userType = user.message.usertype;
+  
+            if (userType === "customer") {
+              navigate("/CustomerProfile");
+            } else if (userType === "vendor") {
+              navigate("/VendorProfile");
+            } else if (userType === "deliveryman") {
+              navigate("/DeliveryMan");
+            } else {
+              console.error("Unknown user type:", user.usertype);
+              navigate("/login");
+            }
           }
         })
         .catch((error) => {
           console.error("Error fetching user profile:", error);
-         
           navigate("/login");
         });
     }

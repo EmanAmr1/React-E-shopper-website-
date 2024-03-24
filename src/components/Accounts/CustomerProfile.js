@@ -392,9 +392,11 @@ function CustomerProfile() {
             </div>
           ) : (
             <div className="card mt-4">
-              <div className="card-body">
-                <h5 className="card-title">Your Orders</h5>
-                <div className="list-group">
+              <div className="card-body px-5">
+              <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
+                    Your Orders
+                  </span>
+                <div className="list-group mt-3">
                   {userOrders.map((order) => (
                     <div key={order.id} className="list-group-item">
                       <div className="d-flex w-100 justify-content-between">

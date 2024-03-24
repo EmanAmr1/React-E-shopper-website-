@@ -201,14 +201,17 @@ const VendorProduct = () => {
                                             ${proDetails.newprice} <span>${proDetails.price}</span>
                                         </div>
                                     ) : (
-                                       <div className="product__price">{proDetails.price}</div>
+                                        <div className="product__price">{proDetails.price}</div>
                                     )}
                                 </span>
 
 
                                 <p>
 
-                                    <span>( {reviews.length} Reviews)</span>
+                                    {reviews.length === 1 ? "(1 Comment)" : `( ${reviews.length} Comments)`}
+
+
+
                                 </p>
 
                                 <hr></hr>
@@ -371,7 +374,7 @@ const VendorProduct = () => {
 
 
                 <div className="col-lg-12 mx-auto">
-                    <h3 className="reviews__title">Reviews</h3>
+                    <h3 className="reviews__title">Comments</h3>
                     {reviews.length > 0 ? (
                         <ul className="reviews__list">
                             {reviews.map((review, index) => (
@@ -394,7 +397,7 @@ const VendorProduct = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p>No reviews yet</p>
+                        <p>No Comments yet</p>
                     )}
                 </div>
 

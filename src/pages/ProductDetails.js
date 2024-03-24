@@ -135,11 +135,11 @@ const ProductDetails = () => {
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
-            navigate('/not-found'); // Redirect to not-found page if product is not found
+          navigate('/not-found'); // Redirect to not-found page if product is not found
         } else {
-            console.log(err);
+          console.log(err);
         }
-    });
+      });
   }, [params.id, userId]);
 
   useEffect(() => {
@@ -371,21 +371,20 @@ const ProductDetails = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-5">
-              <div className="product__big__img__container myimg" style={{  height: '570px' }} >
+              <div className="product__big__img__container myimg" style={{ height: '570px' }} >
                 <img
                   className="mypic"
                   src={`${baseImageUrl}${selectedImage}`}
                   alt="Product Image"
-                  style={{  height: '570px' }}
+                  style={{ height: '570px' }}
                 />
               </div>
 
               <div class="product__details__pic">
                 <div class="thumbnail-container">
                   <Link
-                    className={`pt ${
-                      selectedImage === proDetails.subImageOne ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageOne ? "active" : ""
+                      }`}
                     onClick={() => setSelectedImage(proDetails.subImageOne)}
                   >
                     <img
@@ -395,9 +394,8 @@ const ProductDetails = () => {
                   </Link>
 
                   <Link
-                    className={`pt ${
-                      selectedImage === proDetails.subImageTwo ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageTwo ? "active" : ""
+                      }`}
                     onClick={() => setSelectedImage(proDetails.subImageTwo)}
                   >
                     <img
@@ -407,9 +405,8 @@ const ProductDetails = () => {
                   </Link>
 
                   <Link
-                    className={`pt ${
-                      selectedImage === proDetails.subImageThree ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageThree ? "active" : ""
+                      }`}
                     onClick={() => setSelectedImage(proDetails.subImageThree)}
                   >
                     <img
@@ -418,9 +415,8 @@ const ProductDetails = () => {
                     />
                   </Link>
                   <Link
-                    className={`pt ${
-                      selectedImage === proDetails.subImageFour ? "active" : ""
-                    }`}
+                    className={`pt ${selectedImage === proDetails.subImageFour ? "active" : ""
+                      }`}
                     onClick={() => setSelectedImage(proDetails.subImageFour)}
                   >
                     <img
@@ -462,7 +458,13 @@ const ProductDetails = () => {
                   <div className="rating-stars">
                     <StarRating rating={rating} handleRate={handleRate} />
                   </div>
-                  <span>( {reviews.length} Reviews)</span>
+                  <p>
+
+                    {reviews.length === 1 ? "(1 Comment)" : `( ${reviews.length} Comments)`}
+
+
+
+                  </p>
                 </p>
 
                 <hr></hr>
@@ -609,7 +611,7 @@ const ProductDetails = () => {
 
           <div className="row">
             <div className="col-lg-6 mx-auto">
-              <h3 className="reviews__title">Reviews</h3>
+              <h3 className="reviews__title">Comments</h3>
               {reviews.length > 0 ? (
                 <ul className="reviews__list">
                   {reviews.map((review, index) => (
@@ -632,13 +634,13 @@ const ProductDetails = () => {
                   ))}
                 </ul>
               ) : (
-                <p>No reviews yet</p>
+                <p>No Comments yet</p>
               )}
             </div>
 
             <div className="col-lg-6 mt-5">
               <div className="add-review-form p-4 border rounded mt-5">
-                <h3 className="mb-3">Add your Review</h3>
+                <h3 className="mb-3">Add your Comment</h3>
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     <textarea
@@ -649,7 +651,7 @@ const ProductDetails = () => {
                       onChange={(e) => setComment(e.target.value)}
                     />
                   </div>
-                  <button type="submit">Add Review</button>
+                  <button type="submit">Add Comment</button>
                 </form>
               </div>
             </div>

@@ -380,7 +380,6 @@ const AddProduct = () => {
                     price: '',
                     brand: '',
                     stock: '',
-
                     new: true,
                     sale: true,
                     newprice: '',
@@ -458,16 +457,16 @@ const AddProduct = () => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock" className="form-label">
-                                            <FontAwesomeIcon icon={faBalanceScale} /> Stock:
+                                            <FontAwesomeIcon icon={faBalanceScale} /> Stock: {!addPro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" disabled={addPro.sizeable === true} />
+                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" required={!addPro?.sizeable === true}  disabled={addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="new" className="form-check-label">New</label>
                                     </div>
                                     <div className="mb-3 form-check">
-                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input" />
+                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange}   className="form-check-input" />
                                         <label htmlFor="sale" className="form-check-label">Sale</label>
                                     </div>
                                     <div className="mb-3 form-check">
@@ -478,10 +477,10 @@ const AddProduct = () => {
 
                                     <div className="mb-3">
                                         <label htmlFor="newprice" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> New Price:
+                                            <FontAwesomeIcon icon={faDollarSign} /> New Price: 
                                         </label>
 
-                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
+                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice}    onChange={handleChange} className="form-control" />
 
                                     </div>
 
@@ -531,26 +530,26 @@ const AddProduct = () => {
                                     )}
                                     <div className="mb-3">
                                         <label htmlFor="stock_S" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (S):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (S): {addPro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
                                         <input type="number" id="stock_S" name="stock_S" value={addPro.stock_S} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_M" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (M):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (M): {addPro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
                                         <input type="number" id="stock_M" name="stock_M" value={addPro.stock_M} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="stock_L" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (L):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (L): {addPro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
                                         <input type="number" id="stock_L" name="stock_L" value={addPro.stock_L} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_XL" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL): {addPro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
                                         <input type="number" id="stock_XL" name="stock_XL" value={addPro.stock_XL} onChange={handleChange} className="form-control" required={addPro.sizeable === true} disabled={!addPro.sizeable === true} />
                                     </div>

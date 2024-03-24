@@ -56,7 +56,6 @@ const UpdateProduct = () => {
         price: '',
         brand: '',
         stock: '',
-
         new: true,
         sale: true,
         newprice: '',
@@ -468,9 +467,10 @@ const UpdateProduct = () => {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock" className="form-label">
-                                            <FontAwesomeIcon icon={faBalanceScale} /> Stock:
+                                            <FontAwesomeIcon icon={faBalanceScale} /> Stock: {!updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={updatePro?.stock || ''} onChange={handleChange} className="form-control" required />
+                                        <input type="number" id="stock" name="stock" value={updatePro?.stock || ''} onChange={handleChange} className="form-control"   required={!updatePro?.sizeable === true}   disabled={updatePro?.sizeable === true} />
+           
                                     </div>
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={updatePro?.new || ''} onChange={handleChange} className="form-check-input" />
@@ -531,28 +531,28 @@ const UpdateProduct = () => {
 
                                     <div className="mb-3">
                                         <label htmlFor="stock_S" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (S):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (S): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock_S" name="stock_S" value={updatePro?.stock_S || ''} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_S" name="stock_S" value={updatePro?.stock_S || ''} onChange={handleChange} className="form-control"  required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true}  />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_M" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (M):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (M): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock_M" name="stock_M" value={updatePro?.stock_M || ''} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_M" name="stock_M" value={updatePro?.stock_M || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="stock_L" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (L):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (L): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock_L" name="stock_L" value={updatePro?.stock_L || ''} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_L" name="stock_L" value={updatePro?.stock_L || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="stock_XL" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL):
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock_XL" name="stock_XL" value={updatePro?.stock_XL || ''} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_XL" name="stock_XL" value={updatePro?.stock_XL || ''} onChange={handleChange} className="form-control" required={updatePro.sizeable === true} disabled={!updatePro.sizeable === true} />
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="images" className="form-label">

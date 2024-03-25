@@ -65,6 +65,8 @@ function ProductManagement() {
     return (
         <>
             <h3>All Products</h3>
+            <Link to={`/AdminAddPro`} className="btn ">Add</Link>
+
             <table className="table table-success table-striped">
                 <thead>
                     <tr>
@@ -97,6 +99,7 @@ function ProductManagement() {
 
                                 <button className="btn btn-danger" onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
                                 <Link to={`/AdminUpdatePro/${prod.id}`} className="btn ">Update</Link>
+                               
                             </td>
 
                         </tr>

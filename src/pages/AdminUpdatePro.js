@@ -5,7 +5,7 @@ import { axiosInstance } from "../apis/config";
 import { faImage, faMoneyBillAlt, faTag, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const UpdateProduct = () => {
+const AdminUpdatePro= () => {
 
     const params = useParams();
     const token = Cookies.get("token");
@@ -686,4 +686,4 @@ const UpdateProduct = () => {
     );
 }
 
-export default UpdateProduct;
+export default AdminUpdatePro;

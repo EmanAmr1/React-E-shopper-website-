@@ -41,7 +41,7 @@ const SubscriptionVendor = ({ vendorId }) => {
            {subtractionResult !== null ? (
     <p>
         <span className='font-weight-bold'>Remaining products from subscription: </span>
-        {subtractionResult !== 0 ? (
+        {subtractionResult > 0 ? (
             <span className='font-weight-bold' style={{ color: expired ? 'red' : 'inherit' }}>{subtractionResult}</span>
         ) : (
             <span style={{ color: 'red' }}> Subscription Expired</span>

@@ -17,6 +17,8 @@ function getStatusText(status) {
       return "Shipped";
     case "P":
       return "Pending";
+    case "C":
+      return "Cancelled";
     default:
       return "Unknown";
   }
@@ -179,6 +181,27 @@ function CustomerProfile() {
       .catch((error) => {
         console.error("Delete error:", error);
       });
+  };
+
+  const handleCancelOrder = (orderId, orderStatus) => {
+    if (orderStatus !== "P") {
+      // Order is not pending, do not allow cancellation
+      alert("You can only cancel orders that are pending.");
+      return;
+    }
+    
+    const confirmed = window.confirm("Are you sure you want to cancel this order?");
+    if (confirmed) {
+      axiosInstance
+        .put(`/API/orders/${orderId}/cancel/`, null, { headers })
+        .then((res) => {
+          // Update UI or show confirmation message
+          console.log("Order canceled successfully");
+        })
+        .catch((error) => {
+          console.error("Cancel order error:", error);
+        });
+    }
   };
   console.log(userOrders)
   return (
@@ -412,21 +435,25 @@ function CustomerProfile() {
             <p className="mt-3">
               <strong>Total Price:</strong> ${order.total_price}
             </p>
-            <button
-              className="btn btn-danger btn-sm"
-              style={{
-                backgroundColor: "#ca1515",
-                display: " inline-block",
-                fontSize: "13px",
-                color: "#ffffff",
-                fontWeight: "600",
-                textTransform: "uppercase",
-                padding: "8px 15px 9px",
-                borderRadius: "50px",
-              }}
-            >
-              Cancel Order
-            </button>
+            {}
+            {order.status === "P" && (
+  <button
+    className="btn btn-danger btn-sm"
+    style={{
+      backgroundColor: "#ca1515",
+      display: " inline-block",
+      fontSize: "13px",
+      color: "#ffffff",
+      fontWeight: "600",
+      textTransform: "uppercase",
+      padding: "8px 15px 9px",
+      borderRadius: "50px",
+    }}
+    onClick={() => handleCancelOrder(order.id, order.status)}
+  >
+    Cancel Order
+  </button>
+)}
           </div>
         </div>
       </div>

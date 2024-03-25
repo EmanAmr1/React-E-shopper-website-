@@ -73,7 +73,10 @@ function Login() {
         Cookies.set("token", token); // Store user data in a cookie
 
         // Redirect based on the user type
-        if (user.usertype === "customer") {
+        if (user.is_superuser === true) {
+          navigate("/admin");
+        } 
+      else if (user.usertype === "customer") {
           navigate("/CustomerProfile", { state: { user, token } });
         } else if (user.usertype === "vendor") {
           navigate("/VendorProfile", { state: { user, token } });

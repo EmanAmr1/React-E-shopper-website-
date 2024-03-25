@@ -261,13 +261,13 @@ const AdminUpdatePro= () => {
 
         }
     }, [subscriptionInfo]);
-    useEffect(() => {
-        // Check if subscription has expired
-        if (expired) {
-            alert('Your subscription has expired. Please renew your subscription to add products.');
-            navigate('/vendorprofile'); // Redirect to homepage or another appropriate page
-        }
-    }, [expired]);
+    // useEffect(() => {
+    //     // Check if subscription has expired
+    //     if (expired) {
+    //         alert('Your subscription has expired. Please renew your subscription to add products.');
+    //         navigate('/vendorprofile'); // Redirect to homepage or another appropriate page
+    //     }
+    // }, [expired]);
 
     const getRemainingProducts = (subscriptionInfo) => {
         let productLimit = 0;

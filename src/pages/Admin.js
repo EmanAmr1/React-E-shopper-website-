@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Cookies from "js-cookie";
 import axios from "axios";
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
@@ -31,25 +31,25 @@ function AdminPanel() {
         const token = Cookies.get("token");
         Cookies.remove("token");
         const headers = {
-          Authorization: `Token ${token}`,
+            Authorization: `Token ${token}`,
         };
         axios
-          .post("http://localhost:8000/api/logout/", null, { headers })
-          .then(() => {
-            console.log("Logout successful");
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("Logout error:", error);
-          });
-      };
+            .post("http://localhost:8000/api/logout/", null, { headers })
+            .then(() => {
+                console.log("Logout successful");
+                navigate("/");
+            })
+            .catch((error) => {
+                console.error("Logout error:", error);
+            });
+    };
 
     return (
         <>
-            <h2 style={{backgroundColor:"#8FBC8F",color:"white"}}>Admin Panel
-            <button onClick={handleLogout} style={{backgroundColor:"#8FBC8F",padding:"2px",marginLeft:"1000px",fontSize:"15px"}}>Logout</button>
+            <h2 style={{ backgroundColor: "#8FBC8F", color: "white" }}>Admin Panel
+                <button onClick={handleLogout} style={{ backgroundColor: "#8FBC8F", padding: "2px", marginLeft: "1000px", fontSize: "15px" }}>Logout</button>
             </h2>
-            
+
 
             <div style={{ display: 'flex', justifyContent: 'flex-start', padding: '20px' }}>
                 <div style={{ marginLeft: '50px', marginTop: '10px' }}>
@@ -73,10 +73,24 @@ function AdminPanel() {
                             backgroundColor: 'black',
                             color: '#fff',
                             borderRadius: '5px',
-                            margin:"10px"
+                            margin: "10px"
                         }}
                     >
                         Product Management
+                    </Link>
+
+                    <Link
+                        to="/PlanManagment"
+                        style={{
+                            display: 'inline-block',
+                            padding: '10px 20px',
+                            backgroundColor: 'black',
+                            color: '#fff',
+                            borderRadius: '5px',
+                            margin: "10px"
+                        }}
+                    >
+                        Plan Management
                     </Link>
                 </div>
             </div>

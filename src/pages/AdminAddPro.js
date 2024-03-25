@@ -400,18 +400,18 @@ const AdminAddPro = () => {
 
 
 
-    console.log("subscriptionInfo",subscriptionInfo)
-    useEffect(() => {
-        if(subscriptionInfo !=null){
-            console.log("subscriptionInfo")
-            console.log("subscriptionInfo.payment_status",subscriptionInfo.payment_status)
-        if ((expired || !subscriptionInfo.payment_status)) {
-            alert('Your subscription has expired. Please renew your subscription to add products.');
-            navigate('/vendorprofile');
-            console.log("subscriptionInfo")
-             // Redirect to homepage or another appropriate page
-        }}
-    }, [expired, subscriptionInfo, navigate]);
+    // console.log("subscriptionInfo",subscriptionInfo)
+    // useEffect(() => {
+    //     if(subscriptionInfo !=null){
+    //         console.log("subscriptionInfo")
+    //         console.log("subscriptionInfo.payment_status",subscriptionInfo.payment_status)
+    //     if ((expired || !subscriptionInfo.payment_status)) {
+    //         alert('Your subscription has expired. Please renew your subscription to add products.');
+    //         navigate('/vendorprofile');
+    //         console.log("subscriptionInfo")
+    //          // Redirect to homepage or another appropriate page
+    //     }}
+    // }, [expired, subscriptionInfo, navigate]);
 
 
 

@@ -45,7 +45,8 @@ const UpdateProduct = () => {
 
             });
     }, []);
-
+    const [imageFile, setImageFile] = useState(null); // State variable to store image file
+    const [isNewImageSelected, setIsNewImageSelected] = useState(false); // State variable to track if new image is selected
 
     const [subcategories, setSubCategories] = useState([]);
     const [errors, setErrors] = useState([]);
@@ -111,11 +112,17 @@ const UpdateProduct = () => {
                 ...updatePro,
                 [name]: checked
             });
+        } else if (type === 'file') {
+            // If file input is changed, set isNewImageSelected accordingly
+            setIsNewImageSelected(!!e.target.files[0]);
+            setImageFile(e.target.files[0]);
+
         } else {
             setUpdatePro({
                 ...updatePro,
                 [name]: value
             });
+
 
 
 
@@ -171,32 +178,32 @@ const UpdateProduct = () => {
     };
 
     const handleImageChange = (e) => {
-        if (e.target.name === "image") {
+        if ( e.target.name === "image") {
             const file = e.target.files[0];
             setUpdatePro({
                 ...updatePro,
                 image: file
             });
-        } else if (e.target.name === "subImageOne") {
+        } else if ( e.target.name === "subImageOne") {
             setUpdatePro({
                 ...updatePro,
                 subImageOne: e.target.files[0]
             });
         }
-        else if (e.target.name === "subImageTwo") {
+        else if ( e.target.name === "subImageTwo") {
             setUpdatePro({
                 ...updatePro,
                 subImageTwo: e.target.files[0]
             });
         }
-        else if (e.target.name === "subImageThree") {
+        else if (  e.target.name === "subImageThree") {
             setUpdatePro({
                 ...updatePro,
                 subImageThree: e.target.files[0]
             });
         }
 
-        else if (e.target.name === "subImageFour") {
+        else if (  e.target.name === "subImageFour") {
             setUpdatePro({
                 ...updatePro,
                 subImageFour: e.target.files[0]
@@ -286,7 +293,37 @@ const UpdateProduct = () => {
 
         const formData = new FormData();
 
+        Object.keys(updatePro).forEach(key => {
+            formData.append(key, updatePro[key]);
+        });
 
+        // Append imageFile to formData only if a new image is selected
+        if (isNewImageSelected && imageFile) {
+            formData.append('image', imageFile);
+        }
+
+
+        // Check if the user has selected a new image
+        if (updatePro.image) {
+            formData.append('image', updatePro.image);
+        }
+
+        if (updatePro.subImageOne) {
+            formData.append('subImageOne', updatePro.subImageOne);
+        }
+
+        
+        if (updatePro.subImageTwo) {
+            formData.append('subImageTwo', updatePro.subImageTwo);
+        }
+
+        if (updatePro.subImageThree) {
+            formData.append('subImageThree', updatePro.subImageThree);
+        }
+
+        if (updatePro.subImageFour) {
+            formData.append('subImageFour', updatePro.subImageFour);
+        }
 
 
         const newErrors = [];
@@ -436,7 +473,7 @@ const UpdateProduct = () => {
 
     return (
         <>
-            <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
+           <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
                 <h3 className="mb-0 " style={{ color: '#FFFFFF' }}>Update Product</h3>
             </div>
             <div className="container mt-5">
@@ -467,6 +504,15 @@ const UpdateProduct = () => {
                                         <input type="text" id="price" name="price" value={updatePro?.price || ''} onChange={handleChange} className="form-control" onBlur={handleBlur('price', 'Please fill price')} required />
                                         {errors.includes('Please fill price') && <div className="text-danger">Please fill price.</div>}
                                     </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="newprice" className="form-label">
+                                            <FontAwesomeIcon icon={faDollarSign} /> New Price:
+                                        </label>
+                                        <input type="text" id="newprice" name="newprice" value={updatePro?.newprice || ''} onChange={handleChange} className="form-control" />
+                                    </div>
+
+
                                     <div className="mb-3">
                                         <label htmlFor="brand" className="form-label">
                                             <FontAwesomeIcon icon={faPlus} /> Brand:  <span style={{ color: 'red' }}>*</span>
@@ -478,8 +524,8 @@ const UpdateProduct = () => {
                                         <label htmlFor="stock" className="form-label">
                                             <FontAwesomeIcon icon={faBalanceScale} /> Stock: {!updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={updatePro?.stock || ''} onChange={handleChange} className="form-control"   required={!updatePro?.sizeable === true}   disabled={updatePro?.sizeable === true} />
-           
+                                        <input type="number" id="stock" name="stock" value={updatePro?.stock || ''} onChange={handleChange} className="form-control" required={!updatePro?.sizeable === true} disabled={updatePro?.sizeable === true} />
+
                                     </div>
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={updatePro?.new || ''} onChange={handleChange} className="form-check-input" />
@@ -493,14 +539,32 @@ const UpdateProduct = () => {
                                         <input type="checkbox" id="sizeable" name="sizeable" checked={updatePro?.sizeable || ''} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sizeable" className="form-check-label">sizeable</label>
                                     </div>
-
+                                    <div className="mb-3">
+                                        <label htmlFor="stock_S" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (S): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
+                                        </label>
+                                        <input type="number" id="stock_S" name="stock_S" value={updatePro?.stock_S || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="stock_M" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (M): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
+                                        </label>
+                                        <input type="number" id="stock_M" name="stock_M" value={updatePro?.stock_M || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
+                                    </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="newprice" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> New Price:
+                                        <label htmlFor="stock_L" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (L): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="text" id="newprice" name="newprice" value={updatePro?.newprice || ''} onChange={handleChange} className="form-control" />
+                                        <input type="number" id="stock_L" name="stock_L" value={updatePro?.stock_L || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
                                     </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="stock_XL" className="form-label">
+                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
+                                        </label>
+                                        <input type="number" id="stock_XL" name="stock_XL" value={updatePro?.stock_XL || ''} onChange={handleChange} className="form-control" required={updatePro.sizeable === true} disabled={!updatePro.sizeable === true} />
+                                    </div>
+
                                     <div className="mb-3">
                                         <label htmlFor="category" className="form-label">
                                             <FontAwesomeIcon icon={faMoneyBillAlt} /> Category:  <span style={{ color: 'red' }}>*</span>
@@ -538,64 +602,57 @@ const UpdateProduct = () => {
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
 
 
-                                    <div className="mb-3">
-                                        <label htmlFor="stock_S" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (S): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
-                                        </label>
-                                        <input type="number" id="stock_S" name="stock_S" value={updatePro?.stock_S || ''} onChange={handleChange} className="form-control"  required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true}  />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="stock_M" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (M): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
-                                        </label>
-                                        <input type="number" id="stock_M" name="stock_M" value={updatePro?.stock_M || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
-                                    </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="stock_L" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (L): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
+                                        <label htmlFor="image" className="form-label">
+                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:
                                         </label>
-                                        <input type="number" id="stock_L" name="stock_L" value={updatePro?.stock_L || ''} onChange={handleChange} className="form-control" required={updatePro?.sizeable === true} disabled={!updatePro?.sizeable === true} />
+                                        {updatePro.image && (
+                                            <img src={`http://127.0.0.1:8000${updatePro.image}`} alt="Product Main Image" style={{ maxWidth: '100px' }} />
+                                        )}
+                                        <input type="file" id="image" name="image" onChange={handleImageChange} className="form-control" />
                                     </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="stock_XL" className="form-label">
-                                            <FontAwesomeIcon icon={faPlus} /> Stock (XL): {updatePro.sizeable && <span style={{ color: 'red' }}>*</span>}
-                                        </label>
-                                        <input type="number" id="stock_XL" name="stock_XL" value={updatePro?.stock_XL || ''} onChange={handleChange} className="form-control" required={updatePro.sizeable === true} disabled={!updatePro.sizeable === true} />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="images" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:  <span style={{ color: 'red' }}>*</span>
-                                        </label>
-                                        <input type="file" id="image" name="image" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
-                                    </div>
+
+
                                     <div className="mb-3">
                                         <label htmlFor="subImageOne" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image One: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
+                                        {updatePro.subImageOne && (
+                                            <img src={`http://127.0.0.1:8000${updatePro.subImageOne}`} alt="Product Sub Image One" style={{ maxWidth: '100px' }} />
+                                        )}
+                                        <input type="file" id="subImageOne" name="subImageOne" onChange={handleImageChange} className="form-control" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageTwo" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Two: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="file" id="subImageTwo" name="subImageTwo" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
+                                        {updatePro.subImageTwo && (
+                                            <img src={`http://127.0.0.1:8000${updatePro.subImageTwo}`} alt="Product Sub Image Two" style={{ maxWidth: '100px' }} />
+                                        )}
+                                        <input type="file" id="subImageTwo" name="subImageTwo" onChange={handleImageChange} className="form-control" />
                                     </div>
+
                                     <div className="mb-3">
                                         <label htmlFor="subImageThree" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Three: <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
+                                        {updatePro.subImageThree && (
+                                            <img src={`http://127.0.0.1:8000${updatePro.subImageThree}`} alt="Product Sub Image Three" style={{ maxWidth: '100px' }} />
+                                        )}
+                                        <input type="file" id="subImageThree" name="subImageThree" onChange={handleImageChange} className="form-control" />
                                     </div>
 
                                     <div className="mb-3">
                                         <label htmlFor="subImageFour" className="form-label">
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:  <span style={{ color: 'red' }}>*</span>
                                         </label>
-                                        <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} required className="form-control" multiple defaultValue="" />
+                                        {updatePro.subImageFour && (
+                                            <img src={`http://127.0.0.1:8000${updatePro.subImageFour}`} alt="Product Sub Image Four" style={{ maxWidth: '100px' }} />
+                                        )}
+                                        <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} className="form-control" />
                                     </div>
-
 
 
 

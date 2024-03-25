@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function UserManagement() {
     const [users, setUsers] = useState([]);
@@ -9,24 +9,41 @@ function UserManagement() {
     useEffect(() => {
         const token = Cookies.get("token");
         if (token) {
-        axios.get("http://localhost:8000/api/allUser/", { headers: { Authorization: `Token ${token}` } })
-            .then((response) => {
-                setUsers(response.data.Users);
-            })
-            .catch((error) => {
-                console.error("Error fetching users:", error);
-            });
+            axios.get("http://localhost:8000/api/allUser/", { headers: { Authorization: `Token ${token}` } })
+                .then((response) => {
+                    setUsers(response.data.Users);
+                })
+                .catch((error) => {
+                    console.error("Error fetching users:", error);
+                });
         }
     }, []);
 
-    console.log(users);
-    
+    const handleDeleteUser = (userId) => {
+        const token = Cookies.get("token");
+        if (token) {
+            axios.delete(`http://localhost:8000/profile/`, {
+                headers: {
+                    Authorization: `Token ${token}`
+                },
+                data: { id: userId }
+            })
+                .then((response) => {
+                    console.log("User deleted successfully");
+                    // Update the user list after deletion
+                    setUsers(users.filter(user => user.id !== userId));
+                })
+                .catch((error) => {
+                    console.error("Error deleting user:", error);
+                });
+        }
+    };
 
     return (
         <>
             <h3>User Management</h3>
             <table className="table table-success table-striped">
-                <thead >
+                <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">First Name</th>
@@ -50,11 +67,10 @@ function UserManagement() {
                             <td>{user.address}</td>
                             <td>{user.phone}</td>
                             <td>{user.usertype}</td>
-                           
+
                             <td>
-                            <Link to={`/UpdateUser/${user.id}`}><button className="btn btn-dark">Update</button></Link>
-  
-                                <button className="btn btn-danger">Delete</button>
+                                <Link to={`/UpdateUser/${user.id}`}><button className="btn btn-dark">Update</button></Link>
+                                <button className="btn btn-danger" onClick={() => handleDeleteUser(user.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -65,4 +81,3 @@ function UserManagement() {
 }
 
 export default UserManagement;
-

@@ -50,9 +50,13 @@ const ProductDetails = () => {
   useEffect(() => {
     // Fetch related products based on the current product's category
     axiosInstance
-      .get(`/API/allproducts/?category=${proDetails.category}`)
-      .then((res) => {
-        setRelatedProducts(res.data.results.products);
+    .get(`/API/allproducts/?brand="${proDetails.category}"&subcategory=${proDetails.subcategory}`)
+    .then((res) => {
+      // Filter products to ensure both category and brand match
+      const filteredProducts = res.data.results.products.filter(product =>
+        product.category === proDetails.category && product.subcategory === proDetails.subcategory
+      );
+      setRelatedProducts(filteredProducts);
         if (proDetails.stock_S > 0) {
           setSelectedSize("S");
         } else if (proDetails.stock_M > 0) {
@@ -66,7 +70,7 @@ const ProductDetails = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, [proDetails.category]);
+  }, [proDetails.category, proDetails.subcategory]);
 
   const increase = () => {
     setQuantity((count) => count + 1);

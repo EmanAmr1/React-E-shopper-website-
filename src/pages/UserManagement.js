@@ -41,7 +41,7 @@ function UserManagement() {
 
     return (
         <>
-            <h3>User Management</h3>
+            <h3 style={{backgroundColor:"#8FBC8F",color:"white",padding:"10px"}}>User Management</h3>
             <br></br>
             <Link to="/AddUser"><button className="btn btn-dark">Add User</button></Link>
             <br></br> <br></br>

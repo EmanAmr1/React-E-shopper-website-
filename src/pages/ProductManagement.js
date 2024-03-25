@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
+import { Link } from 'react-router-dom';
 function ProductManagement() {
     const token = Cookies.get("token");
     const headers = {
-      Authorization: `Token ${token}`,
+        Authorization: `Token ${token}`,
     };
     const [products, setProducts] = useState([]);
 
@@ -21,11 +22,11 @@ function ProductManagement() {
                 console.error('Error fetching products:', error);
             });
     };
-  
+
 
     const handleDeleteProduct = (productId) => {
         console.log(productId)
-        axiosInstance.delete(`http://127.0.0.1:8000/API/deleteProduct/${productId}/`,{headers})
+        axiosInstance.delete(`http://127.0.0.1:8000/API/deleteProduct/${productId}/`, { headers })
             .then(() => {
                 console.log("Product deleted successfully");
                 setProducts(products.filter(product => product.id !== productId));
@@ -34,6 +35,32 @@ function ProductManagement() {
                 console.error('Error deleting product:', error);
             });
     };
+
+
+
+
+
+    /*
+        const handleUpdateProduct = (productId) => {
+            console.log(productId)
+        axiosInstance.put(`/API/updateProduct/${productId}/`, formData, { headers })
+        .then(res => {
+            setUpdatePro(prevState => ({
+                ...prevState,
+                ...res.data.product
+            }));
+            setSuccessMessage('Product successfully updated');
+            setErrors([]);
+    
+        })
+        .catch(error => {
+            console.error('Error updating product:', error);
+            setErrors(['Error updating product']);
+        });
+        }
+    */
+
+
 
     return (
         <>
@@ -65,9 +92,13 @@ function ProductManagement() {
                             <td>{prod.ratings}</td>
                             <td>{prod.price}</td>
                             <td>{prod.newprice}</td>
+
                             <td>
+
                                 <button className="btn btn-danger" onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
+                                <Link to={`/AdminUpdatePro/${prod.id}`} className="btn ">Update</Link>
                             </td>
+
                         </tr>
                     ))}
                 </tbody>

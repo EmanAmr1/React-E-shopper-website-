@@ -56,7 +56,7 @@ const UserManagement = React.lazy(() => import("../pages/UserManagement"));
 const ProductManagement = React.lazy(() => import("../pages/ProductManagement"));
 const UpdateUser = React.lazy(() => import("../pages/UpdateUser"));
 const Admin = React.lazy(() => import("../pages/Admin"));
-
+const AdminUpdatePro = React.lazy(() => import("../pages/AdminUpdatePro"));
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
 const Router = () => {
@@ -112,7 +112,7 @@ const Router = () => {
         <Route path="/UserManagement" element={<UserManagement />} />
         <Route path="/ProductManagement" element={<ProductManagement />} />
         <Route path="/Admin" element={<Admin />} />
-
+        <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />
         <Route element={<DelivaryLayout />}>
           <Route
             path="/deliveryman"

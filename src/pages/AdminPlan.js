@@ -111,20 +111,20 @@ const handleDelete = async (planId) => {
       <form onSubmit={handleSubmit}>
         <label>
           Name:
-          <input type="text" name="name" value={formData.name} onChange={handleChange} />
+          <input type="text" style={{width:'92%',height:'40px',border:'1px solid #777'}} name="name" value={formData.name} onChange={handleChange} />
         </label>
         <br />
         <label>
           Description:
-          <input type="text" name="description" value={formData.description} onChange={handleChange} />
+          <input type="text"style={{width:'80%',height:'40px',border:'1px solid #777'}} name="description" value={formData.description} onChange={handleChange} />
         </label>
         <br />
         <label>
           Price:
-          <input type="number" name="price" value={formData.price} onChange={handleChange} />
+          <input type="number" style={{width:'100%',height:'40px',border:'1px solid #777',borderRadius:'5px'}} name="price" value={formData.price} onChange={handleChange} />
         </label>
         <br />
-        <button type="submit"  style={{ background: 'linear-gradient(to right, #0072ff, #00c6ff)', border: 'none' }}>Create Plan</button>
+        <button type="submit" className='my-2' style={{ padding:'10px',background: 'linear-gradient(to right, #0072ff, #00c6ff)', border: 'none',borderRadius:'5px' }}>Create Plan</button>
       </form>
     </div>
             <div className='row'>

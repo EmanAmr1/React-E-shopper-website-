@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import rev from "../imags/rev.png";
-
+import pro1 from "../imags/product/details/product-1.jpg"
+import pro2 from "../imags/product/details/product-1.jpg"
+import pro3 from "../imags/product/details/product-4.jpg"
+import pro4 from "../imags/product/details/product-2.jpg"
+import pro5 from "../imags/product/details/product-3.jpg"
+import { Link } from 'react-router-dom';
 
 const ReviwProductShape = () => {
-
+    const [mainImage, setMainImage] = useState(pro1);
 
     const proDetails = {
         id: 1,
@@ -31,7 +36,9 @@ const ReviwProductShape = () => {
         { user: "Sample User 1", date: "2024-03-23", comment: "Sample comment 1" },
         { user: "Sample User 2", date: "2024-03-22", comment: "Sample comment 2" },
     ];
-
+    const handleSubImageClick = (image) => {
+        setMainImage(image);
+    };
     return (
         <>
             <section className="product-details spad topheight ">
@@ -41,25 +48,33 @@ const ReviwProductShape = () => {
                             <div className="product__big__img__container myimg" style={{ height: '570px' }}>
                                 <img
                                     className="mypic"
-                                    src=" "
+                                    src={mainImage} // Render main image dynamically
                                     alt="Product Main Image"
                                     style={{ height: '570px' }}
                                 />
                             </div>
-                            <div class="product__details__pic">
-                                <div class="thumbnail-container">
-                                    <a className="pt" href="#">
-                                        <img src=" " alt="sub Image One" />
-                                    </a>
-                                    <a className="pt" href="#">
-                                        <img src=" " alt="sub Image Two" />
-                                    </a>
-                                    <a className="pt" href="#">
-                                        <img src=" " alt="sub ImageThree" />
-                                    </a>
-                                    <a className="pt" href="#">
-                                        <img src=" " alt="sub Image Four" />
-                                    </a>
+                            <div className="product__details__pic">
+                                <div className="thumbnail-container">
+                                    <Link className="pt" to="">
+                                        <div onClick={() => handleSubImageClick(pro2)}>
+                                            <img src={pro2} alt="sub Image One" />
+                                        </div>
+                                    </Link>
+                                    <Link className="pt" to="">
+                                        <div onClick={() => handleSubImageClick(pro3)}>
+                                            <img src={pro3} alt="sub Image Two" />
+                                        </div>
+                                    </Link>
+                                    <Link className="pt" to="">
+                                        <div onClick={() => handleSubImageClick(pro4)}>
+                                            <img src={pro4} alt="sub Image Three" />
+                                        </div>
+                                    </Link>
+                                    <Link className="pt" to="">
+                                        <div onClick={() => handleSubImageClick(pro5)}>
+                                            <img src={pro5} alt="sub Image Four" />
+                                        </div>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +209,7 @@ const ReviwProductShape = () => {
                     </div>
                 </div>
                 <div className="col-lg-12 mx-auto">
-                    <h3 className="reviews__title">Reviews</h3>
+                    <h3 className="reviews__title">Comments</h3>
                     {reviews.length > 0 ? (
                         <ul className="reviews__list">
                             {reviews.map((review, index) => (

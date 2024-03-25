@@ -78,8 +78,8 @@ function ProductManagement() {
                                         <td>{prod.price}</td>
                                         <td>{prod.newprice}</td>
                                         <td>
-                                            <button className="btn btn-danger " style={{width:'100px'}} onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
-                                            <Link to={`/AdminUpdatePro/${prod.id}`} className="btn-success mt-2 btn" style={{width:'100px'}}>Update</Link>
+                                            <button className="btn btn-danger pe-2" style={{ width: '100px' }} onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
+                                            <Link to={`/AdminUpdatePro/${prod.id}`} className="btn-success  btn" style={{ width: '100px', marginLeft: '10px' }}>Update</Link>
                                         </td>
                                     </tr>
                                 ))}

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function UpdateUser() {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [user, setUser] = useState({
-        id: "",
+        id: id,
         first_name: "",
         last_name: "",
         email: "",
@@ -17,17 +17,14 @@ function UpdateUser() {
     });
 
     useEffect(() => {
-        const token = Cookies.get("token");
-        if (token) {
-            axios.get("http://localhost:8000/api/profile/", { headers: { Authorization: `Token ${token}` } })
-                .then((response) => {
-                    setUser(response.data.message); // Assuming it returns a single user object
-                })
-                .catch((error) => {
-                    console.error("Error fetching user data:", error);
-                });
-        }
-    }, []);
+        axios.get(`http://localhost:8000/user-profile/${id}/`)
+            .then((response) => {
+                setUser(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching user data:", error);
+            });
+    }, [id]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -39,12 +36,7 @@ function UpdateUser() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const token = Cookies.get("token");
-        const headers = {
-            Authorization: `Token ${token}`,
-        };
-
-        axios.put("http://localhost:8000/api/profile/", user, { headers })
+        axios.put(`http://localhost:8000/profile/${id}/`, user)
             .then((res) => {
                 console.log("Update successful");
                 if (window.confirm("The User Profile has been updated successfully")) {
@@ -95,4 +87,3 @@ function UpdateUser() {
 }
 
 export default UpdateUser;
-

@@ -55,6 +55,7 @@ const VerifyOTP = React.lazy(() => import("../components/Accounts/VerifyOTP"));
 const UserManagement = React.lazy(() => import("../pages/UserManagement"));
 const UpdateUser = React.lazy(() => import("../pages/UpdateUser"));
 const Admin = React.lazy(() => import("../pages/Admin"));
+const AddUser = React.lazy(() => import("../pages/AddUser"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
@@ -110,6 +111,7 @@ const Router = () => {
         <Route path="/UpdateUser/:id" element={<UpdateUser />} />
         <Route path="/UserManagement" element={<UserManagement />} />
         <Route path="/Admin" element={<Admin />} />
+        <Route path="/AddUser" element={<AddUser />} />
 
         <Route element={<DelivaryLayout />}>
           <Route

@@ -7,9 +7,13 @@ function Sidebar() {
                     <div className="sb-sidenav-menu">
                         <div className="nav">
                             <div className="sb-sidenav-menu-heading">Core</div>
-                            <Link className="nav-link" to="#">
+                            <Link className="nav-link" to="/dashboard">
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Dashboard
+                            </Link>
+                            <Link className="nav-link" to="/addCategory">
+                                <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
+                                Add Category
                             </Link>
                             <div className="sb-sidenav-menu-heading">Interface</div>
                             <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -55,7 +59,7 @@ function Sidebar() {
                                 </nav>
                             </div>
                             <div className="sb-sidenav-menu-heading">Addons</div>
-                            <Link className="nav-link" to="Link">
+                            <Link className="nav-link" to="/charts">
                                 <div className="sb-nav-link-icon"><i className="fas fa-chart-area"></i></div>
                                 Charts
                             </Link>

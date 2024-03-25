@@ -4,6 +4,7 @@ import '../../../assets/admin/js/scripts'
 import  Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
+import { Outlet } from "react-router-dom";
 function MasterLayout() {
   return (
     <div className='sb-nav-fixed"'>
@@ -15,7 +16,7 @@ function MasterLayout() {
       </div>
       <div id="layoutSidenav_content">
         <main>
-         master file
+        <Outlet />
         </main>
         <Footer/>
       </div>

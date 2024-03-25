@@ -353,6 +353,8 @@ const UpdateProduct = () => {
                             vendor: userId,
                             stock: newStock
                         };
+                        formData.append(checkstock,totalStock)
+                        console.log("checkstock: " + checkstock);
                         
                     } else {
                         console.log("totalStock: " + totalStock);
@@ -364,7 +366,10 @@ const UpdateProduct = () => {
                             vendor: userId,
                             stock: newStock
                         };
+                        formData.append(checkstock,totalStock)
+                        console.log("checkstock: " + checkstock);
                     }
+
                 } else {
                     // If the product is not sizable, check if the updated stock is greater than the original stock
                     if (parseInt(updatePro.stock || 0) > checkstock) {
@@ -377,6 +382,8 @@ const UpdateProduct = () => {
                             vendor: userId,
                             stock: newStock
                         };
+                        formData.append(checkstock,updatePro.stock)
+                        console.log("checkstock: " + checkstock);
                     } else {
                         console.log("totalStock: " + updatePro.stock);
                         console.log("checkstock: " + checkstock);
@@ -387,6 +394,8 @@ const UpdateProduct = () => {
                             vendor: userId,
                             stock: newStock
                         };
+                        formData.append(checkstock,updatePro.stock)
+                        console.log("checkstock: " + checkstock);
                     }
                 }
 
@@ -420,7 +429,7 @@ const UpdateProduct = () => {
 
     };
 
-
+    console.log("checkstock: " + checkstock);
 
 
 

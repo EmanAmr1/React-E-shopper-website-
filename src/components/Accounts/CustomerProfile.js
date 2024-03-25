@@ -333,7 +333,7 @@ function CustomerProfile() {
           </div>
         </div>
       </div>
-      <div className="col-md-9 py-4">
+      <div className="col-md-9 py-4" style={{ overflowY: "auto", maxHeight: "calc(100vh - 150px)" }}>
         {showProfile ? (
           <div className="card">
             <div className="card-body px-5">

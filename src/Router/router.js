@@ -61,6 +61,7 @@ const Admin = React.lazy(() => import("../pages/Admin"));
 const AdminUpdatePro = React.lazy(() => import("../pages/AdminUpdatePro"));
 const AdminAddPro = React.lazy(() => import("../pages/AdminAddPro"));
 const AdminPlan = React.lazy(() => import("../pages/AdminPlan"));
+const VendorPayment = React.lazy(() => import("../pages/VendorPayment"));
 
 const Dashboard = React.lazy(() => import("../components/admin/Dashboard"));
 const Charts = React.lazy(() => import("../components/admin/Charts"));
@@ -134,6 +135,7 @@ const Router = () => {
         <Route path="/UpdateUser/:id" element={<UpdateUser />} />
         <Route path="/UserManagement" element={<UserManagement />} />
         <Route path="/ProductManagement" element={<ProductManagement />} />
+        <Route path="/VendorPayment" element={<VendorPayment />} />
 
         <Route path="/Admin" element={<Admin />} />
         <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />

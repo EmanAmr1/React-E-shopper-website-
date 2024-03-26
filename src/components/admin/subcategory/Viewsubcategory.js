@@ -8,10 +8,10 @@ function Viewsubcategory() {
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
-    // Fetch subcategories when component mounts
+   
     axiosInstance.get("/API/subcategories/").then((res) => {
       if (res.status === 200) {
-        // After fetching subcategories, fetch parent categories for each subcategory
+   
         Promise.all(
           res.data.map((subcategory) =>
             axiosInstance.get(`/API/categories/${subcategory.parentCategory}/`)
@@ -30,21 +30,27 @@ function Viewsubcategory() {
 
   const deleteSubcategory = (e, id) => {
     e.preventDefault();
-
+  
     const thisClicked = e.currentTarget;
     thisClicked.innerText = "Deleting";
-
+  
     axiosInstance.delete(`/API/subcategories/${id}`).then((res) => {
       if (res.data.status === 200) {
-        swal("Success", res.data.message, "success");
+        // Subcategory deleted successfully, update state
         setSubcategories(subcategories.filter((subcategory) => subcategory.id !== id));
-      } else if (res.data.status === 404) {
         swal("Success", res.data.message, "success");
+      } else {
+        // Handle other status codes, such as 404 (Not Found)
+        swal("Error", res.data.message || "Failed to delete subcategory", "error");
         thisClicked.innerText = "Delete";
       }
+    }).catch(error => {
+      // Handle network errors or unexpected errors
+      console.error("Error deleting subcategory:", error);
+      swal("Error", "Failed to delete subcategory", "error");
+      thisClicked.innerText = "Delete";
     });
   };
-
   let viewSubcategoryHTML = "";
   if (loading) {
     return <h4>Loading Subcategories...</h4>;
@@ -55,7 +61,7 @@ function Viewsubcategory() {
         <td>{subcategory.name}</td>
         <td>{subcategory.parentCategory.name}</td>
         <td>
-          <Link to={`editSubcategory/${subcategory.id}`} className="btn btn-success btn-sm">
+          <Link to={`editsubcategory/${subcategory.id}`} className="btn btn-success btn-sm">
             Edit
           </Link>
         </td>

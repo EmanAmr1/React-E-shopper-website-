@@ -70,6 +70,7 @@ const ViewCategory = React.lazy(() => import("../components/admin/category/ViewC
 const EditCategory = React.lazy(() => import("../components/admin/category/EditCategory"));
 const AddSubcategory = React.lazy(() => import("../components/admin/subcategory/AddSubcategory"));
 const Viewsubcategory = React.lazy(() => import("../components/admin/subcategory/Viewsubcategory"));
+const EditSubcategory = React.lazy(() => import("../components/admin/subcategory/EditSubcategory"));
 const Order = React.lazy(() => import("../components/admin/orders/Order"));
 const AddUser = React.lazy(() => import("../pages/AddUser"));
 
@@ -124,6 +125,7 @@ const Router = () => {
         <Route path="viewCategory/editCategory/:id" element={<EditCategory/>} />
         <Route path="/addsubcategory" element={<AddSubcategory/>} />
         <Route path="/viewsubcategory" element={<Viewsubcategory/>} />
+        <Route path="viewsubcategory/editsubcategory/:id" element={<EditSubcategory/>} />
         <Route path="/PlanManagment" element={<AdminPlan />} />
         <Route path="/UserManagement" element={<UserManagement />} />
         <Route path="/ProductManagement" element={<ProductManagement />} />

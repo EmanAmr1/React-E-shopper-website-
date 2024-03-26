@@ -11,7 +11,6 @@ function EditSubcategory() {
     parentCategory: "", // You can initialize it with the parent category ID if needed
   });
   const [categories, setCategories] = useState([]); // State to store categories
-
   useEffect(() => {
     // Fetch subcategory data based on ID when component mounts
     axiosInstance.get(`/API/subcategories/${id}/`).then((res) => {
@@ -44,8 +43,15 @@ function EditSubcategory() {
     if (!validateForm()) {
       return;
     }
+    const formData = new FormData();
+    formData.append("name", subcategoryInput.name);
+    // formData.append("description", subcategoryInput.parentCategory);
+    if (subcategoryInput.parentCategory) {
+      formData.append("parentCategory", subcategoryInput.parentCategory);
+    }
 
-    axiosInstance.put(`/API/subcategories/${id}/`, subcategoryInput).then((res) => {
+
+    axiosInstance.put(`/API/subcategories/${id}/`, formData).then((res) => {
       if (res.data.status === 200) {
         swal("Success", res.data.message, "success");
         setError({});
@@ -79,7 +85,7 @@ function EditSubcategory() {
         <div className="card mt-4">
           <div className="card-header">
             <h4>Edit Subcategory</h4>
-            <Link to="/subcategories" className="btn btn-primary btn-sm float-end">
+            <Link to="/viewsubcategory" className="btn btn-primary btn-sm float-end">
               BACK
             </Link>
           </div>
@@ -117,7 +123,7 @@ function EditSubcategory() {
               <button type="submit" className="btn btn-primary px-4">
                 Update
               </button>
-              <Link to="/subcategories" className="btn btn-secondary mx-2">
+              <Link to="/viewsubcategory" className="btn btn-secondary mx-2">
                 Cancel
               </Link>
             </form>

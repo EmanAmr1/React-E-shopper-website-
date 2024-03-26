@@ -89,9 +89,10 @@ const getRemainingProducts = (subscriptionInfo) => {
     if (subscriptionInfo) {
         const plan = plans.find(plan => plan.id === subscriptionInfo.plan);
         console.log('kkkkkkkkkkkk',plan)
-     
+    //  console.log("AAA",plan.count)
+     if(plan){
             productLimit = plan.count;
-            console.log('ppppp',productLimit)
+            console.log('ppppp',productLimit)}
 
     }
     console.log("in eee", subscriptionInfo.stock);
@@ -141,3 +142,7 @@ const getRemainingProducts = (subscriptionInfo) => {
 };
 
 export default Vendorplan;
+
+
+
+

@@ -259,34 +259,53 @@ const ProductDetails = () => {
       console.error("Error:", error.response.data);
     }
   };
-
+  const[disable,setdisable]=useState()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(
-        "/API/Review/addReview/",
-        {
-          product_id: productId,
-          comment: comment,
-          user_id: userId,
-        },
-        { headers }
-      );
-      console.log(response.data);
-
-      // Update reviews state with the new review
-      setReviews([
-        ...reviews,
-        { comment, date: new Date().toLocaleDateString() },
-      ]);
-
-      // Reset form fields
-      setComment("");
+      // Retrieve authentication token from cookies
+      const token = Cookies.get("token");
+      const headers = {
+        Authorization: `Token ${token}`,
+      };
+  
+      // Check if the user has ordered the product
+      const responseOrders = await axiosInstance.get('http://127.0.0.1:8000/API/userorders/', { headers });
+      const userOrders = responseOrders.data.orders;
+      const hasOrdered = userOrders.some(order => order.orderItems.some(item => item.product === productId));
+  setdisable(!hasOrdered)
+      if (hasOrdered) {
+        // If the user has ordered the product, proceed with submitting the review
+        const responseReview = await axiosInstance.post(
+          "/API/Review/addReview/",
+          {
+            product_id: productId,
+            comment: comment,
+            user_id: userId,
+          },
+          { headers }
+        );
+        console.log("Review submitted successfully:", responseReview.data);
+  
+        // Update reviews state with the new review
+        setReviews([
+          ...reviews,
+          { comment, date: new Date().toLocaleDateString() },
+        ]);
+  
+        // Reset form fields
+        setComment("");
+      } else {
+        console.log("User has not ordered the product.");
+        alert("Please make an order before leaving a comment.");
+        // Add logic here to provide user feedback, such as displaying a message
+      }
     } catch (error) {
-      console.error("Error:", error.response.data);
+      console.error("Error submitting review:", error);
+      // Add code here to provide user feedback about the error
     }
   };
-
+  
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
   };
@@ -299,62 +318,132 @@ const ProductDetails = () => {
   /////////////////////////////////////////////////////
   const [rating, setRating] = useState(0);
 
+  // const handleRate = async (value) => {
+  //   try {
+  //     // Check if the user has already rated this product
+  //     const existingRating = proDetails.rates.find(
+  //       (rate) => rate.user === userId
+  //     );
+
+  //     if (existingRating) {
+  //       // If the user has already rated, update the existing rating
+  //       const response = await axiosInstance.post(
+  //         `http://127.0.0.1:8000/API/${productId}/rate`,
+  //         {
+  //           rating: value,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Token ${token}`,
+  //           },
+  //         }
+  //       );
+
+  //       if (response.status === 200) {
+  //         console.log("Rating updated successfully");
+  //         // Update the local state if the update is successful
+  //         setRating(value);
+  //       } else {
+  //         console.error("Failed to update rating");
+  //       }
+  //     } else {
+  //       // If the user hasn't rated, create a new rating
+  //       const response = await axiosInstance.post(
+  //         `http://127.0.0.1:8000/API/${productId}/rate`,
+  //         {
+  //           rating: value,
+  //         },
+  //         {
+  //           headers: {
+  //             Authorization: `Token ${token}`,
+  //           },
+  //         }
+  //       );
+
+  //       if (response.status === 200) {
+  //         console.log("Rating added successfully");
+  //         // Update the local state if the creation is successful
+  //         setRating(value);
+  //       } else {
+  //         console.error("Failed to add rating");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     // Add code here to provide user feedback about the error
+  //   }
+  // };
   const handleRate = async (value) => {
     try {
-      // Check if the user has already rated this product
-      const existingRating = proDetails.rates.find(
-        (rate) => rate.user === userId
-      );
+      const token = Cookies.get("token"); // Retrieve authentication token from cookies
+    const headers = {
+      Authorization: `Token ${token}`, // Include the authentication token in the headers
+    };
 
-      if (existingRating) {
-        // If the user has already rated, update the existing rating
-        const response = await axiosInstance.post(
-          `http://127.0.0.1:8000/API/${productId}/rate`,
-          {
-            rating: value,
-          },
-          {
-            headers: {
-              Authorization: `Token ${token}`,
+    // Fetch user orders with authentication token included
+    const response = await axiosInstance.get('http://127.0.0.1:8000/API/userorders/', { headers });
+    const userOrders = response.data.orders;
+    const hasOrdered = userOrders.some(order => order.orderItems.some(item => item.product === productId));
+    console.log("hasOrdered", hasOrdered);
+
+  
+      if (hasOrdered) {
+        // Proceed with rating the product
+        const existingRating = proDetails.rates.find(rate => rate.user === userId);
+  
+        if (existingRating) {
+          // If the user has already rated, update the existing rating
+          const updateResponse = await axiosInstance.post(
+            `http://127.0.0.1:8000/API/${productId}/rate`,
+            {
+              rating: value,
             },
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+            }
+          );
+  
+          if (updateResponse.status === 200) {
+            console.log("Rating updated successfully");
+            // Update the local state if the update is successful
+            setRating(value);
+          } else {
+            console.error("Failed to update rating");
           }
-        );
-
-        if (response.status === 200) {
-          console.log("Rating updated successfully");
-          // Update the local state if the update is successful
-          setRating(value);
         } else {
-          console.error("Failed to update rating");
+          // If the user hasn't rated, create a new rating
+          const createResponse = await axiosInstance.post(
+            `http://127.0.0.1:8000/API/${productId}/rate`,
+            {
+              rating: value,
+            },
+            {
+              headers: {
+                Authorization: `Token ${token}`,
+              },
+            }
+          );
+  
+          if (createResponse.status === 200) {
+            console.log("Rating added successfully");
+            // Update the local state if the creation is successful
+            setRating(value);
+          } else {
+            console.error("Failed to add rating");
+          }
         }
       } else {
-        // If the user hasn't rated, create a new rating
-        const response = await axiosInstance.post(
-          `http://127.0.0.1:8000/API/${productId}/rate`,
-          {
-            rating: value,
-          },
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          console.log("Rating added successfully");
-          // Update the local state if the creation is successful
-          setRating(value);
-        } else {
-          console.error("Failed to add rating");
-        }
+        console.log("User has not made an order for this product.");
+        // Add your logic to handle user feedback here, such as displaying a message to the user
       }
     } catch (error) {
       console.error("Error:", error);
       // Add code here to provide user feedback about the error
     }
   };
-
+  
   return (
     <>
       <div class="breadcrumb-option ">
@@ -652,6 +741,7 @@ const ProductDetails = () => {
                       className="form-control"
                       rows="3"
                       value={comment}
+                      
                       onChange={(e) => setComment(e.target.value)}
                     />
                   </div>

@@ -16,6 +16,7 @@ function getStatusText(status) {
     case "S":
       return "Shipped";
     case "P":
+    case "R":
       return "Pending";
     case "C":
       return "Cancelled";
@@ -183,27 +184,39 @@ function CustomerProfile() {
       });
   };
 
-  const handleCancelOrder = (orderId, orderStatus) => {
-    if (orderStatus !== "P") {
+  const handleCancelOrder = (orderId, orderStatus, order) => {
+    if (orderStatus !== "P" && orderStatus !== "R") {
       // Order is not pending, do not allow cancellation
       alert("You can only cancel orders that are pending.");
       return;
     }
-    
-    const confirmed = window.confirm("Are you sure you want to cancel this order?");
+
+    const confirmed = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
     if (confirmed) {
       axiosInstance
         .put(`/API/orders/${orderId}/cancel/`, null, { headers })
         .then((res) => {
           // Update UI or show confirmation message
           console.log("Order canceled successfully");
+          const updatedItemIndex = userOrders.findIndex(
+            (item) => item.id === order.id
+          );
+          const updatedItem = { ...userOrders[updatedItemIndex] };
+
+          updatedItem.status = "C";
+
+          const updatedItems = [...userOrders];
+          updatedItems[updatedItemIndex] = updatedItem;
+          setUserOrders(updatedItems);
         })
         .catch((error) => {
           console.error("Cancel order error:", error);
         });
     }
   };
-  console.log(userOrders)
+  console.log(userOrders);
   return (
     <div
       className="container-fluid pl-0"
@@ -261,211 +274,217 @@ function CustomerProfile() {
                     <i
                       className="fas fa-trash-alt mr-2"
                       style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
-                    ></i><span
-                    className="align-text-start"
-                    style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
+                    ></i>
+                    <span
+                      className="align-text-start"
+                      style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
+                    >
+                      Delete Account
+                    </span>
+                  </button>
+                </li>
+                <li className="mt-2">
+                  <button
+                    className="btn btn-link sidebar-btn"
+                    onClick={() => setShowProfile(true)}
+                    style={{
+                      textDecoration: "none",
+                      textAlign: "start",
+                    }}
                   >
-                    Delete Account
-                  </span>
-                </button>
-              </li>
-              <li className="mt-2">
-                <button
-                  className="btn btn-link sidebar-btn"
-                  onClick={() => setShowProfile(true)}
-                  style={{
-                    textDecoration: "none",
-                    textAlign: "start",
-                  }}
-                >
-                  <i
-                    className="fas fa-user mr-2"
-                    style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
-                  ></i>
-                  <span
-                    className="align-text-start"
-                    style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
+                    <i
+                      className="fas fa-user mr-2"
+                      style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
+                    ></i>
+                    <span
+                      className="align-text-start"
+                      style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
+                    >
+                      Profile
+                    </span>
+                  </button>
+                </li>
+                <li className="mt-2">
+                  <button
+                    className="btn btn-link sidebar-btn"
+                    onClick={() => setShowProfile(false)}
+                    style={{
+                      textDecoration: "none",
+                      textAlign: "start",
+                    }}
                   >
-                    Profile
-                  </span>
-                </button>
-              </li>
-              <li className="mt-2">
-                <button
-                  className="btn btn-link sidebar-btn"
-                  onClick={() => setShowProfile(false)}
-                  style={{
-                    textDecoration: "none",
-                    textAlign: "start",
-                  }}
-                >
-                  <i
-                    className="fas fa-list-alt mr-2"
-                    style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
-                  ></i>
-                  <span
-                    className="align-text-start"
-                    style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
-                  >
-                    Orders
-                  </span>
-                </button>
-              </li>
-            </ul>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-          </div>
-        </div>
-      </div>
-      <div className="col-md-9 py-4" style={{ overflowY: "auto", maxHeight: "calc(100vh - 150px)" }}>
-        {showProfile ? (
-          <div className="card">
-            <div className="card-body px-5">
-              <form onSubmit={handleUpdate}>
-                <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
-                  Profile Info
-                </span>
-                <div className="form-group mt-3">
-                  <label htmlFor="first_name">First Name:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="first_name"
-                    name="first_name"
-                    value={updatedUser.first_name}
-                    onChange={handleFieldChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="last_name">Last Name:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="last_name"
-                    name="last_name"
-                    value={updatedUser.last_name}
-                    onChange={handleFieldChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="address">Address:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="address"
-                    name="address"
-                    value={updatedUser.address}
-                    onChange={handleFieldChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="phone">Phone Number:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="phone"
-                    name="phone"
-                    value={updatedUser.phone}
-                    onChange={handleFieldChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="birthdate">Birthdate:</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="birthdate"
-                    name="birthdate"
-                    value={updatedUser.birthdate}
-                    onChange={handleFieldChange}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={!isModified}
-                >
-                  Update
-                </button>
-              </form>
+                    <i
+                      className="fas fa-list-alt mr-2"
+                      style={{ color: "rgb(227, 192, 28)", fontSize: "20px" }}
+                    ></i>
+                    <span
+                      className="align-text-start"
+                      style={{ fontSize: "17px", color: "rgb(126, 133, 155)" }}
+                    >
+                      Orders
+                    </span>
+                  </button>
+                </li>
+              </ul>
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
             </div>
           </div>
-        ) : (
-          <div className=" mt-4 ">
-  <div className="card-body px-5">
-    <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
-      Your Orders
-    </span>
-    {userOrders.map((order) => (
-      <div key={order.id} className="my-4">
-        <div className="card shadow p-3">
-          <div className="card-body ">
-            <h5 className="card-title">Order Code: {order.id}</h5>
-            <p className="card-text">
-              <strong>Status:</strong> {getStatusText(order.status)}
-            </p>
-            <ul className="list-group">
-              {order.orderItems.map((item, index) => (
-                <li key={index} className="list-group-item">
-                  <div className="d-flex justify-content-between">
-                    <span>{item.name}</span>
-                    <span>${item.price}</span>
+        </div>
+        <div
+          className="col-md-9 py-4"
+          style={{ overflowY: "auto", maxHeight: "calc(100vh - 150px)" }}
+        >
+          {showProfile ? (
+            <div className="card">
+              <div className="card-body px-5">
+                <form onSubmit={handleUpdate}>
+                  <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
+                    Profile Info
+                  </span>
+                  <div className="form-group mt-3">
+                    <label htmlFor="first_name">First Name:</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="first_name"
+                      name="first_name"
+                      value={updatedUser.first_name}
+                      onChange={handleFieldChange}
+                    />
                   </div>
-                  <div>Quantity: {item.quantity}</div>
-                  <div>Size: {item.size}</div>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-3">
-              <strong>Total Price:</strong> ${order.total_price}
-            </p>
-            {}
-            {order.status === "P" && (
-  <button
-    className="btn btn-danger btn-sm"
-    style={{
-      backgroundColor: "#ca1515",
-      display: " inline-block",
-      fontSize: "13px",
-      color: "#ffffff",
-      fontWeight: "600",
-      textTransform: "uppercase",
-      padding: "8px 15px 9px",
-      borderRadius: "50px",
-    }}
-    onClick={() => handleCancelOrder(order.id, order.status)}
-  >
-    Cancel Order
-  </button>
-)}
-          </div>
+                  <div className="form-group">
+                    <label htmlFor="last_name">Last Name:</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="last_name"
+                      name="last_name"
+                      value={updatedUser.last_name}
+                      onChange={handleFieldChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="address">Address:</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="address"
+                      name="address"
+                      value={updatedUser.address}
+                      onChange={handleFieldChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number:</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="phone"
+                      name="phone"
+                      value={updatedUser.phone}
+                      onChange={handleFieldChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="birthdate">Birthdate:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="birthdate"
+                      name="birthdate"
+                      value={updatedUser.birthdate}
+                      onChange={handleFieldChange}
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={!isModified}
+                  >
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div className=" mt-4 ">
+              <div className="card-body px-5">
+                <span style={{ fontWeight: "semibold", fontSize: "20px" }}>
+                  Your Orders
+                </span>
+                {userOrders.map((order) => (
+                  <div key={order.id} className="my-4">
+                    <div className="card shadow p-3">
+                      <div className="card-body ">
+                        <h5 className="card-title">Order Code: {order.id}</h5>
+                        <p className="card-text">
+                          <strong>Status:</strong> {getStatusText(order.status)}
+                        </p>
+                        <ul className="list-group">
+                          {order.orderItems.map((item, index) => (
+                            <li key={index} className="list-group-item">
+                              <div className="d-flex justify-content-between">
+                                <span>{item.name}</span>
+                                <span>${item.price}</span>
+                              </div>
+                              <div>Quantity: {item.quantity}</div>
+                              <div>Size: {item.size}</div>
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="mt-3">
+                          <strong>Total Price:</strong> ${order.total_price}
+                        </p>
+                        {}
+                        {order.status === "R" || order.status === "P" ? (
+                          <button
+                            className="btn btn-danger btn-sm"
+                            style={{
+                              backgroundColor: "#ca1515",
+                              display: " inline-block",
+                              fontSize: "13px",
+                              color: "#ffffff",
+                              fontWeight: "600",
+                              textTransform: "uppercase",
+                              padding: "8px 15px 9px",
+                              borderRadius: "50px",
+                            }}
+                            onClick={() =>
+                              handleCancelOrder(order.id, order.status, order)
+                            }
+                          >
+                            Cancel Order
+                          </button>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    ))}
-  </div>
-</div>
-        )}
-      </div>
+      <hr className="my-0" />
     </div>
-    <hr className="my-0" />
-  </div>
-);
+  );
 }
 
 export default CustomerProfile;

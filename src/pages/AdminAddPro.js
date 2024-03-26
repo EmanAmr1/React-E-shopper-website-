@@ -17,11 +17,12 @@ const AdminAddPro = () => {
         'Content-Type': 'multipart/form-data'
     };
 
-
+    const [selectedVendorId, setSelectedVendorId] = useState('');
     const [errors, setErrors] = useState([]);
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubCategories] = useState([]);
     const [addPro, setAddPro] = useState({
+        vendor:'',
         name: '',
         description: '',
         price: '',
@@ -45,6 +46,10 @@ const AdminAddPro = () => {
         subImageFour: null
     });
     const [successMessage, setSuccessMessage] = useState('');
+    const [vendors, setVendors] = useState([]);
+
+  
+
 
 
     /////////////////////////////////////////////////////////
@@ -57,7 +62,7 @@ const AdminAddPro = () => {
             Authorization: `Token ${token}`
         };
 
-        axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+              axiosInstance.get('http://localhost:8000/api/profile/', { headers })
             .then((res) => {
                 setuser(res.data.message)
                 setUser(res.data.message.id);
@@ -69,6 +74,26 @@ const AdminAddPro = () => {
 
             });
     }, []);
+
+ 
+
+
+    useEffect(() => {
+        // Fetch all users from the backend API
+        axiosInstance.get('http://127.0.0.1:8000/api/allUser/', { headers })
+            .then(res => {
+                console.log('Raw data from API:', res.data); // Debugging statement
+                // Filter users to get only vendors
+                const vendors = res.data.Users.filter(user => user.usertype === 'vendor');
+                console.log('Vendors:', vendors); // Debugging statement
+                // Set the list of vendors in state
+                setVendors(vendors);
+            })
+            .catch(error => {
+                console.error('Error fetching vendors:', error);
+            });
+    }, []);
+
 
 
     useEffect(() => {
@@ -230,12 +255,12 @@ const AdminAddPro = () => {
 
     ////////////////////
     // deny to add new product 
-    console.log("user Id", userId)
+    /*console.log("user Id", userId)
     const [expired, setExpired] = useState(false);
-    const [subscriptionInfo, setSubscriptionInfo] = useState(null);
-    useEffect(() => {
+    const [subscriptionInfo, setSubscriptionInfo] = useState(null);*/
+   /* useEffect(() => {
         // Reset expired state when component mounts
-        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${vendor}`, { headers })
             .then((res) => {
                 setSubscriptionInfo(res.data);
             })
@@ -243,8 +268,24 @@ const AdminAddPro = () => {
                 console.error('Error fetching subscription info:', error);
               
             });
-    }, [userId]); // Add userId as a dependency to trigger useEffect when it changes
+    }, [userId]); */// Add userId as a dependency to trigger useEffect when it changes
 
+
+    useEffect(() => {
+        // Reset expired state when component mounts
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${selectedVendorId}`, { headers })
+            .then((res) => {
+               /* setSubscriptionInfo(res.data);*/
+            })
+            .catch((error) => {
+                console.error('Error fetching subscription info:', error);
+            });
+    }, [selectedVendorId]);
+
+
+
+
+/*
     useEffect(() => {
         if (subscriptionInfo && subscriptionInfo.stock) {
             const remainingProducts = getRemainingProducts(subscriptionInfo);
@@ -278,16 +319,21 @@ const AdminAddPro = () => {
 
     };
 
-
+*/
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const formData = new FormData();
-
+      
+        if (!selectedVendorId) {
+            newErrors.push('Please select a vendor.');
+        }
+        // Append selected vendor ID to form data
+        formData.append('vendor', selectedVendorId)
         const newErrors = [];
-
+       
         if (!addPro.name) {
             newErrors.push('Please fill name.');
         }
@@ -330,8 +376,8 @@ const AdminAddPro = () => {
             });
         }
 
-        formData.append('vendor', userId)
-        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`, { headers })
+        formData.append('vendor', addPro.vendor)
+        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${addPro.vendor}`, { headers })
             .then(res => {
                 let newStockData;
                 if (addPro.sizeable) {
@@ -343,14 +389,14 @@ const AdminAddPro = () => {
                         + parseInt(addPro.stock_L)
                         + parseInt(addPro.stock_XL);
                     newStockData = {
-                        vendor: userId,
+                        vendor: addPro.vendor,
                         stock: newStock
                     };
                 } else {
                     // Otherwise, use the single stock value
                     const currentStock = res.data.stock; // Assuming the latest stock is at index 0
                     const newStock = parseInt(currentStock) + parseInt(addPro.stock); // Calculate new stock by adding current and new stock
-                    newStockData = { vendor: userId, stock: newStock };
+                    newStockData = { vendor: addPro.vendor, stock: newStock };
                 }
                 // Update stock using the stockupdate API
                 axiosInstance.post('http://127.0.0.1:8000/api/stockupdate/', newStockData, { headers })
@@ -364,11 +410,16 @@ const AdminAddPro = () => {
             .catch(error => {
                 console.error('Error fetching current stock:', error);
             });
+
+
+
         axiosInstance.post('/API/addProduct/', formData, { headers })
             .then(res => {
                 setSuccessMessage('Product successfully added');
+                console.log(res.data)
                 event.target.reset();
                 setAddPro({
+                    vendor:'',
                     name: '',
                     description: '',
                     price: '',
@@ -399,21 +450,28 @@ const AdminAddPro = () => {
     };
 
 
-
-    // console.log("subscriptionInfo",subscriptionInfo)
-    // useEffect(() => {
-    //     if(subscriptionInfo !=null){
-    //         console.log("subscriptionInfo")
-    //         console.log("subscriptionInfo.payment_status",subscriptionInfo.payment_status)
-    //     if ((expired || !subscriptionInfo.payment_status)) {
-    //         alert('Your subscription has expired. Please renew your subscription to add products.');
-    //         navigate('/vendorprofile');
-    //         console.log("subscriptionInfo")
-    //          // Redirect to homepage or another appropriate page
-    //     }}
-    // }, [expired, subscriptionInfo, navigate]);
-
-
+/*
+    console.log("subscriptionInfo",subscriptionInfo)
+    useEffect(() => {
+        if(subscriptionInfo !=null){
+            console.log("subscriptionInfo")
+            console.log("subscriptionInfo.payment_status",subscriptionInfo.payment_status)
+        if ((expired || !subscriptionInfo.payment_status)) {
+            alert('Your subscription has expired. Please renew your subscription to add products.');
+            navigate('/vendorprofile');
+            console.log("subscriptionInfo")
+             // Redirect to homepage or another appropriate page
+        }}
+    }, [expired, subscriptionInfo, navigate]);
+*/
+const handleVendorChange = (e) => {
+    const selectedVendorId = e.target.value;
+    setSelectedVendorId(selectedVendorId);
+    setAddPro(prevState => ({
+        ...prevState,
+        vendor: selectedVendorId
+    }));
+};
 
     return (
         <>
@@ -429,7 +487,25 @@ const AdminAddPro = () => {
                     <div className="col-md-6">
                         <div className="card h-100 shadow-lg">
                             <div className="card-body">
+
+
+
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
+                            
+                                <div className="mb-3">
+                                        <label htmlFor="vendor" className="form-label">
+                                            <FontAwesomeIcon icon={faTag} /> Vendor: <span style={{ color: 'red' }}>*</span>
+                                        </label>
+                                        <select id="vendor" name="vendor" value={selectedVendorId} onChange={handleVendorChange} className="form-control" required>
+                                            <option value="">Select Vendor</option>
+                                            {vendors.map(vendor => (
+                                                <option key={vendor.id} value={vendor.id}>{vendor.email}</option>
+                                            ))}
+                                        
+                                        </select>
+                                        {selectedVendorId === "" && <div className="text-danger">Please select a specific vendor.</div>}
+                                    </div>
+
                                     <div className="mb-3">
                                         <label htmlFor="name" className="form-label">
                                             <FontAwesomeIcon icon={faTag} /> Product Name: <span style={{ color: 'red' }}>*</span>

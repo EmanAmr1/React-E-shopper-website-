@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
-import { axiosInstance } from "../../apis/config";
+import { axiosInstance } from "../../../apis/config";
 
 function Category() {
   const [error, setError] = useState({});
@@ -73,7 +73,7 @@ function Category() {
             <h4>
               Add Category
               <Link
-                to="/admin/view-category"
+                to="/viewCategory"
                 className="btn btn-primary btn-sm float-end"
               >
                 View Category
@@ -90,7 +90,17 @@ function Category() {
                   aria-labelledby="home-tab"
                 >
                   <div className="form-group mb-3">
-                    <label>Name <span>*</span></label>
+                    <label>Image <span className='text-danger'>*</span></label>
+                    <input
+                      type="file"
+                      name="image"
+                      onChange={handleInput}
+                      className="form-control"
+                    />
+                    <small className='text-danger'>{error.image}</small>
+                  </div>
+                  <div className="form-group mb-3">
+                    <label>Name <span className='text-danger'>*</span></label>
                     <input
                       type="text"
                       name="name"
@@ -101,7 +111,7 @@ function Category() {
                     <small className='text-danger'>{error.name}</small>
                   </div>
                   <div className="form-group mb-3">
-                    <label>Description</label>
+                    <label>Description<span className='text-danger'>*</span></label>
                     <textarea
                       name="description"
                       onChange={handleInput}
@@ -109,16 +119,6 @@ function Category() {
                       className="form-control"
                     ></textarea>
                     <small className='text-danger'>{error.description}</small>
-                  </div>
-                  <div className="form-group mb-3">
-                    <label>Image</label>
-                    <input
-                      type="file"
-                      name="image"
-                      onChange={handleInput}
-                      className="form-control"
-                    />
-                    <small className='text-danger'>{error.image}</small>
                   </div>
                 </div>
               </div>

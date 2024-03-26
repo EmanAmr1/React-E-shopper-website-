@@ -1,6 +1,44 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import Cookies from "js-cookie";
+import axios from "axios";
+
 function Sidebar() {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = Cookies.get("token");
+        if (token) {
+            axios.get("http://localhost:8000/api/allUser/", { headers: { Authorization: `Token ${token}` } })
+                .then((response) => {
+                    if (response.data.Users.length > 0) {
+                        setUser(response.data.Users[0]);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching users:", error);
+                });
+        }
+    }, []);
+    
+    const navigate = useNavigate();
+    
+    const handleLogout = () => {
+        const token = Cookies.get("token");
+        Cookies.remove("token");
+        const headers = {
+          Authorization: `Token ${token}`,
+        };
+        axios
+          .post("http://localhost:8000/api/logout/", null, { headers })
+          .then(() => {
+            console.log("Logout successful");
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("Logout error:", error);
+          });
+    };
   return (
     <>
      <nav className="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -116,15 +154,22 @@ function Sidebar() {
                                 <div className="sb-nav-link-icon"><i className="fas fa-table"></i></div>
                                 Tables
                             </Link>
+                           
                         </div>
                     </div>
-                    <div className="sb-sidenav-footer">
-                        <div className="small">Logged in as:</div>
-                        Start Bootstrap
+                    <div>
+                        
                     </div>
+                    <div className="sb-sidenav-footer">
+                    <div className="small">Logged in as: {user ? user.first_name : ''}</div>
+                    </div>
+                    <button onClick={handleLogout} style={{backgroundColor:"rgb(33, 37, 41)"}}>
+                                Logout
+                            </button>
                 </nav>
     </>
   )
 }
 
 export default Sidebar
+

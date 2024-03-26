@@ -19,6 +19,7 @@ function getStatusText(status) {
     case "R":
       return "Pending";
     case "C":
+    case "F":
       return "Cancelled";
     default:
       return "Unknown";

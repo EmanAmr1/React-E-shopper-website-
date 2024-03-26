@@ -11,10 +11,10 @@ function Sidebar() {
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </Link>
-                            <Link className="nav-link" to="/addCategory">
+                            {/* <Link className="nav-link" to="/addCategory">
                                 <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
                                 Add Category
-                            </Link>
+                            </Link> */}
                             <div className="sb-sidenav-menu-heading">Interface</div>
                             <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
@@ -25,6 +25,40 @@ function Sidebar() {
                                 <nav className="sb-sidenav-menu-nested nav">
                                     <Link className="nav-link" to="/addCategory">Add Category</Link>
                                     <Link className="nav-link" to="/viewCategory">view Category</Link>
+                                </nav>
+                            </div>
+                            <div className="sb-sidenav-menu-heading">Interface</div>
+                            <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
+                                Product
+                                <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+                            </Link>
+                            <div className="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav className="sb-sidenav-menu-nested nav">
+                                    <Link className="nav-link" to="/AdminAddPro">Add Product</Link>
+                                    <Link className="nav-link" to="/ProductManagement">view Products </Link>
+                                </nav>
+                            </div>
+                            <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
+                                User
+                                <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+                            </Link>
+                            <div className="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav className="sb-sidenav-menu-nested nav">
+                                    <Link className="nav-link" to="/UserManagement">view users</Link>
+                                    <Link className="nav-link" to="/ProductManagement">view Products </Link>
+                                </nav>
+                            </div>
+                            <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
+                                Plan
+                                <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down"></i></div>
+                            </Link>
+                            <div className="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav className="sb-sidenav-menu-nested nav">
+                                    <Link className="nav-link" to="/VendorPayment">Vendor history</Link>
+                                    <Link className="nav-link" to="/PlanManagment">Add plan </Link>
                                 </nav>
                             </div>
                             <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -59,7 +93,7 @@ function Sidebar() {
                                 </nav>
                             </div>
                             <div className="sb-sidenav-menu-heading">Addons</div>
-                            <Link className="nav-link" to="/charts">
+                            <Link className="nav-link" to="/Admin">
                                 <div className="sb-nav-link-icon"><i className="fas fa-chart-area"></i></div>
                                 Charts
                             </Link>

@@ -120,6 +120,13 @@ const Router = () => {
         <Route path="/viewCategory" element={<ViewCategory/>} />
         <Route path="viewCategory/editCategory/:id" element={<EditCategory/>} />
         <Route path="/PlanManagment" element={<AdminPlan />} />
+        <Route path="/UserManagement" element={<UserManagement />} />
+        <Route path="/ProductManagement" element={<ProductManagement />} />
+        <Route path="/VendorPayment" element={<VendorPayment />} />
+        <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />
+        <Route path="/AdminAddPro" element={<AdminAddPro />} />
+
+        <Route path="/Admin" element={<Admin />} />
         </Route>
 
 
@@ -133,13 +140,13 @@ const Router = () => {
         <Route path="/message" element={<Message />} />
         <Route path="/deleteProduct/:id" element={<DeleteProduct />} />
         <Route path="/UpdateUser/:id" element={<UpdateUser />} />
-        <Route path="/UserManagement" element={<UserManagement />} />
+        {/* <Route path="/UserManagement" element={<UserManagement />} />
         <Route path="/ProductManagement" element={<ProductManagement />} />
         <Route path="/VendorPayment" element={<VendorPayment />} />
 
         <Route path="/Admin" element={<Admin />} />
         <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />
-        <Route path="/AdminAddPro" element={<AdminAddPro />} />
+        <Route path="/AdminAddPro" element={<AdminAddPro />} /> */}
         
         <Route path="/AddUser" element={<AddUser />} />
         <Route element={<DelivaryLayout />}>

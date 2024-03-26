@@ -1,10 +1,9 @@
-// Subcategory.js
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../../../apis/config";
 import swal from "sweetalert";
+
 function Viewsubcategory() {
-  
   const [loading, setLoading] = useState(true);
   const [subcategories, setSubcategories] = useState([]);
 
@@ -12,8 +11,19 @@ function Viewsubcategory() {
     // Fetch subcategories when component mounts
     axiosInstance.get("/API/subcategories/").then((res) => {
       if (res.status === 200) {
-        setSubcategories(res.data);
-        setLoading(false);
+        // After fetching subcategories, fetch parent categories for each subcategory
+        Promise.all(
+          res.data.map((subcategory) =>
+            axiosInstance.get(`/API/categories/${subcategory.parentCategory}/`)
+          )
+        ).then((parentCategoryResponses) => {
+          const subcategoryData = res.data.map((subcategory, index) => ({
+            ...subcategory,
+            parentCategory: parentCategoryResponses[index].data,
+          }));
+          setSubcategories(subcategoryData);
+          setLoading(false);
+        });
       }
     });
   }, []);
@@ -88,9 +98,8 @@ function Viewsubcategory() {
           </div>
         </div>
       </div>
-      
     </div>
-  )
+  );
 }
 
-export default Viewsubcategory
+export default Viewsubcategory;

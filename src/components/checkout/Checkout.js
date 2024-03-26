@@ -377,8 +377,10 @@ const Checkout = () => {
                         return (
                           <>
                             <li>
-                              01. {product.item_name}{" "}
-                              <span>$ {product.item_price}</span>
+                              {product.quantity} {product.item_name}{" "}
+                              <span>
+                                $ {product.item_price * product.quantity}
+                              </span>
                             </li>
                           </>
                         );

@@ -22,7 +22,7 @@ const ListOfProduct = ({
                 backgroundImage: `url('http://127.0.0.1:8000${prod.image}')`,
               }}
             >
-              {prod.new ? (
+              {prod.new && prod.stock !== 0 ? (
                 <div className="label new">New</div>
               ) : prod.sale && prod.stock !== 0 ? (
                 <div className="label sale">Sale</div>
@@ -59,13 +59,20 @@ const ListOfProduct = ({
                   <a
                     href={() => false}
                     style={{
-                      backgroundColor: itemsid.includes(prod.id) && "#ca1515",
+                      backgroundColor: itemsid.includes(prod.id)
+                        ? "#ca1515"
+                        : prod.stock === 0
+                        ? "gray"
+                        : null,
                     }}
                     onClick={() => handleAdd(prod)}
                   >
                     <span
                       style={{
-                        color: itemsid.includes(prod.id) && "#ffffff",
+                        color:
+                          itemsid.includes(prod.id) || prod.stock === 0
+                            ? "#ffffff"
+                            : null,
                       }}
                       className="icon_bag_alt"
                     ></span>

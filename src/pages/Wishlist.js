@@ -209,14 +209,20 @@ const Wishlist = () => {
                         <a
                           href={() => false}
                           style={{
-                            backgroundColor:
-                              itemsid.includes(item.item) && "#ca1515",
+                            backgroundColor: itemsid.includes(item.item)
+                              ? "#ca1515"
+                              : item.stock === 0
+                              ? "gray"
+                              : null,
                           }}
                           onClick={() => handleAdd(item)}
                         >
                           <span
                             style={{
-                              color: itemsid.includes(item.item) && "#ffffff",
+                              color:
+                                itemsid.includes(item.item) || item.stock === 0
+                                  ? "#ffffff"
+                                  : null,
                             }}
                             className="icon_bag_alt"
                           ></span>

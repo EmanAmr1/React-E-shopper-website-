@@ -80,6 +80,7 @@ const Cart = () => {
       dispatch(increaseCounter());
     } catch (error) {
       console.error("Error:", error.response.data);
+      error.response.data.quantity !== 0 && dispatch(increaseCounter());
     }
   };
 
@@ -203,6 +204,11 @@ const Cart = () => {
                             <button
                               onClick={() => handleRemove(product.id)}
                               className="btn btn-danger"
+                              style={{
+                                backgroundColor:
+                                  product.quantity === 1 && "gray",
+                                border: "none",
+                              }}
                             >
                               -
                             </button>
@@ -216,6 +222,31 @@ const Cart = () => {
                                 )
                               }
                               className="btn btn-success"
+                              style={{
+                                backgroundColor:
+                                  product.size === "one_size"
+                                    ? product.quantity === product.stock
+                                      ? "gray"
+                                      : null
+                                    : product.size === "S"
+                                    ? product.quantity === product.stock_S
+                                      ? "gray"
+                                      : null
+                                    : product.size === "M"
+                                    ? product.quantity === product.stock_M
+                                      ? "gray"
+                                      : null
+                                    : product.size === "L"
+                                    ? product.quantity === product.stock_L
+                                      ? "gray"
+                                      : null
+                                    : product.size === "XL"
+                                    ? product.quantity === product.stock_XL
+                                      ? "gray"
+                                      : null
+                                    : null,
+                                border: "none",
+                              }}
                             >
                               +
                             </button>

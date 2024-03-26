@@ -11,8 +11,12 @@ import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 import { fetchWishList, setTotalCount } from "../store/slices/wishlist";
 import StarRating from "./StarRating";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 const ProductDetails = () => {
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
   const dispatch = useDispatch();
   const userCookie = Cookies.get("token");
   console.log(userCookie);
@@ -50,13 +54,17 @@ const ProductDetails = () => {
   useEffect(() => {
     // Fetch related products based on the current product's category
     axiosInstance
-    .get(`/API/allproducts/?brand="${proDetails.category}"&subcategory=${proDetails.subcategory}`)
-    .then((res) => {
-      // Filter products to ensure both category and brand match
-      const filteredProducts = res.data.results.products.filter(product =>
-        product.category === proDetails.category && product.subcategory === proDetails.subcategory
-      );
-      setRelatedProducts(filteredProducts);
+      .get(
+        `/API/allproducts/?brand="${proDetails.category}"&subcategory=${proDetails.subcategory}`
+      )
+      .then((res) => {
+        // Filter products to ensure both category and brand match
+        const filteredProducts = res.data.results.products.filter(
+          (product) =>
+            product.category === proDetails.category &&
+            product.subcategory === proDetails.subcategory
+        );
+        setRelatedProducts(filteredProducts);
         if (proDetails.stock_S > 0) {
           setSelectedSize("S");
         } else if (proDetails.stock_M > 0) {
@@ -139,7 +147,7 @@ const ProductDetails = () => {
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
-          navigate('/not-found'); // Redirect to not-found page if product is not found
+          navigate("/not-found"); // Redirect to not-found page if product is not found
         } else {
           console.log(err);
         }
@@ -196,26 +204,10 @@ const ProductDetails = () => {
   const handleAdd = async (e, id) => {
     if (e !== id) {
       e.preventDefault();
-      try {
-        const response = await axiosInstance.post(
-          `/api/cart/add/`,
-          {
-            item: id,
-            quantity: quantity,
-            size: selectedSize,
-          },
-          { headers }
-        );
-        console.log(cartitems);
-        const updatedItemsId = itemsid.concat(proDetails.id);
-        dispatch(setItemsid(updatedItemsId));
-        dispatch(increaseCounterByAmount(response.data.quantity));
-        setCount((prevCount) => prevCount + response.data.quantity);
-      } catch (error) {
-        console.error("Error:", error.response.data);
-      }
-    } else {
-      if (!itemsid.includes(proDetails.id)) {
+      if (!token) {
+        // If user is not logged in, show the modal
+        setShowModal(true);
+      } else {
         try {
           const response = await axiosInstance.post(
             `/api/cart/add/`,
@@ -235,31 +227,62 @@ const ProductDetails = () => {
           console.error("Error:", error.response.data);
         }
       }
+    } else {
+      if (!token) {
+        // If user is not logged in, show the modal
+        setShowModal(true);
+      } else {
+        if (!itemsid.includes(proDetails.id)) {
+          try {
+            const response = await axiosInstance.post(
+              `/api/cart/add/`,
+              {
+                item: id,
+                quantity: quantity,
+                size: selectedSize,
+              },
+              { headers }
+            );
+            console.log(cartitems);
+            const updatedItemsId = itemsid.concat(proDetails.id);
+            dispatch(setItemsid(updatedItemsId));
+            dispatch(increaseCounterByAmount(response.data.quantity));
+            setCount((prevCount) => prevCount + response.data.quantity);
+          } catch (error) {
+            console.error("Error:", error.response.data);
+          }
+        }
+      }
     }
   };
 
   const handleAddWish = async (id) => {
-    try {
-      const response = await axiosInstance.post(
-        `/api/wishlist/add/`,
-        {
-          item: id,
-        },
-        { headers }
-      );
+    if (!token) {
+      // If user is not logged in, show the modal
+      setShowModal(true);
+    } else {
+      try {
+        const response = await axiosInstance.post(
+          `/api/wishlist/add/`,
+          {
+            item: id,
+          },
+          { headers }
+        );
 
-      if (response.data.msg === "Item removed from wishlist") {
-        dispatch(removeItem());
-        setWishlistid(wishlistid.filter((itemid) => itemid !== productId));
-      } else if (response.data.msg === "Item added to wishlist") {
-        dispatch(addItem());
-        setWishlistid(wishlistid.concat(productId));
+        if (response.data.msg === "Item removed from wishlist") {
+          dispatch(removeItem());
+          setWishlistid(wishlistid.filter((itemid) => itemid !== productId));
+        } else if (response.data.msg === "Item added to wishlist") {
+          dispatch(addItem());
+          setWishlistid(wishlistid.concat(productId));
+        }
+      } catch (error) {
+        console.error("Error:", error.response.data);
       }
-    } catch (error) {
-      console.error("Error:", error.response.data);
     }
   };
-  const[disable,setdisable]=useState()
+  const [disable, setdisable] = useState();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -268,12 +291,17 @@ const ProductDetails = () => {
       const headers = {
         Authorization: `Token ${token}`,
       };
-  
+
       // Check if the user has ordered the product
-      const responseOrders = await axiosInstance.get('http://127.0.0.1:8000/API/userorders/', { headers });
+      const responseOrders = await axiosInstance.get(
+        "http://127.0.0.1:8000/API/userorders/",
+        { headers }
+      );
       const userOrders = responseOrders.data.orders;
-      const hasOrdered = userOrders.some(order => order.orderItems.some(item => item.product === productId));
-  setdisable(!hasOrdered)
+      const hasOrdered = userOrders.some((order) =>
+        order.orderItems.some((item) => item.product === productId)
+      );
+      setdisable(!hasOrdered);
       if (hasOrdered) {
         // If the user has ordered the product, proceed with submitting the review
         const responseReview = await axiosInstance.post(
@@ -286,13 +314,13 @@ const ProductDetails = () => {
           { headers }
         );
         console.log("Review submitted successfully:", responseReview.data);
-  
+
         // Update reviews state with the new review
         setReviews([
           ...reviews,
           { comment, date: new Date().toLocaleDateString() },
         ]);
-  
+
         // Reset form fields
         setComment("");
       } else {
@@ -305,7 +333,7 @@ const ProductDetails = () => {
       // Add code here to provide user feedback about the error
     }
   };
-  
+
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
   };
@@ -376,21 +404,27 @@ const ProductDetails = () => {
   const handleRate = async (value) => {
     try {
       const token = Cookies.get("token"); // Retrieve authentication token from cookies
-    const headers = {
-      Authorization: `Token ${token}`, // Include the authentication token in the headers
-    };
+      const headers = {
+        Authorization: `Token ${token}`, // Include the authentication token in the headers
+      };
 
-    // Fetch user orders with authentication token included
-    const response = await axiosInstance.get('http://127.0.0.1:8000/API/userorders/', { headers });
-    const userOrders = response.data.orders;
-    const hasOrdered = userOrders.some(order => order.orderItems.some(item => item.product === productId));
-    console.log("hasOrdered", hasOrdered);
+      // Fetch user orders with authentication token included
+      const response = await axiosInstance.get(
+        "http://127.0.0.1:8000/API/userorders/",
+        { headers }
+      );
+      const userOrders = response.data.orders;
+      const hasOrdered = userOrders.some((order) =>
+        order.orderItems.some((item) => item.product === productId)
+      );
+      console.log("hasOrdered", hasOrdered);
 
-  
       if (hasOrdered) {
         // Proceed with rating the product
-        const existingRating = proDetails.rates.find(rate => rate.user === userId);
-  
+        const existingRating = proDetails.rates.find(
+          (rate) => rate.user === userId
+        );
+
         if (existingRating) {
           // If the user has already rated, update the existing rating
           const updateResponse = await axiosInstance.post(
@@ -404,7 +438,7 @@ const ProductDetails = () => {
               },
             }
           );
-  
+
           if (updateResponse.status === 200) {
             console.log("Rating updated successfully");
             // Update the local state if the update is successful
@@ -425,7 +459,7 @@ const ProductDetails = () => {
               },
             }
           );
-  
+
           if (createResponse.status === 200) {
             console.log("Rating added successfully");
             // Update the local state if the creation is successful
@@ -443,7 +477,7 @@ const ProductDetails = () => {
       // Add code here to provide user feedback about the error
     }
   };
-  
+
   return (
     <>
       <div class="breadcrumb-option ">
@@ -461,23 +495,41 @@ const ProductDetails = () => {
       </div>
 
       <section className="product-details spad">
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Login Required</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Please log in first.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" href="/login">
+              Login
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <div className="container">
           <div className="row">
             <div className="col-lg-5">
-              <div className="product__big__img__container myimg" style={{ height: '570px' }} >
+              <div
+                className="product__big__img__container myimg"
+                style={{ height: "570px" }}
+              >
                 <img
                   className="mypic"
                   src={`${baseImageUrl}${selectedImage}`}
                   alt="Product Image"
-                  style={{ height: '570px' }}
+                  style={{ height: "570px" }}
                 />
               </div>
 
               <div class="product__details__pic">
                 <div class="thumbnail-container">
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageOne ? "active" : ""
-                      }`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageOne ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageOne)}
                   >
                     <img
@@ -487,8 +539,9 @@ const ProductDetails = () => {
                   </Link>
 
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageTwo ? "active" : ""
-                      }`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageTwo ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageTwo)}
                   >
                     <img
@@ -498,8 +551,9 @@ const ProductDetails = () => {
                   </Link>
 
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageThree ? "active" : ""
-                      }`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageThree ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageThree)}
                   >
                     <img
@@ -508,8 +562,9 @@ const ProductDetails = () => {
                     />
                   </Link>
                   <Link
-                    className={`pt ${selectedImage === proDetails.subImageFour ? "active" : ""
-                      }`}
+                    className={`pt ${
+                      selectedImage === proDetails.subImageFour ? "active" : ""
+                    }`}
                     onClick={() => setSelectedImage(proDetails.subImageFour)}
                   >
                     <img
@@ -552,11 +607,9 @@ const ProductDetails = () => {
                     <StarRating rating={rating} handleRate={handleRate} />
                   </div>
                   <p>
-
-                    {reviews.length === 1 ? "(1 Comment)" : `( ${reviews.length} Comments)`}
-
-
-
+                    {reviews.length === 1
+                      ? "(1 Comment)"
+                      : `( ${reviews.length} Comments)`}
                   </p>
                 </p>
 
@@ -669,6 +722,9 @@ const ProductDetails = () => {
                       href=" "
                       className="cart-btn"
                       onClick={(e) => handleAdd(e, productId)}
+                      style={{
+                        backgroundColor: proDetails.stock === 0 ? "gray" : null,
+                      }}
                     >
                       <span className="icon_bag_alt"></span>{" "}
                       {itemsid.includes(proDetails.id)
@@ -741,7 +797,6 @@ const ProductDetails = () => {
                       className="form-control"
                       rows="3"
                       value={comment}
-                      
                       onChange={(e) => setComment(e.target.value)}
                     />
                   </div>

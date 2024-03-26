@@ -68,7 +68,7 @@ function ViewCategory() {
                   style={{ backgroundImage: `url(${item.image})`, width:'150px', height:'100px'}}
                 ></div></td>
                     <td>
-                        <Link to={`edit-category/${item.id}`} className="btn btn-success btn-sm">Edit</Link>
+                        <Link to={`editCategory/${item.id}`} className="btn btn-success btn-sm">Edit</Link>
                     </td>
                     <td>
                         <button type="button" onClick={ (e) => deleteCategory(e, item.id) } className="btn btn-danger btn-sm">Delete</button>

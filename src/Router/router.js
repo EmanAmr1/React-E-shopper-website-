@@ -66,6 +66,7 @@ const Dashboard = React.lazy(() => import("../components/admin/Dashboard"));
 const Charts = React.lazy(() => import("../components/admin/Charts"));
 const Category = React.lazy(() => import("../components/admin/category/Category"));
 const ViewCategory = React.lazy(() => import("../components/admin/category/ViewCategory"));
+const EditCategory = React.lazy(() => import("../components/admin/category/EditCategory"));
 const AddUser = React.lazy(() => import("../pages/AddUser"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
@@ -116,6 +117,7 @@ const Router = () => {
         <Route path="/charts" element={<Charts/>} />
         <Route path="/addCategory" element={<Category/>} />
         <Route path="/viewCategory" element={<ViewCategory/>} />
+        <Route path="viewCategory/editCategory/:id" element={<EditCategory/>} />
         <Route path="/PlanManagment" element={<AdminPlan />} />
         </Route>
 

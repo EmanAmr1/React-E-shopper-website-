@@ -41,7 +41,7 @@ function ProductManagement() {
         <>
 
 
-            <div className="card" style={{ width: "1450px" }}>
+            <div className="card" >
                 <div className="card-header bg-dark text-white " >
                     <h3 className="mb-0 " >All Products</h3>
                 </div>
@@ -79,7 +79,7 @@ function ProductManagement() {
                                         <td>{prod.newprice}</td>
                                         <td>
                                             <button className="btn btn-danger pe-2" style={{ width: '100px' }} onClick={() => handleDeleteProduct(prod.id)}>Delete</button>
-                                            <Link to={`/AdminUpdatePro/${prod.id}`} className="btn-success  btn" style={{ width: '100px', marginLeft: '10px' }}>Update</Link>
+                                            <Link to={`/AdminUpdatePro/${prod.id}`} className="btn-success mt-1 btn" style={{ width: '100px' }}>Update</Link>
                                         </td>
                                     </tr>
                                 ))}

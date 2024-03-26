@@ -5,7 +5,7 @@ import { axiosInstance } from "../apis/config";
 import { faImage, faMoneyBillAlt, faTag, faBalanceScale, faPlus, faWarehouse, faDollarSign, faStar } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const AdminUpdatePro= () => {
+const AdminUpdatePro = () => {
 
     const params = useParams();
     const token = Cookies.get("token");
@@ -473,10 +473,10 @@ const AdminUpdatePro= () => {
 
     return (
         <>
-            <div className="card-header " style={{ backgroundColor: '#8FBC8F', color: '#FFFFFF' }}>
-                <h3 className="mb-0  " style={{ color: '#FFFFFF', }}>Update Product</h3>
+            <div className="card-header " style={{ color: '#FFFFFF' }}>
+                <h3 className="mb-0  mt-2 ms-3" style={{ color: 'black', }}>Update Product</h3>
             </div>
-            <div className="container mt-5">
+            <div className="container mt-3">
 
                 <div className="row justify-content-center">
 

@@ -22,7 +22,7 @@ const AdminAddPro = () => {
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubCategories] = useState([]);
     const [addPro, setAddPro] = useState({
-        vendor:'',
+        vendor: '',
         name: '',
         description: '',
         price: '',
@@ -48,7 +48,7 @@ const AdminAddPro = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [vendors, setVendors] = useState([]);
 
-  
+
 
 
 
@@ -62,7 +62,7 @@ const AdminAddPro = () => {
             Authorization: `Token ${token}`
         };
 
-              axiosInstance.get('http://localhost:8000/api/profile/', { headers })
+        axiosInstance.get('http://localhost:8000/api/profile/', { headers })
             .then((res) => {
                 setuser(res.data.message)
                 setUser(res.data.message.id);
@@ -75,7 +75,7 @@ const AdminAddPro = () => {
             });
     }, []);
 
- 
+
 
 
     useEffect(() => {
@@ -258,24 +258,24 @@ const AdminAddPro = () => {
     /*console.log("user Id", userId)
     const [expired, setExpired] = useState(false);
     const [subscriptionInfo, setSubscriptionInfo] = useState(null);*/
-   /* useEffect(() => {
-        // Reset expired state when component mounts
-        axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${vendor}`, { headers })
-            .then((res) => {
-                setSubscriptionInfo(res.data);
-            })
-            .catch((error) => {
-                console.error('Error fetching subscription info:', error);
-              
-            });
-    }, [userId]); */// Add userId as a dependency to trigger useEffect when it changes
+    /* useEffect(() => {
+         // Reset expired state when component mounts
+         axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${vendor}`, { headers })
+             .then((res) => {
+                 setSubscriptionInfo(res.data);
+             })
+             .catch((error) => {
+                 console.error('Error fetching subscription info:', error);
+               
+             });
+     }, [userId]); */// Add userId as a dependency to trigger useEffect when it changes
 
 
     useEffect(() => {
         // Reset expired state when component mounts
         axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${selectedVendorId}`, { headers })
             .then((res) => {
-               /* setSubscriptionInfo(res.data);*/
+                /* setSubscriptionInfo(res.data);*/
             })
             .catch((error) => {
                 console.error('Error fetching subscription info:', error);
@@ -285,55 +285,55 @@ const AdminAddPro = () => {
 
 
 
-/*
-    useEffect(() => {
-        if (subscriptionInfo && subscriptionInfo.stock) {
-            const remainingProducts = getRemainingProducts(subscriptionInfo);
-            console.log("use eee", remainingProducts);
-            const isExpired = remainingProducts == 0;
-            setExpired(isExpired);
-            console.log("isExpired", isExpired)
-
-            console.log(expired) // Update the expired state
-
-        }
-    }, [subscriptionInfo]);
-
-    const getRemainingProducts = (subscriptionInfo) => {
-        let productLimit = 0;
-        switch (subscriptionInfo.plan) {
-            case 1:
-                productLimit = 500;
-                break;
-            case 2:
-                productLimit = 1200;
-                break;
-            case 3:
-                productLimit = 2500;
-                break;
-            default:
-                productLimit = 0;
-        }
-        console.log("in eee", subscriptionInfo.stock);
-        return productLimit - subscriptionInfo.stock;
-
-    };
-
-*/
+    /*
+        useEffect(() => {
+            if (subscriptionInfo && subscriptionInfo.stock) {
+                const remainingProducts = getRemainingProducts(subscriptionInfo);
+                console.log("use eee", remainingProducts);
+                const isExpired = remainingProducts == 0;
+                setExpired(isExpired);
+                console.log("isExpired", isExpired)
+    
+                console.log(expired) // Update the expired state
+    
+            }
+        }, [subscriptionInfo]);
+    
+        const getRemainingProducts = (subscriptionInfo) => {
+            let productLimit = 0;
+            switch (subscriptionInfo.plan) {
+                case 1:
+                    productLimit = 500;
+                    break;
+                case 2:
+                    productLimit = 1200;
+                    break;
+                case 3:
+                    productLimit = 2500;
+                    break;
+                default:
+                    productLimit = 0;
+            }
+            console.log("in eee", subscriptionInfo.stock);
+            return productLimit - subscriptionInfo.stock;
+    
+        };
+    
+    */
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const formData = new FormData();
-      
+
         if (!selectedVendorId) {
             newErrors.push('Please select a vendor.');
         }
         // Append selected vendor ID to form data
         formData.append('vendor', selectedVendorId)
         const newErrors = [];
-       
+
         if (!addPro.name) {
             newErrors.push('Please fill name.');
         }
@@ -419,7 +419,7 @@ const AdminAddPro = () => {
                 console.log(res.data)
                 event.target.reset();
                 setAddPro({
-                    vendor:'',
+                    vendor: '',
                     name: '',
                     description: '',
                     price: '',
@@ -450,38 +450,38 @@ const AdminAddPro = () => {
     };
 
 
-/*
-    console.log("subscriptionInfo",subscriptionInfo)
-    useEffect(() => {
-        if(subscriptionInfo !=null){
-            console.log("subscriptionInfo")
-            console.log("subscriptionInfo.payment_status",subscriptionInfo.payment_status)
-        if ((expired || !subscriptionInfo.payment_status)) {
-            alert('Your subscription has expired. Please renew your subscription to add products.');
-            navigate('/vendorprofile');
-            console.log("subscriptionInfo")
-             // Redirect to homepage or another appropriate page
-        }}
-    }, [expired, subscriptionInfo, navigate]);
-*/
-const handleVendorChange = (e) => {
-    const selectedVendorId = e.target.value;
-    setSelectedVendorId(selectedVendorId);
-    setAddPro(prevState => ({
-        ...prevState,
-        vendor: selectedVendorId
-    }));
-};
+    /*
+        console.log("subscriptionInfo",subscriptionInfo)
+        useEffect(() => {
+            if(subscriptionInfo !=null){
+                console.log("subscriptionInfo")
+                console.log("subscriptionInfo.payment_status",subscriptionInfo.payment_status)
+            if ((expired || !subscriptionInfo.payment_status)) {
+                alert('Your subscription has expired. Please renew your subscription to add products.');
+                navigate('/vendorprofile');
+                console.log("subscriptionInfo")
+                 // Redirect to homepage or another appropriate page
+            }}
+        }, [expired, subscriptionInfo, navigate]);
+    */
+    const handleVendorChange = (e) => {
+        const selectedVendorId = e.target.value;
+        setSelectedVendorId(selectedVendorId);
+        setAddPro(prevState => ({
+            ...prevState,
+            vendor: selectedVendorId
+        }));
+    };
 
     return (
         <>
-            <div className="card-header " style={{ backgroundColor: '#8FBC8F', color: '#FFFFFF' }}>
-                <h3 className="mb-0  " style={{ color: '#FFFFFF', }}>Add New Product</h3>
+            <div className="card-header " style={{ color: '#FFFFFF' }}>
+                <h3 className="mb-0 mt-3 ms-3 " style={{ color: 'black', }}>Add New Product</h3>
             </div>
 
 
-            <div className="container mt-5">
-               
+            <div className="container mt-1">
+
                 <div className="row justify-content-center">
 
                     <div className="col-md-6">
@@ -491,8 +491,8 @@ const handleVendorChange = (e) => {
 
 
                                 <form onSubmit={handleSubmit} encType="multipart/form-data">
-                            
-                                <div className="mb-3">
+
+                                    <div className="mb-3">
                                         <label htmlFor="vendor" className="form-label">
                                             <FontAwesomeIcon icon={faTag} /> Vendor: <span style={{ color: 'red' }}>*</span>
                                         </label>
@@ -501,7 +501,7 @@ const handleVendorChange = (e) => {
                                             {vendors.map(vendor => (
                                                 <option key={vendor.id} value={vendor.id}>{vendor.email}</option>
                                             ))}
-                                        
+
                                         </select>
                                         {selectedVendorId === "" && <div className="text-danger">Please select a specific vendor.</div>}
                                     </div>
@@ -541,14 +541,14 @@ const handleVendorChange = (e) => {
                                         <label htmlFor="stock" className="form-label">
                                             <FontAwesomeIcon icon={faBalanceScale} /> Stock: {!addPro.sizeable && <span style={{ color: 'red' }}>*</span>}
                                         </label>
-                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" required={!addPro?.sizeable === true}  disabled={addPro.sizeable === true} />
+                                        <input type="number" id="stock" name="stock" value={addPro.stock} onChange={handleChange} className="form-control" required={!addPro?.sizeable === true} disabled={addPro.sizeable === true} />
                                     </div>
                                     <div className="mb-3 form-check">
                                         <input type="checkbox" id="new" name="new" checked={addPro.new} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="new" className="form-check-label">New</label>
                                     </div>
                                     <div className="mb-3 form-check">
-                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange}   className="form-check-input" />
+                                        <input type="checkbox" id="sale" name="sale" checked={addPro.sale} onChange={handleChange} className="form-check-input" />
                                         <label htmlFor="sale" className="form-check-label">Sale</label>
                                     </div>
                                     <div className="mb-3 form-check">
@@ -559,10 +559,10 @@ const handleVendorChange = (e) => {
 
                                     <div className="mb-3">
                                         <label htmlFor="newprice" className="form-label">
-                                            <FontAwesomeIcon icon={faDollarSign} /> New Price: 
+                                            <FontAwesomeIcon icon={faDollarSign} /> New Price:
                                         </label>
 
-                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice}    onChange={handleChange} className="form-control" />
+                                        <input type="text" id="newprice" name="newprice" value={addPro.newprice} onChange={handleChange} className="form-control" />
 
                                     </div>
 

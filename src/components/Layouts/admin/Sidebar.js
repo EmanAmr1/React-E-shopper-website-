@@ -27,7 +27,7 @@ function Sidebar() {
                                     <Link className="nav-link" to="/viewCategory">view Category</Link>
                                 </nav>
                             </div>
-                            <div className="sb-sidenav-menu-heading">Interface</div>
+                            
                             <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div className="sb-nav-link-icon"><i className="fas fa-columns"></i></div>
                                 Product
@@ -61,6 +61,10 @@ function Sidebar() {
                                     <Link className="nav-link" to="/PlanManagment">Add plan </Link>
                                 </nav>
                             </div>
+                            <Link className="nav-link" to="/order">
+                                <div className="sb-nav-link-icon"><i className="fas fa-tachometer-alt"></i></div>
+                                Orders
+                            </Link>
                             <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div className="sb-nav-link-icon"><i className="fas fa-book-open"></i></div>
                                 Pages

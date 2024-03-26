@@ -68,6 +68,7 @@ const Charts = React.lazy(() => import("../components/admin/Charts"));
 const Category = React.lazy(() => import("../components/admin/category/Category"));
 const ViewCategory = React.lazy(() => import("../components/admin/category/ViewCategory"));
 const EditCategory = React.lazy(() => import("../components/admin/category/EditCategory"));
+const Order = React.lazy(() => import("../components/admin/orders/Order"));
 const AddUser = React.lazy(() => import("../pages/AddUser"));
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
@@ -125,6 +126,7 @@ const Router = () => {
         <Route path="/VendorPayment" element={<VendorPayment />} />
         <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />
         <Route path="/AdminAddPro" element={<AdminAddPro />} />
+        <Route path="/order" element={<Order />} />
 
         <Route path="/Admin" element={<Admin />} />
         </Route>

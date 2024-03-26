@@ -259,34 +259,53 @@ const ProductDetails = () => {
       console.error("Error:", error.response.data);
     }
   };
-
+  const[disable,setdisable]=useState()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post(
-        "/API/Review/addReview/",
-        {
-          product_id: productId,
-          comment: comment,
-          user_id: userId,
-        },
-        { headers }
-      );
-      console.log(response.data);
-
-      // Update reviews state with the new review
-      setReviews([
-        ...reviews,
-        { comment, date: new Date().toLocaleDateString() },
-      ]);
-
-      // Reset form fields
-      setComment("");
+      // Retrieve authentication token from cookies
+      const token = Cookies.get("token");
+      const headers = {
+        Authorization: `Token ${token}`,
+      };
+  
+      // Check if the user has ordered the product
+      const responseOrders = await axiosInstance.get('http://127.0.0.1:8000/API/userorders/', { headers });
+      const userOrders = responseOrders.data.orders;
+      const hasOrdered = userOrders.some(order => order.orderItems.some(item => item.product === productId));
+  setdisable(!hasOrdered)
+      if (hasOrdered) {
+        // If the user has ordered the product, proceed with submitting the review
+        const responseReview = await axiosInstance.post(
+          "/API/Review/addReview/",
+          {
+            product_id: productId,
+            comment: comment,
+            user_id: userId,
+          },
+          { headers }
+        );
+        console.log("Review submitted successfully:", responseReview.data);
+  
+        // Update reviews state with the new review
+        setReviews([
+          ...reviews,
+          { comment, date: new Date().toLocaleDateString() },
+        ]);
+  
+        // Reset form fields
+        setComment("");
+      } else {
+        console.log("User has not ordered the product.");
+        alert("Please make an order before leaving a comment.");
+        // Add logic here to provide user feedback, such as displaying a message
+      }
     } catch (error) {
-      console.error("Error:", error.response.data);
+      console.error("Error submitting review:", error);
+      // Add code here to provide user feedback about the error
     }
   };
-
+  
   const handleSizeChange = (e) => {
     setSelectedSize(e.target.value);
   };
@@ -722,6 +741,7 @@ const ProductDetails = () => {
                       className="form-control"
                       rows="3"
                       value={comment}
+                      
                       onChange={(e) => setComment(e.target.value)}
                     />
                   </div>

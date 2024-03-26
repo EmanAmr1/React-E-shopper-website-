@@ -78,6 +78,32 @@ function AdminPanel() {
                     >
                         Product Management
                     </Link>
+                    <Link
+                        to="/PlanManagment"
+                        style={{
+                            display: 'inline-block',
+                            padding: '10px 20px',
+                            backgroundColor: 'black',
+                            color: '#fff',
+                            borderRadius: '5px',
+                            margin: "10px"
+                        }}
+                    >
+                        Plan Management
+                    </Link>
+                    <Link
+                        to="/VendorPayment"
+                        style={{
+                            display: 'inline-block',
+                            padding: '10px 20px',
+                            backgroundColor: 'black',
+                            color: '#fff',
+                            borderRadius: '5px',
+                            margin: "10px"
+                        }}
+                    >
+                       payment History
+                    </Link>
                 </div>
             </div>
 

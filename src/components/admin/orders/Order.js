@@ -79,13 +79,14 @@ function Order() {
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
-                    <th>Country</th>
+                    {/* <th>Country</th> */}
                     <th>City</th>
                     <th>Street</th>
                     <th>Zip Code</th>
                     <th>Date</th>
                     <th>Status</th>
                     <th>Action</th>
+                    <th>More Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -96,7 +97,7 @@ function Order() {
                       <td>{order.last_name}</td>
                       <td>{order.email}</td>
                       <td>{order.phone_number}</td>
-                      <td>{order.country}</td>
+                      {/* <td>{order.country}</td> */}
                       <td>{order.city}</td>
                       <td>{order.street}</td>
                       <td>{order.zip_code}</td>
@@ -123,9 +124,11 @@ function Order() {
                         >
                           details
                         </button>
+                      </td>
+                      <td>
                         <button
                           type="button"
-                          className="site-btn ms-2"
+                          className="btn btn-primary"
                           style={{
                             backgroundColor:
                               order.status === "D" ||
@@ -134,6 +137,7 @@ function Order() {
                               order.status === "RF"
                                 ? "gray"
                                 : null,
+                            border: "none",
                           }}
                           onClick={() => updateStatus(order)}
                         >

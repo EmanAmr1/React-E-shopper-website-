@@ -27,21 +27,22 @@ function AdminPanel() {
             .then(data => setOrderStatistics(data))
             .catch(error => console.error('Error fetching order statistics:', error));
     };
+
     const handleLogout = () => {
         const token = Cookies.get("token");
         Cookies.remove("token");
         const headers = {
-            Authorization: `Token ${token}`,
+          Authorization: `Token ${token}`,
         };
         axios
-            .post("http://localhost:8000/api/logout/", null, { headers })
-            .then(() => {
-                console.log("Logout successful");
-                navigate("/");
-            })
-            .catch((error) => {
-                console.error("Logout error:", error);
-            });
+          .post("http://localhost:8000/api/logout/", null, { headers })
+          .then(() => {
+            console.log("Logout successful");
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error("Logout error:", error);
+          });
     };
 
     return (
@@ -49,7 +50,6 @@ function AdminPanel() {
             <h2 style={{ backgroundColor: "#8FBC8F", color: "white" }}>Admin Panel
                 <button onClick={handleLogout} style={{ backgroundColor: "#8FBC8F", padding: "2px", marginLeft: "1000px", fontSize: "15px" }}>Logout</button>
             </h2>
-
 
             <div style={{ display: 'flex', justifyContent: 'flex-start', padding: '20px' }}>
                 <div style={{ marginLeft: '50px', marginTop: '10px' }}>
@@ -78,29 +78,17 @@ function AdminPanel() {
                     >
                         Product Management
                     </Link>
-
-                    <Link
-                        to="/PlanManagment"
-                        style={{
-                            display: 'inline-block',
-                            padding: '10px 20px',
-                            backgroundColor: 'black',
-                            color: '#fff',
-                            borderRadius: '5px',
-                            margin: "10px"
-                        }}
-                    >
-                        Plan Management
-                    </Link>
                 </div>
             </div>
+
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
                 <div style={{ width: '50%' }}>
                     <h2>Admin Statistics</h2>
                     <VictoryChart
                         theme={VictoryTheme.material}
                         domainPadding={20}
-                        style={{ fontSize: '5px' }}
+                        width={300}
+                        height={200}
                     >
                         <VictoryAxis
                             tickValues={['Orders', 'Products', 'Users']}
@@ -124,11 +112,12 @@ function AdminPanel() {
                     <VictoryChart
                         theme={VictoryTheme.material}
                         domainPadding={20}
-                        style={{ fontSize: '5px' }}
+                        width={300}
+                        height={200}
                     >
                         <VictoryAxis
-                            tickValues={['Total Orders', 'Total Revenue', 'Average Order Value']}
-                            tickFormat={['Total Orders', 'Total Revenue', 'Average Order Value']}
+                            tickValues={['Total Orders', 'Total Revenue', 'Average Value']}
+                            tickFormat={['Total Orders', 'Total Revenue', 'Average Value']}
                         />
                         <VictoryAxis
                             dependentAxis
@@ -138,7 +127,7 @@ function AdminPanel() {
                             data={[
                                 { x: 'Total Orders', y: orderStatistics.total_orders || 0 },
                                 { x: 'Total Revenue', y: parseFloat(orderStatistics.total_revenue) || 0 },
-                                { x: 'Average Order Value', y: parseFloat(orderStatistics.average_order_value) || 0 }
+                                { x: 'Average Value', y: parseFloat(orderStatistics.average_order_value) || 0 }
                             ]}
                         />
                     </VictoryChart>
@@ -149,4 +138,3 @@ function AdminPanel() {
 }
 
 export default AdminPanel;
-

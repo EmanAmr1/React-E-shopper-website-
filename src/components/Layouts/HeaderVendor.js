@@ -90,11 +90,10 @@ const HeaderVendor = () => {
             <li className={location.pathname === "/Vendorplan" ? "active" : ""}>
               <Link to="/Vendorplan">Plan</Link>
             </li>
-            <li
-              className={location.pathname === "/vendorpending" ? "active" : ""}
-            >
-              <Link to="/vendorpending">Items</Link>
+            <li className={location.pathname === "/VendorOrder" ? "active" : ""}>
+              <Link to="/VendorOrder">Orders</Link>
             </li>
+
           </ul>
         </nav>
         <div className="offcanvas__auth">
@@ -157,6 +156,10 @@ const HeaderVendor = () => {
                   >
                     <Link to="/vendorpending">Items</Link>
                   </li>
+                  <li className={location.pathname === "/VendorOrder" ? "active" : ""}>
+              <Link to="/VendorOrder">Orders</Link>
+            </li>
+
                 </ul>
               </nav>
             </div>

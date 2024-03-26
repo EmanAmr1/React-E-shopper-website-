@@ -94,6 +94,8 @@ const EditSubcategory = React.lazy(() =>
 );
 const Order = React.lazy(() => import("../components/admin/orders/Order"));
 const AddUser = React.lazy(() => import("../pages/AddUser"));
+const VendoOrder = React.lazy(() => import("../pages/VendorOrder"));
+
 
 // const Register = React.lazy(()=>import('../components/Accounts/Register'))
 
@@ -135,6 +137,7 @@ const Router = () => {
 
           <Route path="vendorPro/:id" element={<VendorPro />} />
           <Route path="/ReviewProductShape" element={<ReviewProductShape />} />
+          <Route path="/vendorOrder" element={<VendoOrder />} />
         </Route>
         <Route element={<MasterLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />

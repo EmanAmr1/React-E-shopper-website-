@@ -26,56 +26,74 @@ console.log(orderslist)
   return (
     <>
     <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Tables</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
-                        </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
+                    <div className="container px-4 mt-3">
+                        {/* <h1 className="mt-4">Orders</h1> */}
+                        {/* <ol className="breadcrumb mb-4">
+                            <li className="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li className="breadcrumb-item active">Tables</li>
+                        </ol> */}
+                        {/* <div className="card mb-4">
+                            <div className="card-body">
                                 DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                                <Link target="_blank" to="https://datatables.net/">official DataTables documentation</Link>
                                 .
                             </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                        </div> */}
+                        <div className="card mb-4">
+                            <div className="card-header">
+                                <i className="fas fa-table me-1"></i>
+                                Orders
                             </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple">
+                            <div className="card-body">
+                              <div className="table-responsive">
+
+                                <table id="datatablesSimple" className='table table-bordered table-striped'>
                                     <thead>
                                         <tr>
+                                            <th>id</th>
                                             <th>First_Name</th>
                                             <th>Last_Name</th>
                                             <th>email</th>
-                                            <th>customer id</th>
                                             <th>Phone Number</th>
-                                            <th>Salary</th>
+                                            <th>Country</th>
+                                            <th>Cit</th>
+                                            <th>Street</th>
+                                            <th>zip_code</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                        <th>id</th>
+                                            <th>First_Name</th>
+                                            <th>Last_Name</th>
+                                            <th>email</th>
+                                            <th>Phone Number</th>
+                                            <th>Country</th>
+                                            <th>Cit</th>
+                                            <th>Street</th>
+                                            <th>zip_code</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                     {orderslist.map((order) => {
                                       return(<>
                                         <tr>
+                                            <td> {order.id}</td>
                                             <td>{order.first_name}</td>
                                             <td>{order.last_name}</td>
                                             <td>{order.email}</td>
-                                            <td> {order.id}</td>
                                             <td>{order.phone_number}</td>
-                                            <td>$320,800</td>
+                                            <td>{order.country}</td>
+                                            <td>{order.city}</td>
+                                            <td>{order.street}</td>
+                                            <td>{order.zip_code}</td>
+                                            <td>{order.placed_at}</td>
+                                            <td>{order.status}</td>
+                                            
                                         </tr>
                                       
                                       
@@ -85,6 +103,7 @@ console.log(orderslist)
                                         
                                     </tbody>
                                 </table>
+                              </div>
                             </div>
                         </div>
                     </div>

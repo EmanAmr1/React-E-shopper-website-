@@ -21,27 +21,45 @@ const Shipped = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const updateStatus = async (order) => {
-    if (order.status !== "D") {
+  // const updateStatus = async (order) => {
+  //   if (order.status !== "D") {
+  //     try {
+  //       const response = await axiosInstance.put(
+  //         `/api/delivaryman/update/${order.id}`,
+  //         null,
+  //         { headers }
+  //       );
+
+  //       const updatedItemIndex = orderslist.findIndex(
+  //         (item) => item.id === order.id
+  //       );
+  //       const updatedItem = { ...orderslist[updatedItemIndex] };
+  //       // if (updatedItem.status === "P") {
+  //       // updatedItem.status = "S";
+  //       // } else if (updatedItem.status === "S") {
+  //       updatedItem.status = "D";
+  //       // }
+  //       const updatedItems = [...orderslist];
+  //       updatedItems[updatedItemIndex] = updatedItem;
+  //       setOrderslist(updatedItems.filter((item) => item.id !== order.id));
+  //     } catch (error) {
+  //       console.error("Error:", error.response);
+  //     }
+  //     console.log("yes");
+  //   } else {
+  //     console.log("no");
+  //   }
+  // };
+  const orderFailed = async (order) => {
+    if (order.status === "S") {
       try {
         const response = await axiosInstance.put(
-          `/api/delivaryman/update/${order.id}`,
+          `/api/delivaryman/failed/${order.id}`,
           null,
           { headers }
         );
 
-        const updatedItemIndex = orderslist.findIndex(
-          (item) => item.id === order.id
-        );
-        const updatedItem = { ...orderslist[updatedItemIndex] };
-        // if (updatedItem.status === "P") {
-        // updatedItem.status = "S";
-        // } else if (updatedItem.status === "S") {
-        updatedItem.status = "D";
-        // }
-        const updatedItems = [...orderslist];
-        updatedItems[updatedItemIndex] = updatedItem;
-        setOrderslist(updatedItems.filter((item) => item.id !== order.id));
+        setOrderslist(orderslist.filter((item) => item.id !== order.id));
       } catch (error) {
         console.error("Error:", error.response);
       }
@@ -51,9 +69,27 @@ const Shipped = () => {
     }
   };
 
+  const orderDelivered = async (order) => {
+    if (order.status === "S") {
+      try {
+        const response = await axiosInstance.put(
+          `/api/delivaryman/delivered/${order.id}`,
+          null,
+          { headers }
+        );
+
+        setOrderslist(orderslist.filter((item) => item.id !== order.id));
+      } catch (error) {
+        console.error("Error:", error.response);
+      }
+      console.log("yes");
+    } else {
+      console.log("no");
+    }
+  };
   return (
     <div className="populer container p-4 mt-5 ">
-      <h1 className="mb-3">Shipped</h1>
+      <h1 className="mb-3">Pending</h1>
       {orderslist.map((order) => {
         return (
           <div key={order.id} className="card text-center mb-5">
@@ -75,15 +111,27 @@ const Shipped = () => {
                 type="button"
                 className="site-btn"
                 style={{
-                  backgroundColor: order.status === "D" && "gray",
+                  backgroundColor:
+                    order.status === "D" || order.status === "F"
+                      ? "gray"
+                      : null,
                 }}
-                onClick={() => updateStatus(order)}
+                onClick={() => orderDelivered(order)}
               >
-                {order.status === "P"
-                  ? "Pending"
-                  : order.status === "S"
-                  ? "Shipped"
-                  : "Delivered"}
+                Delivered
+              </button>
+              <button
+                type="button"
+                className="site-btn ms-2"
+                style={{
+                  backgroundColor:
+                    order.status === "D" || order.status === "F"
+                      ? "gray"
+                      : null,
+                }}
+                onClick={() => orderFailed(order)}
+              >
+                Failed
               </button>
             </div>
           </div>

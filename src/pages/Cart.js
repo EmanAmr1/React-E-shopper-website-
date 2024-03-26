@@ -8,9 +8,14 @@ import {
   decreaseCounter,
   decreaseCounterByAmount,
 } from "../store/slices/total";
-import { Link } from "react-router-dom";
-
+import { Link, Navigate } from "react-router-dom";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
   const userCookie = Cookies.get("user");
   const itemsid = useSelector((state) => state.total.itemsid);
   const dispatch = useDispatch();
@@ -34,6 +39,15 @@ const Cart = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const handleCheckout = function () {
+    if (!token) {
+      // If user is not logged in, show the modal
+      setShowModal(true);
+    } else {
+      navigate("/checkoutPage");
+    }
+  };
 
   const handleAddMore = async (proID, proSize, cartID) => {
     try {
@@ -141,6 +155,20 @@ const Cart = () => {
       </div>
       {/* Breadcrumb End */}
       <section className="h-100">
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Login Required</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Please log in first.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" href="/login">
+              Login
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <div className="container h-100 py-5">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-10">
@@ -250,9 +278,9 @@ const Cart = () => {
                     Total <span>${total}</span>
                   </li>
                 </ul>
-                <Link to="/checkoutPage" class="primary-btn">
+                <button onClick={handleCheckout} class="primary-btn p-3">
                   Proceed to checkout
-                </Link>
+                </button>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../../apis/config";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
@@ -23,7 +23,41 @@ function Order() {
   const handleViewOrderItems = (orderItems) => {
     setSelectedOrderItems(orderItems);
   };
+  const updateStatus = async (order) => {
+    if (order.status === "R") {
+      axiosInstance
+        .put(`/API/shiporders/${order.id}`, null, { headers })
+        .then((res) => {
+          const updatedItemIndex = ordersList.findIndex(
+            (item) => item.id === order.id
+          );
+          const updatedItem = { ...ordersList[updatedItemIndex] };
 
+          updatedItem.status = "S";
+
+          const updatedItems = [...ordersList];
+          updatedItems[updatedItemIndex] = updatedItem;
+          setOrdersList(updatedItems);
+        })
+        .catch((err) => console.log(err));
+    } else if (order.status === "C" || order.status === "F") {
+      axiosInstance
+        .put(`/API/refundmoney/${order.id}`, null, { headers })
+        .then((res) => {
+          const updatedItemIndex = ordersList.findIndex(
+            (item) => item.id === order.id
+          );
+          const updatedItem = { ...ordersList[updatedItemIndex] };
+
+          updatedItem.status = "RF";
+
+          const updatedItems = [...ordersList];
+          updatedItems[updatedItemIndex] = updatedItem;
+          setOrdersList(updatedItems);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <main>
       <div className="container px-4 mt-3">
@@ -34,7 +68,10 @@ function Order() {
           </div>
           <div className="card-body">
             <div className="table-responsive">
-              <table id="datatablesSimple" className='table table-bordered table-striped'>
+              <table
+                id="datatablesSimple"
+                className="table table-bordered table-striped"
+              >
                 <thead>
                   <tr>
                     <th>Code</th>
@@ -64,13 +101,47 @@ function Order() {
                       <td>{order.street}</td>
                       <td>{order.zip_code}</td>
                       <td>{order.placed_at}</td>
-                      <td>{order.status}</td>
+                      <td>
+                        {order.status === "P"
+                          ? "Pending"
+                          : order.status === "S"
+                          ? "Shipped"
+                          : order.status === "D"
+                          ? "Delivered"
+                          : order.status === "C"
+                          ? "Cancelled"
+                          : order.status === "R"
+                          ? "Ready"
+                          : order.status === "F"
+                          ? "Failed"
+                          : "Refunded"}
+                      </td>
                       <td>
                         <button
                           className="btn btn-primary"
                           onClick={() => handleViewOrderItems(order.orderItems)}
                         >
                           details
+                        </button>
+                        <button
+                          type="button"
+                          className="site-btn ms-2"
+                          style={{
+                            backgroundColor:
+                              order.status === "D" ||
+                              order.status === "P" ||
+                              order.status === "S" ||
+                              order.status === "RF"
+                                ? "gray"
+                                : null,
+                          }}
+                          onClick={() => updateStatus(order)}
+                        >
+                          {order.status === "C" || order.status === "F"
+                            ? "REFUND"
+                            : order.status === "R"
+                            ? "SHIP"
+                            : "No Action"}
                         </button>
                       </td>
                     </tr>
@@ -89,7 +160,7 @@ function Order() {
           </div>
           <div className="card-body">
             <div className="table-responsive">
-              <table className='table table-bordered table-striped'>
+              <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
                     <th>Product_id</th>
@@ -116,7 +187,7 @@ function Order() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
 export default Order;

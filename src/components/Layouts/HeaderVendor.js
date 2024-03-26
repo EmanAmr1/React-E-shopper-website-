@@ -50,9 +50,7 @@ const HeaderVendor = () => {
         className={`offcanvas-menu-overlay ${isMenuOpen ? "active" : ""}`}
         onClick={toggleMenu}
       ></div>
-      <div
-        className={`offcanvas-menu-wrapper ${isMenuOpen ? "active" : ""}`}
-      >
+      <div className={`offcanvas-menu-wrapper ${isMenuOpen ? "active" : ""}`}>
         <div className="offcanvas__close" onClick={toggleMenu}>
           +
         </div>
@@ -81,7 +79,9 @@ const HeaderVendor = () => {
         <div id="mobile-menu-wrap"></div>
         <nav className="header_menu">
           <ul>
-            <li className={location.pathname === "/vendorprofile" ? "active" : ""}>
+            <li
+              className={location.pathname === "/vendorprofile" ? "active" : ""}
+            >
               <Link to="/vendorprofile">Home</Link>
             </li>
             <li className={location.pathname === "/addProduct" ? "active" : ""}>
@@ -90,7 +90,11 @@ const HeaderVendor = () => {
             <li className={location.pathname === "/Vendorplan" ? "active" : ""}>
               <Link to="/Vendorplan">Plan</Link>
             </li>
-         
+            <li
+              className={location.pathname === "/vendorpending" ? "active" : ""}
+            >
+              <Link to="/vendorpending">Items</Link>
+            </li>
           </ul>
         </nav>
         <div className="offcanvas__auth">
@@ -125,16 +129,34 @@ const HeaderVendor = () => {
             <div className="col-xl-6 col-lg-7">
               <nav className="header__menu">
                 <ul>
-                  <li className={location.pathname === "/vendorprofile" ? "active" : ""}>
+                  <li
+                    className={
+                      location.pathname === "/vendorprofile" ? "active" : ""
+                    }
+                  >
                     <Link to="/vendorprofile">Home</Link>
                   </li>
-                  <li className={location.pathname === "/addProduct" ? "active" : ""}>
+                  <li
+                    className={
+                      location.pathname === "/addProduct" ? "active" : ""
+                    }
+                  >
                     <Link to="/addProduct">Create Product</Link>
                   </li>
-                  <li className={location.pathname === "/Vendorplan" ? "active" : ""}>
+                  <li
+                    className={
+                      location.pathname === "/Vendorplan" ? "active" : ""
+                    }
+                  >
                     <Link to="/Vendorplan">Plan</Link>
                   </li>
-             
+                  <li
+                    className={
+                      location.pathname === "/vendorpending" ? "active" : ""
+                    }
+                  >
+                    <Link to="/vendorpending">Items</Link>
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -143,7 +165,12 @@ const HeaderVendor = () => {
                 <div className="header__right__auth">
                   {isAuthenticated ? (
                     <Link
-                      className="header__right__auth__link"  style={{fontWeight:'600',fontSize:'15px',color:'black'}}
+                      className="header__right__auth__link"
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "15px",
+                        color: "black",
+                      }}
                       to="#"
                       onClick={handleLogout}
                     >
@@ -151,7 +178,11 @@ const HeaderVendor = () => {
                     </Link>
                   ) : (
                     <>
-                      <Link className="header__right__auth__link" style={{fontWeight:'500',color:'black'}} to="/login">
+                      <Link
+                        className="header__right__auth__link"
+                        style={{ fontWeight: "500", color: "black" }}
+                        to="/login"
+                      >
                         Login
                       </Link>
                     </>

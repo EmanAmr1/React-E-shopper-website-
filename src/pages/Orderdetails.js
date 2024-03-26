@@ -24,19 +24,65 @@ const Orderdetails = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const updateStatus = async (order) => {
-    if (order.status !== "D") {
+  // const updateStatus = async (order) => {
+  //   if (order.status !== "D") {
+  //     try {
+  //       const response = await axiosInstance.put(
+  //         `/api/delivaryman/update/${order.id}`,
+  //         null,
+  //         { headers }
+  //       );
+  // if (order.status === "P") {
+  //   order.status = "S";
+  // } else if (order.status === "S") {
+  //   order.status = "D";
+  // }
+  // setOrderdetails({ ...order });
+  //     } catch (error) {
+  //       console.error("Error:", error.response);
+  //     }
+  //     console.log("yes");
+  //   } else {
+  //     console.log("no");
+  //   }
+  // };
+
+  const orderFailed = async (order) => {
+    if (order.status === "S") {
       try {
         const response = await axiosInstance.put(
-          `/api/delivaryman/update/${order.id}`,
+          `/api/delivaryman/failed/${order.id}`,
           null,
           { headers }
         );
-        if (order.status === "P") {
-          order.status = "S";
-        } else if (order.status === "S") {
-          order.status = "D";
-        }
+        // if (order.status === "P") {
+        // order.status = "S";
+        // } else if (order.status === "S") {
+        order.status = "F";
+        // }
+        setOrderdetails({ ...order });
+      } catch (error) {
+        console.error("Error:", error.response);
+      }
+      console.log("yes");
+    } else {
+      console.log("no");
+    }
+  };
+
+  const orderDelivered = async (order) => {
+    if (order.status === "S") {
+      try {
+        const response = await axiosInstance.put(
+          `/api/delivaryman/delivered/${order.id}`,
+          null,
+          { headers }
+        );
+        // if (order.status === "P") {
+        // order.status = "S";
+        // } else if (order.status === "S") {
+        order.status = "D";
+        // }
         setOrderdetails({ ...order });
       } catch (error) {
         console.error("Error:", error.response);
@@ -184,15 +230,27 @@ const Orderdetails = () => {
             type="button"
             className="site-btn"
             style={{
-              backgroundColor: orderdetails.status === "D" && "gray",
+              backgroundColor:
+                orderdetails.status === "D" || orderdetails.status === "F"
+                  ? "gray"
+                  : null,
             }}
-            onClick={() => updateStatus(orderdetails)}
+            onClick={() => orderDelivered(orderdetails)}
           >
-            {orderdetails.status === "P"
-              ? "Pending"
-              : orderdetails.status === "S"
-              ? "Shipped"
-              : "Delivered"}
+            Delivered
+          </button>
+          <button
+            type="button"
+            className="site-btn ms-2"
+            style={{
+              backgroundColor:
+                orderdetails.status === "D" || orderdetails.status === "F"
+                  ? "gray"
+                  : null,
+            }}
+            onClick={() => orderFailed(orderdetails)}
+          >
+            Failed
           </button>
         </div>
       </div>

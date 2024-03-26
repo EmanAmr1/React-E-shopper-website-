@@ -13,7 +13,7 @@ const Delivaryman = () => {
 
   useEffect(() => {
     axiosInstance
-      .get(`/API/orders/`, { headers })
+      .get(`/api/delivaryman/list/`, { headers })
       .then((res) => {
         console.log(res.data.orders);
         setOrderslist(res.data.orders);
@@ -21,8 +21,64 @@ const Delivaryman = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const updateStatus = async (order) => {
-    console.log("already delivered");
+  const orderFailed = async (order) => {
+    if (order.status === "S") {
+      try {
+        const response = await axiosInstance.put(
+          `/api/delivaryman/failed/${order.id}`,
+          null,
+          { headers }
+        );
+
+        const updatedItemIndex = orderslist.findIndex(
+          (item) => item.id === order.id
+        );
+        const updatedItem = { ...orderslist[updatedItemIndex] };
+        // if (updatedItem.status === "P") {
+        // updatedItem.status = "S";
+        // } else if (updatedItem.status === "S") {
+        updatedItem.status = "F";
+        // }
+        const updatedItems = [...orderslist];
+        updatedItems[updatedItemIndex] = updatedItem;
+        setOrderslist(updatedItems);
+      } catch (error) {
+        console.error("Error:", error.response);
+      }
+      console.log("yes");
+    } else {
+      console.log("no");
+    }
+  };
+
+  const orderDelivered = async (order) => {
+    if (order.status === "S") {
+      try {
+        const response = await axiosInstance.put(
+          `/api/delivaryman/delivered/${order.id}`,
+          null,
+          { headers }
+        );
+
+        const updatedItemIndex = orderslist.findIndex(
+          (item) => item.id === order.id
+        );
+        const updatedItem = { ...orderslist[updatedItemIndex] };
+        // if (updatedItem.status === "P") {
+        // updatedItem.status = "S";
+        // } else if (updatedItem.status === "S") {
+        updatedItem.status = "D";
+        // }
+        const updatedItems = [...orderslist];
+        updatedItems[updatedItemIndex] = updatedItem;
+        setOrderslist(updatedItems);
+      } catch (error) {
+        console.error("Error:", error.response);
+      }
+      console.log("yes");
+    } else {
+      console.log("no");
+    }
   };
 
   return (
@@ -32,6 +88,7 @@ const Delivaryman = () => {
           <div key={order.id} className="card text-center mb-5">
             <div className="card-header">code: {order.id}</div>
             <div className="card-body">
+              {/* <h5 className="card-title">{order.status}</h5> */}
               <h5 className="card-title">{order.email}</h5>
               <h5 className="card-title">{order.total_price}</h5>
               <p className="card-text">{order.phone_number}</p>
@@ -48,15 +105,27 @@ const Delivaryman = () => {
                 type="button"
                 className="site-btn"
                 style={{
-                  backgroundColor: order.status === "D" && "gray",
+                  backgroundColor:
+                    order.status === "D" || order.status === "F"
+                      ? "gray"
+                      : null,
                 }}
-                onClick={() => updateStatus(order)}
+                onClick={() => orderDelivered(order)}
               >
-                {order.status === "P"
-                  ? "Pending"
-                  : order.status === "S"
-                  ? "Shipped"
-                  : "Delivered"}
+                Delivered
+              </button>
+              <button
+                type="button"
+                className="site-btn ms-2"
+                style={{
+                  backgroundColor:
+                    order.status === "D" || order.status === "F"
+                      ? "gray"
+                      : null,
+                }}
+                onClick={() => orderFailed(order)}
+              >
+                Failed
               </button>
             </div>
           </div>

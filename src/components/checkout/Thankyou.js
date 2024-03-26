@@ -47,6 +47,20 @@ function Thankyou() {
                 );
               })
               .catch((err) => console.log(err));
+            axiosInstance
+              .get("/API/orders/Tmp", { headers })
+              .then((res) => {
+                console.log(res.data.orders[0].id);
+                axiosInstance
+                  .delete(`/API/orders/${res.data.orders[0].id}/deleteTmp/`, {
+                    headers,
+                  })
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((err) => console.log(err));
+              })
+              .catch((err) => console.log(err));
           });
       })
       .catch((err) => console.log(err));

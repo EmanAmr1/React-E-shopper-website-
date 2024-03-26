@@ -82,14 +82,14 @@ const HeaderDelivary = () => {
             >
               <Link to="/DeliveryMan">Orders</Link>
             </li>
-            <li className={location.pathname === "/pending" ? "active" : ""}>
-              <Link to="/pending">Pending</Link>
-            </li>
             <li className={location.pathname === "/shipped" ? "active" : ""}>
-              <Link to="/shipped">Shipped</Link>
+              <Link to="/shipped">Pending</Link>
             </li>
             <li className={location.pathname === "/delivered" ? "active" : ""}>
               <Link to="/delivered">Delivered</Link>
+            </li>
+            <li className={location.pathname === "/pending" ? "active" : ""}>
+              <Link to="/pending">Failed</Link>
             </li>
           </ul>
         </nav>
@@ -133,14 +133,9 @@ const HeaderDelivary = () => {
                     <Link to="/DeliveryMan">Orders</Link>
                   </li>
                   <li
-                    className={location.pathname === "/pending" ? "active" : ""}
-                  >
-                    <Link to="/pending">Pending</Link>
-                  </li>
-                  <li
                     className={location.pathname === "/shipped" ? "active" : ""}
                   >
-                    <Link to="/shipped">Shipped</Link>
+                    <Link to="/shipped">Pending</Link>
                   </li>
                   <li
                     className={
@@ -148,6 +143,11 @@ const HeaderDelivary = () => {
                     }
                   >
                     <Link to="/delivered">Delivered</Link>
+                  </li>
+                  <li
+                    className={location.pathname === "/pending" ? "active" : ""}
+                  >
+                    <Link to="/pending">Failed</Link>
                   </li>
                 </ul>
               </nav>

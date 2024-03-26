@@ -78,32 +78,6 @@ function AdminPanel() {
                     >
                         Product Management
                     </Link>
-                    <Link
-                        to="/PlanManagment"
-                        style={{
-                            display: 'inline-block',
-                            padding: '10px 20px',
-                            backgroundColor: 'black',
-                            color: '#fff',
-                            borderRadius: '5px',
-                            margin: "10px"
-                        }}
-                    >
-                        Plan Managment
-                    </Link>
-                    <Link
-                        to="/VendorPayment"
-                        style={{
-                            display: 'inline-block',
-                            padding: '10px 20px',
-                            backgroundColor: 'black',
-                            color: '#fff',
-                            borderRadius: '5px',
-                            margin: "10px"
-                        }}
-                    >
-                        Plan Managment
-                    </Link>
                 </div>
             </div>
 
@@ -143,11 +117,11 @@ function AdminPanel() {
                     >
                         <VictoryAxis
                             tickValues={['Total Orders', 'Total Revenue', 'Average Value']}
-                            tickFormat={['Total Orders', 'Total Revenue', 'Average Value']}
+                            tickFormat={tick => (typeof tick === 'number' ? tick.toFixed(0) : tick)}
                         />
                         <VictoryAxis
                             dependentAxis
-                            tickFormat={x => `${x}`}
+                            tickFormat={tick => (typeof tick === 'number' ? tick.toFixed(0) : tick)}
                         />
                         <VictoryBar
                             data={[

@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Cookies from "js-cookie";
@@ -230,6 +231,16 @@ const AddProduct = () => {
 
     ////////////////////
     // deny to add new product 
+    const [Plan, setPlan] = useState(null);
+    useEffect(() => {
+        axiosInstance.get(`http://127.0.0.1:8000/api/plans/`)
+            .then((res) => {
+                setPlan(res.data); // Assuming the response includes plan information
+            })
+            .catch((error) => {
+                console.error('Error fetching subscription info:', error);
+            });
+    }, []); 
     console.log("user Id", userId)
     const [expired, setExpired] = useState(false);
     const [subscriptionInfo, setSubscriptionInfo] = useState(null);
@@ -249,7 +260,7 @@ const AddProduct = () => {
         if (subscriptionInfo && subscriptionInfo.stock) {
             const remainingProducts = getRemainingProducts(subscriptionInfo);
             console.log("use eee", remainingProducts);
-            const isExpired = remainingProducts == 0;
+            const isExpired = remainingProducts <= 0;
             setExpired(isExpired);
             console.log("isExpired", isExpired)
 
@@ -260,18 +271,16 @@ const AddProduct = () => {
 
     const getRemainingProducts = (subscriptionInfo) => {
         let productLimit = 0;
-        switch (subscriptionInfo.plan) {
-            case 1:
-                productLimit = 500;
-                break;
-            case 2:
-                productLimit = 1200;
-                break;
-            case 3:
-                productLimit = 2500;
-                break;
-            default:
-                productLimit = 0;
+        console.log('lllllllllll',Plan)
+        if (subscriptionInfo) {
+            const plan = Plan.find(plan => plan.id === subscriptionInfo.plan);
+            console.log('kkkkkkkkkkkk',plan)
+         
+                productLimit = plan.count;
+                console.log('ppppp',productLimit)
+
+
+        
         }
         console.log("in eee", subscriptionInfo.stock);
         return productLimit - subscriptionInfo.stock;

@@ -60,13 +60,17 @@ const Vendorplan = () => {
         axiosInstance.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${userId}`)
         .then((res) => {
             setSubscriptionInfo(res.data);
+            console.log('SubscriptionInfo updated',subscriptionInfo);
+            console.log('SubscriptionInfo updated',res.data);
         })
         .catch((error) => {
             console.error('Error fetching subscription info:', error);
         });
 }, [userId]);
+console.log('SubscriptionInfo updated',subscriptionInfo);
 useEffect(() => {
-    if (subscriptionInfo && subscriptionInfo.stock) {
+    console.log('Sub[]onInfo updated',subscriptionInfo && subscriptionInfo.stock);
+    if (subscriptionInfo ) {
         const remainingProducts = getRemainingProducts(subscriptionInfo);
         console.log("use eee",remainingProducts);
         const isExpired = remainingProducts <= 0;
@@ -77,22 +81,20 @@ useEffect(() => {
        
     }
 }, [subscriptionInfo]);
+
+
 const getRemainingProducts = (subscriptionInfo) => {
     let productLimit = 0;
-    switch (subscriptionInfo.plan) {
-        case 1:
-            productLimit = 500;
-            break;
-        case 2:
-            productLimit = 1200;
-            break;
-        case 3:
-            productLimit = 2500;
-            break;
-        default:
-            productLimit = 0;
+    console.log('lllllllllll',plans)
+    if (subscriptionInfo) {
+        const plan = plans.find(plan => plan.id === subscriptionInfo.plan);
+        console.log('kkkkkkkkkkkk',plan)
+     
+            productLimit = plan.count;
+            console.log('ppppp',productLimit)
+
     }
-    console.log("in eee",subscriptionInfo.stock);
+    console.log("in eee", subscriptionInfo.stock);
     return productLimit - subscriptionInfo.stock;
 
 };
@@ -104,7 +106,7 @@ const getRemainingProducts = (subscriptionInfo) => {
         <div className='container my-5 py-5'>
             <div className='row'>
                 {plans.map(plan => (
-                    <div key={plan.id} className='col-lg-3 col-md-6 my-2'>
+                    <div key={plan.id} className='col-lg-4 col-md-6 my-2'>
                         <Card className='p-0'>
                             <Card.Body className='p-0'>
                                 <Card.Title className='text-center py-4'

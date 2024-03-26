@@ -248,12 +248,21 @@ const UpdateProduct = () => {
                 console.error('Error fetching subscription info:', error);
             });
     }, [userId]); // Add userId as a dependency to trigger useEffect when it changes
-
+    const [Plan, setPlan] = useState(null);
+    useEffect(() => {
+        axiosInstance.get(`http://127.0.0.1:8000/api/plans/`)
+            .then((res) => {
+                setPlan(res.data); 
+            })
+            .catch((error) => {
+                console.error('Error fetching subscription info:', error);
+            });
+    }, []); 
     useEffect(() => {
         if (subscriptionInfo && subscriptionInfo.stock) {
             const remainingProducts = getRemainingProducts(subscriptionInfo);
             console.log("use eee", remainingProducts);
-            const isExpired = remainingProducts == 0;
+            const isExpired = remainingProducts <= 0;
             setExpired(isExpired);
             console.log("isExpired", isExpired)
 
@@ -271,23 +280,20 @@ const UpdateProduct = () => {
 
     const getRemainingProducts = (subscriptionInfo) => {
         let productLimit = 0;
-        switch (subscriptionInfo.plan) {
-            case 1:
-                productLimit = 500;
-                break;
-            case 2:
-                productLimit = 1200;
-                break;
-            case 3:
-                productLimit = 2500;
-                break;
-            default:
-                productLimit = 0;
+        console.log('lllllllllll',Plan)
+        if (subscriptionInfo) {
+            const plan = Plan.find(plan => plan.id === subscriptionInfo.plan);
+            console.log('kkkkkkkkkkkk',plan)
+         
+                productLimit = plan.count;
+                console.log('ppppp',productLimit)
+
         }
         console.log("in eee", subscriptionInfo.stock);
         return productLimit - subscriptionInfo.stock;
 
     };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 

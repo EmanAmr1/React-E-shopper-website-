@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_URL } from '../apis/configpaln';
@@ -20,6 +21,7 @@ const AdminPlan = () => {
         name: '',
         description: '',
         price: '',
+        count:''
       });
     
       const handleChange = (e) => {
@@ -124,6 +126,11 @@ const handleDelete = async (planId) => {
           <input type="number" style={{width:'100%',height:'40px',border:'1px solid #777',borderRadius:'5px'}} name="price" value={formData.price} onChange={handleChange} />
         </label>
         <br />
+        <label>
+          count:
+          <input type="number" style={{width:'100%',height:'40px',border:'1px solid #777',borderRadius:'5px'}} name="count" value={formData.count} onChange={handleChange} />
+        </label>
+        <br />
         <button type="submit" className='my-2' style={{ padding:'10px',background: 'linear-gradient(to right, #0072ff, #00c6ff)', border: 'none',borderRadius:'5px' }}>Create Plan</button>
       </form>
     </div>
@@ -140,6 +147,7 @@ const handleDelete = async (planId) => {
                                     {plan.description}
                                 </Card.Text>
                                 <Card.Subtitle className="mb-2 text-muted text-center">$ {plan.price}</Card.Subtitle>
+                      
                                 <div style={{ display:'flex',justifyContent:'center' }}>
                                 <Button
                                         variant="primary"

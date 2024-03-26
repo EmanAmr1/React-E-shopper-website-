@@ -5,6 +5,8 @@ const SubscriptionVendor = ({ vendorId }) => {
     const [subscriptionInfo, setSubscriptionInfo] = useState(null);
     const [expired, setExpired] = useState(false); // State to track if subscription has expired
     const [subtractionResult, setSubtractionResult] = useState(null);
+    const [Plan, setPlan] = useState(null);
+
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:8000/api/last-vendor/?vendor=${vendorId}`)
@@ -15,18 +17,35 @@ const SubscriptionVendor = ({ vendorId }) => {
                 console.error('Error fetching subscription info:', error);
             });
     }, [vendorId]); 
+    useEffect(() => {
+        axios.get(`http://127.0.0.1:8000/api/plans/`)
+            .then((res) => {
+                setPlan(res.data); // Assuming the response includes plan information
+            })
+            .catch((error) => {
+                console.error('Error fetching subscription info:', error);
+            });
+    }, [vendorId]); 
+
+    // console.log('Subscription', subscriptionInfo)
 
     useEffect(() => {
-        if (subscriptionInfo && subscriptionInfo.plan) {
+        if (subscriptionInfo && subscriptionInfo.plan && Plan) {
+            console.log("plammn",Plan)
+            console.log(subscriptionInfo && subscriptionInfo.plan && Plan)
             // Define the number of products for each plan
-            const productLimits = {
-                1: 500,
-                2: 1200,
-                3: 2500
-            };
-
-            // Check if the plan type is found in the productLimits object
+            const productLimits = {};
+            
+                console.log('plan', Plan)
+                Plan.forEach(plan => {
+                    productLimits[plan.id] = plan.count;
+                });
+            
+            console.log("true", subscriptionInfo.plan);
+            console.log("true", productLimits);
             if (subscriptionInfo.plan in productLimits) {
+                console.log("true", subscriptionInfo.plan);
+                console.log("true", productLimits);
                 const remainingProducts = productLimits[subscriptionInfo.plan] - subscriptionInfo.stock;
                 setSubtractionResult(remainingProducts);
                 setExpired(false); // Subscription not expired
@@ -34,7 +53,9 @@ const SubscriptionVendor = ({ vendorId }) => {
                 console.error('Plan type not found:', subscriptionInfo.plan);
             }
         }
-    }, [subscriptionInfo]);
+    }, [subscriptionInfo, Plan]);
+    
+    // console.log("njnj",subtractionResult)
 
     return (
         <div>

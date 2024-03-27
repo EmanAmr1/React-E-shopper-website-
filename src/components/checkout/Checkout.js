@@ -80,7 +80,7 @@ const Checkout = () => {
     state: "",
     street: "",
     phone_number: "",
-    email: "",
+    // email: "",
     order_Items: [],
   });
 
@@ -121,7 +121,7 @@ const Checkout = () => {
       state: checoutInput.state,
       street: checoutInput.street,
       phone_number: checoutInput.phone_number,
-      email: checoutInput.email,
+      // email: checoutInput.email,
       order_Items: orderItems,
     };
 
@@ -311,7 +311,7 @@ const Checkout = () => {
                       </small>
                     </div>
                   </div>
-                  <div className="col-lg-6 col-md-6 col-sm-6">
+                  {/* <div className="col-lg-6 col-md-6 col-sm-6">
                     <div className="checkout__form__input">
                       <p>
                         Email <span>*</span>
@@ -324,7 +324,7 @@ const Checkout = () => {
                       />
                       <small className="text-danger">{error.email}</small>
                     </div>
-                  </div>
+                  </div> */}
                   {/* <div className="col-lg-12">
                     <div className="checkout__form__checkbox">
                       <label for="acc">

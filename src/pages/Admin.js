@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import Cookies from "js-cookie";
-import axios from "axios";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
+import { Link } from 'react-router-dom';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
 
 function AdminPanel() {
     const [adminStatistics, setAdminStatistics] = useState({});
     const [orderStatistics, setOrderStatistics] = useState({});
-    const navigate = useNavigate();
+    const [planStatistics, setPlanStatistics] = useState({});
+    const [productStatistics, setProductStatistics] = useState({});
 
     useEffect(() => {
         fetchAdminStatistics();
         fetchOrderStatistics();
+        fetchPlanStatistics();
+        fetchProductStatistics();
     }, []);
 
     const fetchAdminStatistics = () => {
@@ -28,29 +29,22 @@ function AdminPanel() {
             .catch(error => console.error('Error fetching order statistics:', error));
     };
 
-    const handleLogout = () => {
-        const token = Cookies.get("token");
-        Cookies.remove("token");
-        const headers = {
-          Authorization: `Token ${token}`,
-        };
-        axios
-          .post("http://localhost:8000/api/logout/", null, { headers })
-          .then(() => {
-            console.log("Logout successful");
-            navigate("/");
-          })
-          .catch((error) => {
-            console.error("Logout error:", error);
-          });
+    const fetchPlanStatistics = () => {
+        fetch('http://localhost:8000/api/admin/plan-statistics/')
+            .then(response => response.json())
+            .then(data => setPlanStatistics(data))
+            .catch(error => console.error('Error fetching plan statistics:', error));
+    };
+
+    const fetchProductStatistics = () => {
+        fetch('http://localhost:8000/best-selling-products/')
+            .then(response => response.json())
+            .then(data => setProductStatistics(data))
+            .catch(error => console.error('Error fetching product statistics:', error));
     };
 
     return (
         <>
-            <h2 style={{ backgroundColor: "#8FBC8F", color: "white" }}>Admin Panel
-                <button onClick={handleLogout} style={{ backgroundColor: "#8FBC8F", padding: "2px", marginLeft: "1000px", fontSize: "15px" }}>Logout</button>
-            </h2>
-
             <div style={{ display: 'flex', justifyContent: 'flex-start', padding: '20px' }}>
                 <div style={{ marginLeft: '50px', marginTop: '10px' }}>
                     <Link
@@ -102,14 +96,14 @@ function AdminPanel() {
                             margin: "10px"
                         }}
                     >
-                       payment History
+                       Payment History
                     </Link>
                 </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
                 <div style={{ width: '50%' }}>
-                    <h2>Admin Statistics</h2>
+                    <h2>Quantity Statistics</h2>
                     <VictoryChart
                         theme={VictoryTheme.material}
                         domainPadding={20}
@@ -159,6 +153,72 @@ function AdminPanel() {
                     </VictoryChart>
                 </div>
             </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
+                <div style={{ width: '50%' }}>
+                <h2>Plan Statistics</h2>
+                    <VictoryChart
+                        theme={VictoryTheme.material}
+                        domainPadding={20}
+                        width={600} // Increased width
+                        height={400} // Increased height
+                    >
+                        <VictoryAxis
+                            tickValues={['NumberOfPlans', 'TotalRevenue', 'MostPurchasedPlan']}
+                            tickFormat={['NumberOfPlans', 'TotalRevenue', 'MostPurchasedPlan']} // Display plan name
+                            style={{ tickLabels: { fontSize: 12 } }} // Larger font size
+                        />
+                        <VictoryAxis
+                            dependentAxis
+                            tickFormat={tick => `${tick}`} // Numbers on y-axis
+                            style={{ tickLabels: { fontSize: 12 } }} // Larger font size
+                        />
+                        <VictoryBar
+                            data={[
+                                { x: 'NumberOfPlans', y: planStatistics.total_plans || 0 },
+                                { x: 'TotalRevenue', y: parseFloat(planStatistics.total_revenue) || 0 },
+                                { x: 'MostPurchasedPlan', y: planStatistics.most_purchased_plan_count || 0, label: `${planStatistics.most_purchased_plan} (${planStatistics.most_purchased_plan_count})` } // Bar for most purchased plan
+                            ]}
+                            labels={({ datum }) => datum.label} // Show plan name and count as labels
+                            labelComponent={<VictoryLabel dy={-15} />} // Adjust label position
+                        />
+                    </VictoryChart>
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
+    {productStatistics.best_selling_products && (
+        <div style={{ width: '50%' }}>
+            <h2>Product Statistics</h2>
+            <VictoryChart
+                theme={VictoryTheme.material}
+                domainPadding={20}
+                width={600}
+                height={400}
+            >
+                <VictoryAxis
+                    tickValues={productStatistics.best_selling_products.map(product => product.product_name)}
+                    tickFormat={tick => tick}
+                    style={{ tickLabels: { fontSize: 12 } }}
+                />
+                <VictoryAxis
+                    dependentAxis
+                    tickFormat={tick => `${tick}`}
+                    style={{ tickLabels: { fontSize: 12 } }}
+                />
+                <VictoryBar
+                    data={productStatistics.best_selling_products}
+                    x="product_name"
+                    y="total_quantity_sold"
+                    labels={({ datum }) => datum.total_quantity_sold}
+                    labelComponent={<VictoryLabel dy={-15} />}
+                    barWidth={40}
+                />
+            </VictoryChart>
+        </div>
+    )}
+</div>
+
         </>
     );
 }

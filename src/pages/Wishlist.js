@@ -173,7 +173,7 @@ const Wishlist = () => {
                       className="card-img-top"
                       alt="..."
                     /> */}
-                    {item.new ? (
+                    {item.new && item.stock !== 0 ? (
                       <div className="label new">New</div>
                     ) : item.sale && item.stock !== 0 ? (
                       <div className="label sale">Sale</div>

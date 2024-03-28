@@ -161,6 +161,8 @@ const Router = () => {
           <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />
           <Route path="/AdminAddPro" element={<AdminAddPro />} />
           <Route path="/order" element={<Order />} />
+        <Route path="/AddUser" element={<AddUser />} />
+
 
           <Route path="/Admin" element={<Admin />} />
         </Route>
@@ -183,7 +185,6 @@ const Router = () => {
         <Route path="/AdminUpdatePro/:id" element={<AdminUpdatePro />} />
         <Route path="/AdminAddPro" element={<AdminAddPro />} /> */}
 
-        <Route path="/AddUser" element={<AddUser />} />
         <Route element={<DelivaryLayout />}>
           <Route
             path="/deliveryman"

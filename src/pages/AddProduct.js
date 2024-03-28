@@ -327,8 +327,12 @@ const AddProduct = () => {
         if (addPro.newprice && addPro.price && parseFloat(addPro.newprice) >= parseFloat(addPro.price)) {
             newErrors.push('New price should be less than the original price.');
         }
+        
+        //         if(!expired){
+        //             alert("new stock greater than stock in plan ")
+        //             newErrors.push('new stock greater than stock in plan ');
+        //         }
         setErrors(newErrors);
-
         if (newErrors.length > 0) {
             return;
         }
@@ -426,12 +430,12 @@ const AddProduct = () => {
 
     return (
         <>
-            <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
-                <h3 className="mb-0 " style={{ color: '#FFFFFF' }}>Add New Product</h3>
-            </div>
+            {/* <div className="card-header m-3 " style={{fontSize:'25px'}} >
+                <h3 className="mb-0  " style={{ color: 'black' }}>Add New Product</h3>
+            </div> */}
 
 
-            <div className="container mt-5">
+            <div className="container mt-3">
                 <p>Before adding your products, would you like to <Link to='/ReviewProductShape'>review a sample product</Link>?</p>
                 <div className="row justify-content-center">
 

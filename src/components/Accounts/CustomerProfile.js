@@ -16,15 +16,23 @@ function getStatusText(status) {
     case "S":
       return "Shipped";
     case "P":
+      return "Pending";
+
     case "R":
       return "Pending";
     case "C":
+      return "Cancelled";
+
     case "F":
       return "Cancelled";
+    case "RF":
+      return "Refunded";
     default:
       return "Unknown";
   }
+  console.log(status)
 }
+
 
 function CustomerProfile() {
   const dispatch = useDispatch();

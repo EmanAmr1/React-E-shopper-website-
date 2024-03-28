@@ -47,7 +47,7 @@ function AdminPanel() {
         <>
             <div style={{ display: 'flex', justifyContent: 'flex-start', padding: '20px' }}>
                 <div style={{ marginLeft: '50px', marginTop: '10px' }}>
-                    <Link
+                    {/* <Link
                         to="/UserManagement"
                         style={{
                             display: 'inline-block',
@@ -97,7 +97,7 @@ function AdminPanel() {
                         }}
                     >
                        Payment History
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
 
@@ -189,7 +189,7 @@ function AdminPanel() {
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
     {productStatistics.best_selling_products && (
         <div style={{ width: '50%' }}>
-            <h2>Product Statistics</h2>
+            <h2>Bestseller Product </h2>
             <VictoryChart
                 theme={VictoryTheme.material}
                 domainPadding={20}

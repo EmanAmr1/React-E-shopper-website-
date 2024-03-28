@@ -154,11 +154,11 @@ const HeaderVendor = () => {
                       location.pathname === "/vendorpending" ? "active" : ""
                     }
                   >
-                    <Link to="/vendorpending">Items</Link>
+                    <Link to="/vendorpending">Orders</Link>
                   </li>
-                  <li className={location.pathname === "/VendorOrder" ? "active" : ""}>
+                  {/* <li className={location.pathname === "/VendorOrder" ? "active" : ""}>
               <Link to="/VendorOrder">Orders</Link>
-            </li>
+            </li> */}
 
                 </ul>
               </nav>

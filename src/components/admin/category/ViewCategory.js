@@ -27,26 +27,50 @@ function ViewCategory() {
 
     }, []);
 
+    // const deleteCategory = (e, id) => {
+    //     e.preventDefault();
+        
+    //     const thisClicked = e.currentTarget;
+    //     thisClicked.innerText = "Deleting";
+
+    //     axiosInstance.delete(`/API/categories/${id}`).then(res=>{
+    //         if(res.data.status === 200)
+    //         {
+    //             swal("Success",res.data.message,"success");
+    //             thisClicked.closest("tr").remove();
+    //         }
+    //         else if(res.data.status === 404)
+    //         {
+    //             swal("Success",res.data.message,"success");
+    //             thisClicked.innerText = "Delete";
+    //         }
+    //     });
+
+    // }
+
     const deleteCategory = (e, id) => {
         e.preventDefault();
-        
+      
         const thisClicked = e.currentTarget;
         thisClicked.innerText = "Deleting";
-
-        axiosInstance.delete(`/API/categories/${id}`).then(res=>{
-            if(res.data.status === 200)
-            {
-                swal("Success",res.data.message,"success");
-                thisClicked.closest("tr").remove();
-            }
-            else if(res.data.status === 404)
-            {
-                swal("Success",res.data.message,"success");
-                thisClicked.innerText = "Delete";
-            }
+      
+        axiosInstance.delete(`/API/categories/${id}`).then((res) => {
+          if (res.data.status === 200) {
+            // Subcategory deleted successfully, update state
+            setCategorylist(categorylist.filter((subcategory) => subcategory.id !== id));
+            swal("Success", res.data.message, "success");
+          } else {
+            // Handle other status codes, such as 404 (Not Found)
+            swal("Success", res.data.message || "Success to delete subcategory", "success");
+            thisClicked.innerText = "Delete";
+          }
+        }).catch(error => {
+          // Handle network errors or unexpected errors
+          console.error("Error deleting subcategory:", error);
+          swal("Error", "Failed to delete subcategory", "error");
+          thisClicked.innerText = "Delete";
         });
-
-    }
+      };
 
     var viewcategory_HTMLTABLE = "";
     if(loading)

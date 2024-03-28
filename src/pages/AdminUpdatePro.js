@@ -607,7 +607,7 @@ const AdminUpdatePro = () => {
 
 
                                     <div className="mb-3">
-                                        <label htmlFor="image" className="form-label">
+                                        <label htmlFor="image" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Main Image:
                                         </label>
                                         {updatePro.image && (
@@ -618,7 +618,7 @@ const AdminUpdatePro = () => {
 
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageOne" className="form-label">
+                                        <label htmlFor="subImageOne" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image One: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageOne && (
@@ -628,7 +628,7 @@ const AdminUpdatePro = () => {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageTwo" className="form-label">
+                                        <label htmlFor="subImageTwo" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Two: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageTwo && (
@@ -638,7 +638,7 @@ const AdminUpdatePro = () => {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageThree" className="form-label">
+                                        <label htmlFor="subImageThree" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Three: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageThree && (
@@ -648,11 +648,11 @@ const AdminUpdatePro = () => {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageFour" className="form-label">
+                                        <label htmlFor="subImageFour" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:  <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageFour && (
-                                            <img src={`http://127.0.0.1:8000${updatePro.subImageFour}`} alt="Product Sub Image Four" style={{ maxWidth: '100px' }} />
+                                            <img src={`http://127.0.0.1:8000${updatePro.subImageFour}`} alt="Product Sub Image Four" style={{ maxWidth: '100px' }}  />
                                         )}
                                         <input type="file" id="subImageFour" name="subImageFour" onChange={handleImageChange} className="form-control" />
                                     </div>

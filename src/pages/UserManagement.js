@@ -42,9 +42,9 @@ function UserManagement() {
     return (
         <>
             <h3 style={{marginTop:"10px"}}>User Management</h3>
-            <br></br>
+            {/* <br></br>
             <Link to="/AddUser"><button className="btn btn-dark">Add User</button></Link>
-            <br></br> <br></br>
+            <br></br> <br></br> */}
             <table className="table table-success table-striped">
                 <thead>
                     <tr>

@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { axiosInstance } from "../apis/config";
 import Cookies from "js-cookie";
 import rev from "../imags/rev.png";
+import ProductRating from "../components/Shop/ProductRating";
+
 
 const VendorProduct = () => {
     const dispatch = useDispatch();
@@ -207,6 +209,7 @@ const VendorProduct = () => {
 
 
                                 <p>
+                                <ProductRating rating={proDetails.ratings} />
 
                                     {reviews.length === 1 ? "(1 Comment)" : `( ${reviews.length} Comments)`}
 

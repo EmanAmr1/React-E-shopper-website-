@@ -41,7 +41,8 @@ function Viewsubcategory() {
         swal("Success", res.data.message, "success");
       } else {
         // Handle other status codes, such as 404 (Not Found)
-        swal("Error", res.data.message || "Failed to delete subcategory", "error");
+        swal("Success", res.data.message || "Success to delete subcategory", "success");
+
         thisClicked.innerText = "Delete";
       }
     }).catch(error => {

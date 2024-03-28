@@ -479,9 +479,9 @@ const UpdateProduct = () => {
 
     return (
         <>
-           <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
+           {/* <div className="card-header" style={{ backgroundColor: '#ca1515', color: '#FFFFFF' }}>
                 <h3 className="mb-0 " style={{ color: '#FFFFFF' }}>Update Product</h3>
-            </div>
+            </div> */}
             <div className="container mt-5">
                 <div className="row justify-content-center">
                     <div className="col-md-6">
@@ -609,10 +609,10 @@ const UpdateProduct = () => {
 
 
 
-                                    <div className="mb-3">
-                                        <label htmlFor="image" className="form-label">
-                                            <FontAwesomeIcon icon={faImage} /> Product Main Image:
-                                        </label>
+                                    <div className="mb-3" >
+                                    <label htmlFor="image" className="form-label" style={{display: 'block'}}>
+                                    <FontAwesomeIcon icon={faImage} /> Product Main Image:
+                                </label>
                                         {updatePro.image && (
                                             <img src={`http://127.0.0.1:8000${updatePro.image}`} alt="Product Main Image" style={{ maxWidth: '100px' }} />
                                         )}
@@ -621,7 +621,7 @@ const UpdateProduct = () => {
 
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageOne" className="form-label">
+                                        <label htmlFor="subImageOne" className="form-label "  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image One: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageOne && (
@@ -631,7 +631,7 @@ const UpdateProduct = () => {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageTwo" className="form-label">
+                                        <label htmlFor="subImageTwo" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Two: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageTwo && (
@@ -641,7 +641,7 @@ const UpdateProduct = () => {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageThree" className="form-label">
+                                        <label htmlFor="subImageThree" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Three: <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageThree && (
@@ -651,7 +651,7 @@ const UpdateProduct = () => {
                                     </div>
 
                                     <div className="mb-3">
-                                        <label htmlFor="subImageFour" className="form-label">
+                                        <label htmlFor="subImageFour" className="form-label"  style={{display: 'block'}}>
                                             <FontAwesomeIcon icon={faImage} /> Product Sub Image Four:  <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         {updatePro.subImageFour && (

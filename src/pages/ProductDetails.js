@@ -200,7 +200,6 @@ const ProductDetails = () => {
       })
       .catch((err) => console.log(err));
   }, [proDetails.id]);
-
   const handleAdd = async (e, id) => {
     if (e !== id) {
       e.preventDefault();
@@ -224,7 +223,13 @@ const ProductDetails = () => {
           dispatch(increaseCounterByAmount(response.data.quantity));
           setCount((prevCount) => prevCount + response.data.quantity);
         } catch (error) {
-          console.error("Error:", error.response.data);
+          console.error(error.response.data.quantity !== 0);
+          if (error.response.data.quantity !== 0) {
+            dispatch(increaseCounterByAmount(error.response.data.quantity));
+            setCount((prevCount) => prevCount + error.response.data.quantity);
+            // setTotalCount
+          }
+          // error.response.data.quantity !== 0 &&
         }
       }
     } else {

@@ -735,7 +735,9 @@ const ProductDetails = () => {
                       }}
                     >
                       <span className="icon_bag_alt"></span>{" "}
-                      {itemsid.includes(proDetails.id)
+                      {proDetails.stock === 0
+                        ? `out of stock`
+                        : itemsid.includes(proDetails.id)
                         ? `Add More ${count}`
                         : `Add to Cart ${count}`}
                     </a>
@@ -840,9 +842,9 @@ const ProductDetails = () => {
                           backgroundImage: `url('${baseImageUrl}${prod.image}')`,
                         }}
                       >
-                        {prod.new ? (
+                        {prod.new && prod.stock !== 0 ? (
                           <div className="label new">New</div>
-                        ) : prod.sale ? (
+                        ) : prod.sale && prod.stock !== 0 ? (
                           <div className="label sale">Sale</div>
                         ) : prod.stock === 0 ? (
                           <div className="label stockout">out of stock</div>

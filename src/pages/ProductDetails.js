@@ -224,7 +224,10 @@ const ProductDetails = () => {
           setCount((prevCount) => prevCount + response.data.quantity);
         } catch (error) {
           console.error(error.response.data.quantity !== 0);
-          if (error.response.data.quantity !== 0) {
+          if (
+            error.response.data.quantity !== 0 &&
+            error.response.data.quantity
+          ) {
             dispatch(increaseCounterByAmount(error.response.data.quantity));
             setCount((prevCount) => prevCount + error.response.data.quantity);
             // setTotalCount

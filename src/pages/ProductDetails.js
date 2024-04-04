@@ -257,7 +257,7 @@ const ProductDetails = () => {
             dispatch(increaseCounterByAmount(response.data.quantity));
             setCount((prevCount) => prevCount + response.data.quantity);
           } catch (error) {
-            console.error("Error:", error.response.data);
+            // console.error("Error:", error.response.data);
           }
         }
       }
@@ -881,13 +881,20 @@ const ProductDetails = () => {
                               href={() => false}
                               onClick={() => handleAdd(prod.id, prod.id)}
                               style={{
-                                backgroundColor:
-                                  itemsid.includes(prod.id) && "#ca1515",
+                                backgroundColor: itemsid.includes(prod.id)
+                                  ? "#ca1515"
+                                  : prod.stock === 0
+                                  ? "gray"
+                                  : null,
                               }}
                             >
                               <span
                                 style={{
-                                  color: itemsid.includes(prod.id) && "#ffffff",
+                                  color:
+                                    itemsid.includes(prod.id) ||
+                                    prod.stock === 0
+                                      ? "#ffffff"
+                                      : null,
                                 }}
                                 className="icon_bag_alt"
                               ></span>

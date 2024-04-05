@@ -19,7 +19,7 @@ const Home = () => {
       <br/>
       <br/>
       <br/>
-      {/* <Discount /> */}
+      <Discount />
       <Services />
       <Instagram />
     </>

@@ -73,7 +73,7 @@ function Sidebar() {
                             <div className="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav className="sb-sidenav-menu-nested nav">
                                     <Link className="nav-link" to="/addsubcategory">Add Sub Category</Link>
-                                    <Link className="nav-link" to="/viewsubcategory">Liar Sub Category</Link>
+                                    <Link className="nav-link" to="/viewsubcategory">List Sub Category</Link>
                                 </nav>
                             </div>
                             
